@@ -17,6 +17,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_join">JoinActivity</string>
 
-    <string name="login">LoginActivity!</string>
-    <string name="join">JoinActivity!</string>
+    <string name="login">LoginActivity</string>
+    <string name="join">JoinActivity</string>
 </resources>

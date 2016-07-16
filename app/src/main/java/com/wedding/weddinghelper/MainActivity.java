@@ -30,26 +30,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Intent showIntent = new Intent(this, MainActivity.class);
-        /*String pageType;
+        Intent showIntent;
         switch(v.getId()) {
             case R.id.createWedding:
-                Log.d("Home", "Create Wedding Page Clicked");
-                pageType = getString(R.string.login);
+                Log.d(getClass().getSimpleName(), "Create Wedding Page Clicked");
+                showIntent = new Intent(this, LoginActivity.class);
                 break;
             case R.id.joinWedding:
-                Log.d("Home", "Join Wedding Page Clicked");
-                pageType = getString(R.string.join);
+                Log.d(getClass().getSimpleName(), "Join Wedding Page Clicked");
+                showIntent = new Intent(this, JoinActivity.class);
                 break;
             default:
-                pageType = getString(R.string.login);
+                showIntent = new Intent(this, LoginActivity.class);
         }
-        //showMainIntent.setClass(MainActivity.this, LoginActivity.class);
-        //startActivityForResult(showMainIntent, 0);
-        */
-
         //showIntent.putExtra(MainActivity.PAGE_TYPE_KEY, pageType);
-        showIntent.putExtra(MainActivity.PAGE_TYPE_KEY, getString(R.string.login));
         startActivity(showIntent);
     }
+
+    @Override
+    public void onRestart() { super.onRestart();
+        Log.d(getClass().getSimpleName(), "onRestart()");
+    }
+    @Override
+    public void onStart() { super.onStart();
+        Log.d(getClass().getSimpleName(), "onStart()");
+    }
+    @Override
+    public void onResume() { super.onResume();
+        Log.d(getClass().getSimpleName(), "onResume()");
+    }
+    @Override
+    public void onPause() { Log.d(getClass().getSimpleName(), "onPause()");
+        super.onPause(); }
+    @Override
+    public void onStop() {
+        Log.d(getClass().getSimpleName(), "onStop()");
+        super.onStop(); }
+    @Override
+    public void onDestroy() { Log.d(getClass().getSimpleName(), "onDestroy()");
+        super.onDestroy(); }
 }
