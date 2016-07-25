@@ -27,10 +27,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //ImageView coupleImage = (ImageView) findViewById(R.id.couple);
         ImageButton createWeddingBtn = (ImageButton) findViewById(R.id.createWedding);
+        ImageButton ownWeddingBtn = (ImageButton) findViewById(R.id.ownWedding);
         ImageButton joinWeddingBtn = (ImageButton) findViewById(R.id.joinWedding);
 
         if (createWeddingBtn != null) {
             createWeddingBtn.setOnClickListener(this);
+        }
+        if (ownWeddingBtn != null) {
+            ownWeddingBtn.setOnClickListener(this);
         }
         if (joinWeddingBtn != null) {
             joinWeddingBtn.setOnClickListener(this);
@@ -44,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.createWedding:
                 Log.d(getClass().getSimpleName(), "Create Wedding Page Clicked");
                 showIntent = new Intent(this, LoginActivity.class);
+                break;
+            case R.id.ownWedding:
+                Log.d(getClass().getSimpleName(), "Own Wedding Page Clicked");
+                showIntent = new Intent(this, OwnActivity.class);
                 break;
             case R.id.joinWedding:
                 Log.d(getClass().getSimpleName(), "Join Wedding Page Clicked");

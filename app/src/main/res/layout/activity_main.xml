@@ -51,5 +51,13 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/couple" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ownWedding"
+            android:src="@drawable/create_wedding"
+            android:layout_below="@id/couple"
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 </LinearLayout>
