@@ -1,13 +1,13 @@
-package com.wedding.weddinghelper;
+package com.wedding.weddinghelper.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+
+import com.wedding.weddinghelper.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String PAGE_TYPE_KEY = "PageTypeKey";
