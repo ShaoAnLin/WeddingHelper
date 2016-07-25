@@ -14,11 +14,7 @@
         completions."
     </string>
 
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_join">JoinActivity</string>
-
-    <string name="login">LoginActivity</string>
-    <string name="join">JoinActivity</string>
+    <string name="join_wedding">Join Wedding</string>
     <string name="wedding_name">Wedding Name</string>
     <string name="wedding_password">Wedding password</string>
 </resources>

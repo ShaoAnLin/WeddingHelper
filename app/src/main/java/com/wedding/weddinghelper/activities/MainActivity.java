@@ -3,6 +3,7 @@ package com.wedding.weddinghelper.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +16,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // initiate action bar
+        Toolbar actionBar = (Toolbar) findViewById(R.id.main_action_bar);
+        setSupportActionBar(actionBar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+        }
 
         //ImageView coupleImage = (ImageView) findViewById(R.id.couple);
         ImageButton createWeddingBtn = (ImageButton) findViewById(R.id.createWedding);
