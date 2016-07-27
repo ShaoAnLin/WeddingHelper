@@ -1,13 +1,13 @@
-package com.wedding.weddinghelper;
+package com.wedding.weddinghelper.fragements;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.wedding.weddinghelper.R;
 
 public class JoinWeddingFragment extends Fragment {
     private static final String KEY_PARAM="param";
@@ -19,6 +19,11 @@ public class JoinWeddingFragment extends Fragment {
         args.putInt(KEY_PARAM, param);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

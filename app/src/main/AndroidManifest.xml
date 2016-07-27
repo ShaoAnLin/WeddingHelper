@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.JoinActivity" />
-        <activity android:name=".activities.OwnActivity"></activity>
+        <activity android:name=".activities.OwnActivity" />
+        <activity android:name=".activities.JoinInfoActivity"></activity>
     </application>
 
 </manifest>
