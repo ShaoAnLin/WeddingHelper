@@ -1,7 +1,5 @@
 package com.wedding.weddinghelper.fragements;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,10 +9,10 @@ import android.view.ViewGroup;
 
 import com.wedding.weddinghelper.R;
 
-public class JoinWeddingInfoFragment extends Fragment {
-    public static JoinWeddingInfoFragment newInstance() {
-        Log.d("Join wedding fragment", "New Instance");
-        JoinWeddingInfoFragment fragment = new JoinWeddingInfoFragment();
+public class JoinInfoFragment extends Fragment {
+    public static JoinInfoFragment newInstance() {
+        Log.d("Join Info fragment", "New Instance");
+        JoinInfoFragment fragment = new JoinInfoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -28,7 +26,7 @@ public class JoinWeddingInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_join_wedding_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_join_info, container, false);
         return view;
     }
 }

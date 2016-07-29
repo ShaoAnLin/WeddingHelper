@@ -9,14 +9,12 @@ import android.view.ViewGroup;
 
 import com.wedding.weddinghelper.R;
 
-public class JoinWeddingFragment extends Fragment {
-    private static final String KEY_PARAM="param";
+public class JoinSettingFragment extends Fragment {
 
-    public static JoinWeddingFragment newInstance(int param) {
-        Log.d("Join wedding fragment", Integer.toString(param));
-        JoinWeddingFragment fragment = new JoinWeddingFragment();
+    public static JoinSettingFragment newInstance() {
+        Log.d("Join setting fragment", "New Instance");
+        JoinSettingFragment fragment = new JoinSettingFragment();
         Bundle args = new Bundle();
-        args.putInt(KEY_PARAM, param);
         fragment.setArguments(args);
         return fragment;
     }
@@ -29,7 +27,7 @@ public class JoinWeddingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_join_wedding, container, false);
+        View view = inflater.inflate(R.layout.fragment_join_photo, container, false);
         return(view);
     }
 }

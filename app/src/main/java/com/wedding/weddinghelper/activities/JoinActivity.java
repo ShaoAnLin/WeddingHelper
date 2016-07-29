@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.wedding.weddinghelper.fragements.JoinWeddingFragment;
 import com.wedding.weddinghelper.R;
 
 public class JoinActivity extends AppCompatActivity
@@ -33,13 +32,13 @@ public class JoinActivity extends AppCompatActivity
             actionBar.setNavigationOnClickListener(this);
         }
 
-        if (getSupportFragmentManager().findFragmentById(R.id.join_wedding_fragment) == null) {
+        /*if (getSupportFragmentManager().findFragmentById(R.id.join_wedding_fragment) == null) {
             int int1 = 1139;
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.join_wedding_fragment, JoinWeddingFragment.newInstance(int1))
+                    .add(R.id.join_wedding_fragment, JoinMainFragment.newInstance(int1))
                     .commit();
-        }
+        }*/
     }
 
     @Override
