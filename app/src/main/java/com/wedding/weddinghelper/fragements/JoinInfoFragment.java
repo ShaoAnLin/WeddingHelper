@@ -11,11 +11,8 @@ import com.wedding.weddinghelper.R;
 
 public class JoinInfoFragment extends Fragment {
     public static JoinInfoFragment newInstance() {
-        Log.d("Join Info fragment", "New Instance");
-        JoinInfoFragment fragment = new JoinInfoFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        Log.d("Info", "New Instance");
+        return new JoinInfoFragment();
     }
 
     @Override
@@ -27,6 +24,7 @@ public class JoinInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join_info, container, false);
+        Log.d("Info", "create view");
         return view;
     }
 }

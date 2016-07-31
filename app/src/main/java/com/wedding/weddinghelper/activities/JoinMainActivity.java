@@ -1,10 +1,12 @@
 package com.wedding.weddinghelper.activities;
 
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.roughike.bottombar.BottomBar;
@@ -12,6 +14,8 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 import com.wedding.weddinghelper.fragements.JoinInfoFragment;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.JoinPhotoFragment;
+import com.wedding.weddinghelper.fragements.JoinSettingFragment;
 
 public class JoinMainActivity extends AppCompatActivity
         implements OnMenuTabClickListener, View.OnClickListener {
@@ -55,7 +59,7 @@ public class JoinMainActivity extends AppCompatActivity
         mBottomBar.useFixedMode();
         mBottomBar.useDarkTheme();
         mBottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
-        mBottomBar.setItemsFromMenu(R.menu.bottom_bar_menu, this);
+        mBottomBar.setItems(R.menu.bottom_bar_menu);
 
         // set tab's background color
         mBottomBar.mapColorForTab(PageType.INFO.position, ContextCompat.getColor(this, R.color.colorPrimary));
@@ -83,9 +87,16 @@ public class JoinMainActivity extends AppCompatActivity
                     default:
                         position = PageType.INFO.position;
                 }
+                Log.d("Bottom:", type.name());
             }
             mBottomBar.setDefaultTabPosition(position);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mBottomBar.onSaveInstanceState(outState);
     }
 
     @Override
@@ -95,14 +106,28 @@ public class JoinMainActivity extends AppCompatActivity
 
     @Override
     public void onMenuTabSelected(@IdRes int menuItemId) {
-        /*switch (menuItemId) {
-            case R.id.bottomBarInFo:
-                replaceCurrentFragment(JoinInfoFragment.newInstance()
-                        .setModel(introModelFragment.getModel()));
-                setActionBarTitle(R.string.intro_page_title);
+        switch (menuItemId) {
+            case R.id.bottomBarInfo:
+                Log.d("Bar Info selected", "");
+                replaceCurrentFragment(JoinInfoFragment.newInstance());
+                break;
+            case R.id.bottomBarPhoto:
+                Log.d("Bar photo selected", "");
+                replaceCurrentFragment(JoinPhotoFragment.newInstance());
+                break;
+            case R.id.bottomBarSetting:
+                Log.d("Bar setting selected", "");
+                replaceCurrentFragment(JoinSettingFragment.newInstance());
                 break;
             default:
-        }*/
+        }
+    }
+
+    private void replaceCurrentFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.join_main_fragment, fragment)
+                .commit();
     }
 
     @Override

@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import com.wedding.weddinghelper.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    public static final String PAGE_TYPE_KEY = "PageTypeKey";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //ImageView coupleImage = (ImageView) findViewById(R.id.couple);
-        ImageButton createWeddingBtn = (ImageButton) findViewById(R.id.createWedding);
         ImageButton ownWeddingBtn = (ImageButton) findViewById(R.id.ownWedding);
         ImageButton joinWeddingBtn = (ImageButton) findViewById(R.id.joinWedding);
 
-        if (createWeddingBtn != null) {
-            createWeddingBtn.setOnClickListener(this);
-        }
         if (ownWeddingBtn != null) {
             ownWeddingBtn.setOnClickListener(this);
         }
@@ -45,10 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         Intent showIntent;
         switch(v.getId()) {
-            case R.id.createWedding:
-                Log.d(getClass().getSimpleName(), "Create Wedding Page Clicked");
-                showIntent = new Intent(this, LoginActivity.class);
-                break;
             case R.id.ownWedding:
                 Log.d(getClass().getSimpleName(), "Own Wedding Page Clicked");
                 showIntent = new Intent(this, OwnActivity.class);
@@ -58,9 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showIntent = new Intent(this, JoinActivity.class);
                 break;
             default:
-                showIntent = new Intent(this, LoginActivity.class);
+                showIntent = new Intent(this, OwnActivity.class);
         }
-        //showIntent.putExtra(MainActivity.PAGE_TYPE_KEY, pageType);
         startActivity(showIntent);
     }
 

@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import com.wedding.weddinghelper.R;
 
 public class JoinSettingFragment extends Fragment {
-
     public static JoinSettingFragment newInstance() {
-        Log.d("Join setting fragment", "New Instance");
+        Log.d("Setting", "New Instance");
         JoinSettingFragment fragment = new JoinSettingFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -27,7 +26,8 @@ public class JoinSettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_join_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_join_setting, container, false);
+        Log.d("Setting", "create view");
         return(view);
     }
 }

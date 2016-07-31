@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import com.wedding.weddinghelper.R;
 
 public class JoinPhotoFragment extends Fragment {
-
     public static JoinPhotoFragment newInstance() {
-        Log.d("Join photo fragment", "New Instance");
+        Log.d("Photo", "New Instance");
         JoinPhotoFragment fragment = new JoinPhotoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -28,6 +27,7 @@ public class JoinPhotoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join_photo, container, false);
+        Log.d("Photo", "create view");
         return(view);
     }
 }
