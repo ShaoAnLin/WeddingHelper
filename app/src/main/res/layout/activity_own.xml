@@ -37,10 +37,10 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/own_wedding_name"
+                android:id="@+id/user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/wedding_name"
+                android:hint="@string/user_name"
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -52,10 +52,10 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/own_wedding_password"
+                android:id="@+id/user_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/wedding_password"
+                android:hint="@string/user_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true" />
@@ -63,12 +63,12 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/own_wedding_sign_in_button"
+            android:id="@+id/own_wedding_login_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/action_sign_in"
+            android:text="@string/login"
             android:textStyle="bold" />
 
         </LinearLayout>

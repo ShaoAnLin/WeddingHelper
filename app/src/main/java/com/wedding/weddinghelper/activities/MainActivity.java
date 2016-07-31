@@ -8,6 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.wedding.weddinghelper.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -15,6 +20,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.initialize(this,"TlUPVfv4VFf6O5sWppgvE1Koo80oqvhvBB0FePUC", "jObLwhnPEsWGRWkjAhwDVcPv1RUcznytT2X83iet");
+
+        //final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
+        //currentInstallation.saveInBackground();
 
         // initiate action bar
         Toolbar actionBar = (Toolbar) findViewById(R.id.main_action_bar);
