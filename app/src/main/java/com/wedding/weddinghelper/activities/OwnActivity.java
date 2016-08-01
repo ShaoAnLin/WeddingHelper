@@ -55,35 +55,34 @@ public class OwnActivity extends AppCompatActivity implements View.OnClickListen
 
         Button loginButton = (Button) findViewById(R.id.own_wedding_login_button);
         if (loginButton != null) {
-            loginButton.setOnClickListener(this);
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    login();
+                }
+            });
         }
+    }
+
+    public void login(){
+        EditText userNameEditText = (EditText) findViewById(R.id.user_name);
+        final EditText userPasswordEditText = (EditText) findViewById(R.id.user_password);
+        ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    //Go to admin UI
+                    Log.d("Neal","Login success");
+                } else {
+                    //Show a tip to tell user the failed reason.
+                    Log.d("Neal","Login failed with exception"  + e);
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        Log.d("Neal","v.getId() = "+v.getId());
-        switch (v.getId()){
-            case R.id.own_wedding_login_button:
-                EditText userNameEditText = (EditText) findViewById(R.id.user_name);
-                final EditText userPasswordEditText = (EditText) findViewById(R.id.user_password);
-                ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
-                    public void done(ParseUser user, ParseException e) {
-                        if (user != null) {
-                            //Go to admin UI
-                            Log.d("Neal","Login success");
-                        } else {
-                            //Show a tip to tell user the failed reason.
-                            Log.d("Neal","Login failed with exception"  + e);
-                        }
-                    }
-                });
-                break;
-
-            //WRONG WAY
-            case R.id.own_wedding_action_bar:
-                finish();
-                break;
-        }
+        finish();
 
     }
 
