@@ -1,6 +1,7 @@
 package com.wedding.weddinghelper.activities;
 
 import android.content.Intent;
+import android.preference.Preference;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.ParseInstallation;
+import com.wedding.weddinghelper.fragements.CreateAccountFragment;
 
 import org.w3c.dom.Text;
 
@@ -32,9 +34,6 @@ public class OwnActivity extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_own);
-
-
-
 
         // initiate action bar
         Toolbar actionBar = (Toolbar) findViewById(R.id.own_wedding_action_bar);
@@ -53,37 +52,17 @@ public class OwnActivity extends AppCompatActivity implements View.OnClickListen
             actionBar.setNavigationOnClickListener(this);
         }
 
-        Button loginButton = (Button) findViewById(R.id.own_wedding_login_button);
-        if (loginButton != null) {
-            loginButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    login();
-                }
-            });
+        // set preference fragment
+        if (getSupportFragmentManager().findFragmentById(R.id.own_login_fragment) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.own_login_fragment, CreateAccountFragment.newInstance())
+                    .commit();
         }
-    }
-
-    public void login(){
-        EditText userNameEditText = (EditText) findViewById(R.id.user_name);
-        final EditText userPasswordEditText = (EditText) findViewById(R.id.user_password);
-        ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    //Go to admin UI
-                    Log.d("Neal","Login success");
-                } else {
-                    //Show a tip to tell user the failed reason.
-                    Log.d("Neal","Login failed with exception"  + e);
-                }
-            }
-        });
     }
 
     @Override
     public void onClick(View v) {
         finish();
-
     }
-
 }

@@ -108,15 +108,15 @@ public class JoinMainActivity extends AppCompatActivity
     public void onMenuTabSelected(@IdRes int menuItemId) {
         switch (menuItemId) {
             case R.id.bottomBarInfo:
-                Log.d("Bar Info selected", "");
+                Log.d("Bar Info", "Selected");
                 replaceCurrentFragment(JoinInfoFragment.newInstance());
                 break;
             case R.id.bottomBarPhoto:
-                Log.d("Bar photo selected", "");
+                Log.d("Bar photo", "Selected");
                 replaceCurrentFragment(JoinPhotoFragment.newInstance());
                 break;
             case R.id.bottomBarSetting:
-                Log.d("Bar setting selected", "");
+                Log.d("Bar setting", "Selected");
                 replaceCurrentFragment(JoinSettingFragment.newInstance());
                 break;
             default:
