@@ -1,25 +1,19 @@
 <resources>
     <string name="app_name">婚宴小幫手</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="error_incorrect_name">This wedding do not exist</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <!-- Account Log In -->
+    <string name="error_field_required">該欄位不能空白</string>
     <string name="user_name">帳號</string>
     <string name="user_password">密碼</string>
+    <string name="user_email">電子信箱</string>
+    <string name="have_account">已註冊帳號</string>
+    <string name="create_account">註冊帳號</string>
+    <string name="login_account">帳號登入</string>
     <string name="login">登入</string>
+    <string name="create_login">註冊</string>
+
     <string name="join_wedding">參加婚宴</string>
     <string name="join_info">婚宴資訊</string>
-    <string name="own_wedding">舉辦/編輯婚宴</string>
     <string name="wedding_name">婚宴名稱</string>
     <string name="wedding_password">通關密碼</string>
 
@@ -27,7 +21,4 @@
     <string name="bottom_bar_photo_title">照片紀錄</string>
     <string name="bottom_bar_setting_title">設定</string>
     <string name="attend_wedding">Go!</string>
-    <string name="have_account">已註冊帳號</string>
-    <string name="user_email">電子信箱</string>
-    <string name="create_login">註冊</string>
 </resources>
