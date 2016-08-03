@@ -15,17 +15,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 
 import com.wedding.weddinghelper.R;
-
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.LogInCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.ParseInstallation;
 import com.wedding.weddinghelper.fragements.CreateAccountFragment;
 import com.wedding.weddinghelper.fragements.LoginAccountFragment;
 
