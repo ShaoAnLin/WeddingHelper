@@ -59,8 +59,8 @@ public class LoginAccountFragment extends Fragment {
     }
 
     private void attemptLogin(View v){
-        EditText userNameEditText = (EditText) v.findViewById(R.id.login_user_account);
-        final EditText userPasswordEditText = (EditText) v.findViewById(R.id.login_user_password);
+        EditText userNameEditText = (EditText) getActivity().findViewById(R.id.login_user_account);
+        EditText userPasswordEditText = (EditText) getActivity().findViewById(R.id.login_user_password);
         ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
                 if (user != null) {
