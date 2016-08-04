@@ -16,6 +16,9 @@ import com.parse.SignUpCallback;
 import com.wedding.weddinghelper.R;
 
 public class CreateAccountFragment extends Fragment {
+
+    private Button mSignInButton;
+
     public static CreateAccountFragment newInstance() {
         Log.d("Create account", "New Instance");
         CreateAccountFragment fragment = new CreateAccountFragment();
@@ -35,16 +38,18 @@ public class CreateAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_account, container, false);
         Log.d("Create account", "create view");
-        Button createAccountButton = (Button) view.findViewById(R.id.create_account_login_button);
 
-        if (createAccountButton != null) {
-            createAccountButton.setOnClickListener(new View.OnClickListener() {
+        mSignInButton = (Button) view.findViewById(R.id.create_account_signin_button);
+
+        if (mSignInButton != null) {
+            mSignInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     attemptCreateAccount(view);
                 }
             });
         }
+
         return(view);
     }
 

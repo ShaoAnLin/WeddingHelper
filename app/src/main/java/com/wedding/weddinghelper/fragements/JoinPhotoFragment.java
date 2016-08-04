@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.wedding.weddinghelper.R;
 
@@ -29,5 +31,19 @@ public class JoinPhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_join_photo, container, false);
         Log.d("Photo", "create view");
         return(view);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+
+        //取得TextView元件並帶入text字串
+        TextView mText = (TextView) getView().findViewById(R.id.text_photo);
+        mText.setText(R.string.wedding_photo);
+
+        //取得ImageView元件並帶入指定圖片
+        ImageView mImg = (ImageView) getActivity().findViewById(R.id.img_photo);
+        mImg.setImageResource(R.drawable.ic_collections_24dp);
     }
 }

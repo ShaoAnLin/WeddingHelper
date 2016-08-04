@@ -22,10 +22,11 @@ import org.w3c.dom.Text;
 
 
 public class OwnActivity extends AppCompatActivity
-        implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+        implements CompoundButton.OnCheckedChangeListener {
 
     final private String createAccountFragmentTag = "createAccountFragment";
     final private String loginAccountFragmentTag = "loginAccountFragment";
+
     private Switch mHaveAccountSwitch;
 
     @Override
@@ -47,7 +48,12 @@ public class OwnActivity extends AppCompatActivity
 
         // set close icon on click listener
         if (actionBar != null) {
-            actionBar.setNavigationOnClickListener(this);
+            actionBar.setNavigationOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    finish();
+                }
+            });
         }
 
         // get switch
@@ -62,11 +68,6 @@ public class OwnActivity extends AppCompatActivity
         if (getSupportFragmentManager().findFragmentById(R.id.own_login_fragment) == null) {
             replaceLoginFormFragment(CreateAccountFragment.newInstance(), createAccountFragmentTag);
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        finish();
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

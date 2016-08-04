@@ -50,7 +50,8 @@ public class LoginAccountFragment extends Fragment {
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    attemptLogin(view);
+                    Log.d("Login account", "button clicked!");
+                    //attemptLogin(view);
                 }
             });
         }

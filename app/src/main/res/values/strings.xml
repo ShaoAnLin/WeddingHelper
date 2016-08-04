@@ -3,6 +3,7 @@
 
     <!-- Account Log In -->
     <string name="error_field_required">該欄位不能空白</string>
+    <string name="error_not_foune">帳號或密碼有誤</string>
     <string name="user_name">帳號</string>
     <string name="user_password">密碼</string>
     <string name="user_email">電子信箱</string>
@@ -17,8 +18,9 @@
     <string name="wedding_name">婚宴名稱</string>
     <string name="wedding_password">通關密碼</string>
 
-    <string name="bottom_bar_intro_title">婚禮資訊</string>
-    <string name="bottom_bar_photo_title">照片紀錄</string>
-    <string name="bottom_bar_setting_title">設定</string>
+    <string name="wedding_info">婚禮資訊</string>
+    <string name="wedding_photo">照片紀錄</string>
+    <string name="setting">設定</string>
     <string name="attend_wedding">Go!</string>
+
 </resources>

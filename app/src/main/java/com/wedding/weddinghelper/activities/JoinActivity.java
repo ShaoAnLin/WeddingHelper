@@ -54,9 +54,16 @@ public class JoinActivity extends AppCompatActivity
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //testLogin();
                 attemptLogin();
             }
         });
+    }
+
+    private void testLogin(){
+        Intent showIntent;
+        showIntent = new Intent(this, JoinMainActivity.class);
+        startActivity(showIntent);
     }
 
     private void attemptLogin() {
@@ -66,7 +73,8 @@ public class JoinActivity extends AppCompatActivity
 
         boolean emptyName = false;
         boolean emptyPassword = false;
-        View focusView = null;
+        final View focusView = null;
+
         //先判斷組婚宴名稱及通關密語是否為空，若任一個為空，則在文字框旁顯示error。
         // Check for a valid userName.
         if (TextUtils.isEmpty(name)) {
@@ -78,6 +86,7 @@ public class JoinActivity extends AppCompatActivity
             mPasswordView.setError(getString(R.string.error_field_required));
             emptyPassword = true;
         }
+
         //若mNameView為空，則focus在mNameView。若mNameView不為空，但mPasswordView為空，則focus在mPasswordView。
         if (emptyName) {
             mNameView.requestFocus();
@@ -85,6 +94,7 @@ public class JoinActivity extends AppCompatActivity
         else if (emptyPassword){
             mPasswordView.requestFocus();
         }
+
         //若皆不為空，才嘗試以此組婚宴名稱及通關密語搜尋。
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
             ParseQuery query = ParseQuery.getQuery("Information");
@@ -96,6 +106,8 @@ public class JoinActivity extends AppCompatActivity
                     Log.d("Neal", "Exception = " + e);
                     //有其他錯誤發生，如連線異常、伺服器掛掉等。
                     if (e != null) {
+                        mNameView.setError(getString(R.string.error_not_foune));
+                        mNameView.requestFocus();
                         if (e.getCode() == 101) {
                             //目前只能判斷是否有婚宴使用此組婚宴名稱及通關密語，因此較適合使用提示視窗告知使用者此組合是錯誤的。
 
@@ -108,9 +120,10 @@ public class JoinActivity extends AppCompatActivity
                     //有搜尋到婚宴資訊，則進入至下一個畫面且夾帶婚宴資訊。
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
-                        Intent showMainIntent = new Intent(JoinActivity.this, JoinMainActivity.class);
-                        showMainIntent.putExtra(JoinMainActivity.PAGE_TYPE_KEY, JoinMainActivity.PageType.INFO.name());
-                        startActivity(showMainIntent);
+                        //Intent showMainIntent = new Intent(JoinActivity.this, JoinMainActivity.class);
+                        //showMainIntent.putExtra(JoinMainActivity.PAGE_TYPE_KEY, JoinMainActivity.PageType.INFO.name());
+                        //startActivity(showMainIntent);
+                        testLogin();
                     }
                 }
             });

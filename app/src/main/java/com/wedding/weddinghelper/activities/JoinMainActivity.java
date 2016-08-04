@@ -1,35 +1,27 @@
 package com.wedding.weddinghelper.activities;
 
-import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
-import com.wedding.weddinghelper.fragements.JoinInfoFragment;
+import android.widget.TabHost;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.JoinInfoFragment;
 import com.wedding.weddinghelper.fragements.JoinPhotoFragment;
 import com.wedding.weddinghelper.fragements.JoinSettingFragment;
 
 public class JoinMainActivity extends AppCompatActivity
-        implements OnMenuTabClickListener, View.OnClickListener {
-    public static final String PAGE_TYPE_KEY = "whrPageTypeKey";
+        implements View.OnClickListener {
 
-    private BottomBar mBottomBar;
-    public enum PageType {
-        INFO(0), PHOTO(1), SETTING(2);
+    final private String tabInfoTag = "tabInfoTag";
+    final private String tabPhotoTag = "tabPhotoTag";
+    final private String tabSettingTag = "tabSettingTag";
 
-        public final int position;
-        private PageType(int position) {
-            this.position = position;
-        }
-    }
+    private FragmentTabHost mTabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +29,14 @@ public class JoinMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_join_main);
 
         // initiate action bar
-        Toolbar actionBar = (Toolbar) findViewById(R.id.join_info_action_bar);
+        Toolbar actionBar = (Toolbar) findViewById(R.id.join_main_action_bar);
         setSupportActionBar(actionBar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.home_icon_white);
-            getSupportActionBar().setTitle(getString(R.string.join_info));
+            getSupportActionBar().setTitle(getString(R.string.wedding_info));
             getSupportActionBar().setShowHideAnimationEnabled(true);
         }
 
@@ -53,85 +45,55 @@ public class JoinMainActivity extends AppCompatActivity
             actionBar.setNavigationOnClickListener(this);
         }
 
-        // initiate bottom bar
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
-        mBottomBar.useOnlyStatusBarTopOffset();
-        mBottomBar.useFixedMode();
-        mBottomBar.useDarkTheme();
-        mBottomBar.setActiveTabColor(ContextCompat.getColor(this, R.color.colorAccent));
-        mBottomBar.setItems(R.menu.bottom_bar_menu);
+        // set up tab host
+        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        mTabHost.setup(this, getSupportFragmentManager(), R.id.container);
 
-        // set tab's background color
-        mBottomBar.mapColorForTab(PageType.INFO.position, ContextCompat.getColor(this, R.color.colorPrimary));
-        mBottomBar.mapColorForTab(PageType.PHOTO.position, ContextCompat.getColor(this, R.color.colorPrimary));
-        mBottomBar.mapColorForTab(PageType.SETTING.position, ContextCompat.getColor(this, R.color.colorPrimary));
+        // TODO: Images on tabs cannot be shown!
+        mTabHost.addTab(mTabHost.newTabSpec(tabInfoTag)
+                        .setIndicator(
+                                getResources().getText(R.string.wedding_info),
+                                ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
+                JoinInfoFragment.class, null);
 
-        // setup the default tab
-        // Note: the default position has to be set before setting background colors
-        //       for some reason, otherwise the color won't be changed in the first time
-        if (getSupportFragmentManager().findFragmentById(R.id.join_main_fragment) == null) {
-            int position = PageType.INFO.position;
-            if (getIntent() != null && getIntent().getExtras() != null &&
-                    getIntent().getExtras().getString(PAGE_TYPE_KEY) != null) {
-                PageType type = null;
-                try {
-                    type = PageType.valueOf(getIntent().getExtras().getString(PAGE_TYPE_KEY));
-                } catch (Exception e) {}
+        mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
+                        .setIndicator(
+                                getResources().getText(R.string.wedding_photo),
+                                ResourcesCompat.getDrawable(getResources(), R.drawable.ic_collections_24dp, null)),
+                JoinPhotoFragment.class, null);
 
-                switch (type) {
-                    case INFO:
-                    case PHOTO:
-                    case SETTING:
-                        position = type.position;
-                        break;
-                    default:
-                        position = PageType.INFO.position;
+        mTabHost.addTab(mTabHost.newTabSpec(tabSettingTag)
+                        .setIndicator(
+                                getResources().getText(R.string.setting),
+                                ResourcesCompat.getDrawable(getResources(), R.drawable.ic_settings_24dp, null)),
+                JoinSettingFragment.class, null);
+
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            public void onTabChanged(String str) {
+                if (str.equals(tabInfoTag)){
+                    Log.d("Tab", "Info");
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle(getString(R.string.wedding_info));
+                    }
                 }
-                Log.d("Bottom:", type.name());
+                else if (str.equals(tabPhotoTag)){
+                    Log.d("Tab", "Photo");
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle(getString(R.string.wedding_photo));
+                    }
+                }
+                else if (str.equals(tabSettingTag)){
+                    Log.d("Tab", "Setting");
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle(getString(R.string.setting));
+                    }
+                }
             }
-            mBottomBar.setDefaultTabPosition(position);
-        }
+        });
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mBottomBar.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onMenuTabReSelected(int menuItemId) {
-        // do nothing at the moment
-    }
-
-    @Override
-    public void onMenuTabSelected(@IdRes int menuItemId) {
-        switch (menuItemId) {
-            case R.id.bottomBarInfo:
-                Log.d("Bar Info", "Selected");
-                replaceCurrentFragment(JoinInfoFragment.newInstance());
-                break;
-            case R.id.bottomBarPhoto:
-                Log.d("Bar photo", "Selected");
-                replaceCurrentFragment(JoinPhotoFragment.newInstance());
-                break;
-            case R.id.bottomBarSetting:
-                Log.d("Bar setting", "Selected");
-                replaceCurrentFragment(JoinSettingFragment.newInstance());
-                break;
-            default:
-        }
-    }
-
-    private void replaceCurrentFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.join_main_fragment, fragment)
-                .commit();
-    }
-
-    @Override
-    public void onClick(View v) {
+    public void onClick(View v){
         finish();
     }
 }
