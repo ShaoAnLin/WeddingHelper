@@ -1,24 +1,18 @@
 package com.wedding.weddinghelper.activities;
 
 import android.content.Intent;
-import android.preference.Preference;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.CreateAccountFragment;
 import com.wedding.weddinghelper.fragements.LoginAccountFragment;
-
-import org.w3c.dom.Text;
 
 
 public class OwnActivity extends AppCompatActivity
@@ -82,7 +76,6 @@ public class OwnActivity extends AppCompatActivity
             this.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.own_login_fragment, LoginAccountFragment.newInstance(), loginAccountFragmentTag)
-                    .addToBackStack(null)
                     .commit();
         }
         else if (loginFormFragment instanceof LoginAccountFragment && !isChecked){
@@ -95,7 +88,6 @@ public class OwnActivity extends AppCompatActivity
             this.getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.own_login_fragment, CreateAccountFragment.newInstance(), createAccountFragmentTag)
-                    .addToBackStack(null)
                     .commit();
         }
         else{
@@ -108,5 +100,10 @@ public class OwnActivity extends AppCompatActivity
                 .beginTransaction()
                 .replace(R.id.own_login_fragment, fragment, tag)
                 .commit();
+    }
+
+    public void login(){
+        Log.d(getClass().getSimpleName(), "login");
+        startActivity(new Intent(this, ManageActivity.class));
     }
 }

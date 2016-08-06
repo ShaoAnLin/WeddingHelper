@@ -25,6 +25,7 @@
         <activity android:name=".activities.JoinActivity" />
         <activity android:name=".activities.OwnActivity" />
         <activity android:name=".activities.JoinMainActivity" />
+        <activity android:name=".activities.ManageActivity"></activity>
     </application>
 
 </manifest>

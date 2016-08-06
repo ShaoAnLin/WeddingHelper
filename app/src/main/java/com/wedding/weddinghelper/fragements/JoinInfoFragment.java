@@ -35,12 +35,10 @@ public class JoinInfoFragment extends Fragment {
     {
         super.onActivityCreated(savedInstanceState);
 
-        //取得TextView元件並帶入text字串
         TextView mText = (TextView) getView().findViewById(R.id.text_info);
         mText.setText(R.string.wedding_info);
         Log.d("Info", mText.getText().toString());
 
-        //取得ImageView元件並帶入指定圖片
         ImageView mImg = (ImageView) getActivity().findViewById(R.id.img_info);
         mImg.setImageResource(R.drawable.ic_place_24dp);
     }

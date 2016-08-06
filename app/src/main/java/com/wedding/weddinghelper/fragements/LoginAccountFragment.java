@@ -20,6 +20,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.ParseInstallation;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.OwnActivity;
 
 public class LoginAccountFragment extends Fragment {
 
@@ -52,11 +53,17 @@ public class LoginAccountFragment extends Fragment {
                 public void onClick(View view) {
                     Log.d("Login account", "button clicked!");
                     //attemptLogin(view);
+                    login();
                 }
             });
         }
 
         return(view);
+    }
+
+    private void login(){
+        Log.d("Login Account", "login");
+        ((OwnActivity)getActivity()).login();
     }
 
     private void attemptLogin(View v){

@@ -38,11 +38,9 @@ public class JoinPhotoFragment extends Fragment {
     {
         super.onActivityCreated(savedInstanceState);
 
-        //取得TextView元件並帶入text字串
         TextView mText = (TextView) getView().findViewById(R.id.text_photo);
         mText.setText(R.string.wedding_photo);
 
-        //取得ImageView元件並帶入指定圖片
         ImageView mImg = (ImageView) getActivity().findViewById(R.id.img_photo);
         mImg.setImageResource(R.drawable.ic_collections_24dp);
     }

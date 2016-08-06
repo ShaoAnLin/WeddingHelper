@@ -51,12 +51,14 @@ public class JoinActivity extends AppCompatActivity
         mPasswordView = (EditText) findViewById(R.id.join_wedding_password);
 
         Button mSignInButton = (Button) findViewById(R.id.join_wedding_sign_in_button);
-        mSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        if (mSignInButton != null) {
+            mSignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    attemptLogin();
+                }
+            });
+        }
     }
 
     private void login(){

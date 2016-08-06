@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setTitle(getString(R.string.app_name));
         }
 
-        //ImageView coupleImage = (ImageView) findViewById(R.id.couple);
         ImageButton ownWeddingBtn = (ImageButton) findViewById(R.id.ownWedding);
         ImageButton joinWeddingBtn = (ImageButton) findViewById(R.id.joinWedding);
 

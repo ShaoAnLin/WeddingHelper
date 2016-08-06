@@ -23,8 +23,7 @@
     <string name="wedding_photo">照片紀錄</string>
     <string name="setting">設定</string>
     <string name="attend_wedding">Go!</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="wedding_manage">婚宴管理</string>
+    <string name="create">舉辦</string>
 
 </resources>
