@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ManageActivity">
+    tools:context=".activities.CreateWeddingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/manage_action_bar"
+            android:id="@+id/create_wedding_action_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -20,18 +20,12 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-        <RelativeLayout
-            android:id="@+id/wed_manage_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_view_create_wedding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_wedding" />
 
-            <TextView
-                android:id="@+id/text_view_manage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wedding_manage" />
-
-        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

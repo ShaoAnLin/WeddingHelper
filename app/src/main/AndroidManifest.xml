@@ -25,7 +25,8 @@
         <activity android:name=".activities.JoinActivity" />
         <activity android:name=".activities.OwnActivity" />
         <activity android:name=".activities.JoinMainActivity" />
-        <activity android:name=".activities.ManageActivity"></activity>
+        <activity android:name=".activities.ManageActivity" />
+        <activity android:name=".activities.CreateWeddingActivity"></activity>
     </application>
 
 </manifest>
