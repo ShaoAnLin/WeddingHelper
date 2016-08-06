@@ -5,13 +5,13 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/img_setting"
+        android:id="@+id/img_survey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
     <TextView
-        android:id="@+id/text_setting"
+        android:id="@+id/text_survey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

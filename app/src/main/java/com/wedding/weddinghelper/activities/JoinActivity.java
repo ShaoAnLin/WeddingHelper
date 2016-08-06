@@ -54,13 +54,12 @@ public class JoinActivity extends AppCompatActivity
         mSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //testLogin();
                 attemptLogin();
             }
         });
     }
 
-    private void testLogin(){
+    private void login(){
         Intent showIntent;
         showIntent = new Intent(this, JoinMainActivity.class);
         startActivity(showIntent);
@@ -120,10 +119,7 @@ public class JoinActivity extends AppCompatActivity
                     //有搜尋到婚宴資訊，則進入至下一個畫面且夾帶婚宴資訊。
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
-                        //Intent showMainIntent = new Intent(JoinActivity.this, JoinMainActivity.class);
-                        //showMainIntent.putExtra(JoinMainActivity.PAGE_TYPE_KEY, JoinMainActivity.PageType.INFO.name());
-                        //startActivity(showMainIntent);
-                        testLogin();
+                        login();
                     }
                 }
             });

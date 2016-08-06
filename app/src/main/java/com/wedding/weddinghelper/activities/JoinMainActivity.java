@@ -13,10 +13,12 @@ import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.JoinInfoFragment;
 import com.wedding.weddinghelper.fragements.JoinPhotoFragment;
 import com.wedding.weddinghelper.fragements.JoinSettingFragment;
+import com.wedding.weddinghelper.fragements.JoinSurveyFragment;
 
 public class JoinMainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
+    final private String tabSurveyTag = "tabSurveyTag";
     final private String tabInfoTag = "tabInfoTag";
     final private String tabPhotoTag = "tabPhotoTag";
     final private String tabSettingTag = "tabSettingTag";
@@ -36,7 +38,7 @@ public class JoinMainActivity extends AppCompatActivity
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.home_icon_white);
-            getSupportActionBar().setTitle(getString(R.string.wedding_info));
+            getSupportActionBar().setTitle(getString(R.string.attend_survey));
             getSupportActionBar().setShowHideAnimationEnabled(true);
         }
 
@@ -50,6 +52,12 @@ public class JoinMainActivity extends AppCompatActivity
         mTabHost.setup(this, getSupportFragmentManager(), R.id.container);
 
         // TODO: Images on tabs cannot be shown!
+        mTabHost.addTab(mTabHost.newTabSpec(tabSurveyTag)
+                        .setIndicator(
+                                getResources().getText(R.string.attend_survey),
+                                ResourcesCompat.getDrawable(getResources(), R.drawable.ic_add_box_black_24dp, null)),
+                JoinSurveyFragment.class, null);
+
         mTabHost.addTab(mTabHost.newTabSpec(tabInfoTag)
                         .setIndicator(
                                 getResources().getText(R.string.wedding_info),
@@ -70,7 +78,13 @@ public class JoinMainActivity extends AppCompatActivity
 
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             public void onTabChanged(String str) {
-                if (str.equals(tabInfoTag)){
+                if (str.equals(tabSurveyTag)){
+                    Log.d("Tab", "Survey");
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().setTitle(getString(R.string.attend_survey));
+                    }
+                }
+                else if (str.equals(tabInfoTag)){
                     Log.d("Tab", "Info");
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(getString(R.string.wedding_info));
