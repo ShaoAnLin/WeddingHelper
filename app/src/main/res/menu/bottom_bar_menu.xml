@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/bottomBarInfo"
+        android:id="@+id/bottom_bar_info"
         android:icon="@drawable/ic_place_24dp"
         android:title="@string/wedding_info"
         />
     <item
-        android:id="@+id/bottomBarPhoto"
+        android:id="@+id/bottom_bar_photo"
         android:icon="@drawable/ic_collections_24dp"
         android:title="@string/wedding_photo"
         />
     <item
-        android:id="@+id/bottomBarSetting"
+        android:id="@+id/bottom_bar_setting"
         android:icon="@drawable/ic_settings_24dp"
         android:title="@string/setting"
         />
