@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
@@ -15,43 +15,78 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <ImageView
+            android:id="@+id/couple"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/couple"
-            android:src="@mipmap/logo"
-            android:layout_alignParentLeft="true"
-            android:scaleType="fitStart"
             android:adjustViewBounds="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:scaleType="fitStart"
+            android:src="@mipmap/logo" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
+        <TableLayout
+            android:id="@+id/show_icon_table"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ownWedding"
-            android:src="@drawable/create_wedding"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/couple" />
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:stretchColumns="*">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/joinWedding"
-            android:src="@drawable/join_wedding"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/couple" />
+            <TableRow android:layout_marginBottom="@dimen/icon_row_bottom_margin">
 
-    </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ownWedding"
+                        android:layout_width="@dimen/icon_width"
+                        android:layout_height="@dimen/icon_height"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/create_wedding" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/icon_text_margin"
+                        android:text="@string/create_manage_wedding" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/joinWedding"
+                        android:layout_width="@dimen/icon_width"
+                        android:layout_height="@dimen/icon_height"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/join_wedding" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/icon_text_margin"
+                        android:text="@string/join_wedding" />
+                </LinearLayout>
+
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
 </LinearLayout>
