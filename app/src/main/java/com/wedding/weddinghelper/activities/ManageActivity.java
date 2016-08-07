@@ -8,11 +8,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.JoinInfoFragment;
 
 public class ManageActivity extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener, ListView.OnItemClickListener {
+
+    final private String[] wedding_list = {"Test wedding 1","Test wedding 2"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +43,17 @@ public class ManageActivity extends AppCompatActivity
             actionBar.setNavigationOnClickListener(this);
         }
 
-        // get create button
-        /*Button createButton = (Button) findViewById(R.id.button_create);
-        if (createButton != null) {
-            createButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(getClass().getSimpleName(), "Create!");
-                }
-            });
-        }*/
+        ListView weddingList = (ListView)findViewById(R.id.wedding_list_view);
+        ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, wedding_list);
+        weddingList.setAdapter(listAdapter);
+        weddingList.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //Toast.makeText(getApplicationContext(), "你選擇的是" + wedding_list[position], Toast.LENGTH_SHORT).show();
+        Log.d("Manage", wedding_list[position]);
+        startActivity(new Intent(this, OwnMainActivity.class));
     }
 
     @Override
