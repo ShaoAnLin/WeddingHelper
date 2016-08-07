@@ -51,28 +51,29 @@ public class JoinMainActivity extends AppCompatActivity
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.container);
 
-        // TODO: Images on tabs cannot be shown!
+        // The tab can only show image or text?
+        // String: getResources().getText(R.string.wedding_photo)
         mTabHost.addTab(mTabHost.newTabSpec(tabSurveyTag)
                         .setIndicator(
-                                getResources().getText(R.string.attend_survey),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_add_box_black_24dp, null)),
                 JoinSurveyFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(tabInfoTag)
                         .setIndicator(
-                                getResources().getText(R.string.wedding_info),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
                 JoinInfoFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
                         .setIndicator(
-                                getResources().getText(R.string.wedding_photo),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_collections_24dp, null)),
                 JoinPhotoFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(tabSettingTag)
                         .setIndicator(
-                                getResources().getText(R.string.setting),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_settings_24dp, null)),
                 JoinSettingFragment.class, null);
 

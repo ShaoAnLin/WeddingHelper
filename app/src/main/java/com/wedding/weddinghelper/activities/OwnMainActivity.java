@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,20 +65,20 @@ public class OwnMainActivity extends AppCompatActivity
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.container);
 
-        // TODO: Images on tabs cannot be shown!
+        // The tab can only show image or text?
         mTabHost.addTab(mTabHost.newTabSpec(tabInfoTag)
                         .setIndicator(
-                                getResources().getText(R.string.wedding_info),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
                 OwnInfoFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
                         .setIndicator(
-                                getResources().getText(R.string.wedding_photo),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_collections_24dp, null)),
                 OwnPhotoFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(tabSettingTag)
                         .setIndicator(
-                                getResources().getText(R.string.setting),
+                                "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_settings_24dp, null)),
                 OwnSettingFragment.class, null);
 
