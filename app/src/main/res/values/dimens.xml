@@ -9,4 +9,7 @@
     <dimen name="icon_height">64dp</dimen>
     <dimen name="icon_text_margin">8dp</dimen>
     <dimen name="icon_row_bottom_margin">24dp</dimen>
+
+    <dimen name="row_height">48dp</dimen>
+    <dimen name="row_double_height">64dp</dimen>
 </resources>

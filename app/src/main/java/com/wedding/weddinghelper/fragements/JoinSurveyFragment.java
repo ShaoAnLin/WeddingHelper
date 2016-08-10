@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.wedding.weddinghelper.R;
 
 public class JoinSurveyFragment extends Fragment {
+
     public static JoinSurveyFragment newInstance() {
         Log.d("Survey", "New Instance");
         JoinSurveyFragment fragment = new JoinSurveyFragment();
@@ -29,7 +30,7 @@ public class JoinSurveyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_join_survey, container, false);
-        Log.d("Setting", "create view");
+        Log.d("Survey", "create view");
         return(view);
     }
 
@@ -37,11 +38,5 @@ public class JoinSurveyFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
-        TextView mText = (TextView) getView().findViewById(R.id.text_survey);
-        mText.setText(R.string.attend_survey);
-
-        ImageView mImg = (ImageView) getActivity().findViewById(R.id.img_survey);
-        mImg.setImageResource(R.drawable.ic_add_box_black_24dp);
     }
 }

@@ -29,5 +29,31 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="real_name">真實姓名</string>
+    <string name="survey_name_hint">王小明</string>
+    <string name="contact_phone">聯絡電話</string>
+    <string name="survey_phone_hint">0910-123-456</string>
+    <string name="i_am">我是</string>
+    <string name="s_friend">的親朋好友</string>
+    <string name="groom">新郎</string>
+    <string name="bride">新娘</string>
+    <string name="attend">參加</string>
+    <string name="not_attend">不克參加</string>
+    <string name="survery_address">喜帖寄送地址</string>
+    <string name="survey_address_city_hint">(郵遞區號)縣市區域</string>
+    <string name="survey_address_detail_hint">詳細地址</string>
+    <string name="attend_people_count">婚宴參與人數</string>
+    <string name="people">人</string>
+    <string name="zero">0</string>
+    <string name="minus">-</string>
+    <string name="add">+</string>
+    <string name="attend_activity">參與場次</string>
+    <string name="engage">訂婚</string>
+    <string name="marry">結婚</string>
+    <string name="message_for_newly_wed">祝福的話</string>
+    <string name="survey_message_hint">新婚愉快！</string>
+    <string name="food_preference">飲食習慣</string>
+    <string name="meat">葷</string>
+    <string name="vegetarian">素</string>
 
 </resources>
