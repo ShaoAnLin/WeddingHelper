@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="attend_wedding">Go!</string>
+    <string name="attend_no">不克參加</string>
+    <string name="survey_save">完成送出</string>
 </resources>

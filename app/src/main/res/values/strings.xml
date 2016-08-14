@@ -55,5 +55,7 @@
     <string name="food_preference">飲食習慣</string>
     <string name="meat">葷</string>
     <string name="vegetarian">素</string>
+    <string name="attend_no">不克參加</string>
+    <string name="survey_save">完成送出</string>
 
 </resources>
