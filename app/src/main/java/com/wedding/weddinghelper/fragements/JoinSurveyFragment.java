@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.StringDef;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.parse.GetCallback;
@@ -51,7 +53,7 @@ public class JoinSurveyFragment extends Fragment {
     ToggleButton attendMarrySession, attendEngageSession;
     Switch attendWillingSwitch;
     Calendar modifyDeadline;
-
+    Toast errorMessageToast;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,9 +79,43 @@ public class JoinSurveyFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
                     attendWillingSwitch.setText(getString(R.string.attend));
+                    addressRegion.setEnabled(true);
+                    detailAddress.setEnabled(true);
+                    attendPeopleAddButton.setEnabled(true);
+                    attendPeopleMinusButton.setEnabled(true);
+                    peopleNumber.setText("1");
+                    vegetableAddButton.setEnabled(true);
+                    vegetableMinusButton.setEnabled(true);
+                    vegetableNumber.setText("0");
+                    meatAddButton.setEnabled(true);
+                    meatMinusButton.setEnabled(true);
+                    meatNumber.setText("0");
+                    attendEngageSession.setEnabled(true);
+                    attendEngageSession.setChecked(false);
+                    attendMarrySession.setEnabled(true);
+                    attendMarrySession.setChecked(false);
                 }
                 else {
                     attendWillingSwitch.setText(getString(R.string.attend_no));
+                    addressRegion.setEnabled(false);
+                    addressRegion.setText("");
+                    detailAddress.setEnabled(false);
+                    detailAddress.setText("");
+                    attendPeopleAddButton.setEnabled(false);
+                    attendPeopleMinusButton.setEnabled(false);
+                    peopleNumber.setText("0");
+                    vegetableAddButton.setEnabled(false);
+                    vegetableMinusButton.setEnabled(false);
+                    vegetableNumber.setText("0");
+                    meatAddButton.setEnabled(false);
+                    meatMinusButton.setEnabled(false);
+                    meatNumber.setText("0");
+                    attendEngageSession.setEnabled(false);
+                    attendEngageSession.setChecked(false);
+                    attendMarrySession.setEnabled(false);
+                    attendMarrySession.setChecked(false);
+
+
                 }
             }
         });
@@ -115,7 +151,7 @@ public class JoinSurveyFragment extends Fragment {
                     detailAddress.setText(attendInformation.get("AddressDetail").toString());
                     attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
                     attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
-                    attendEngageSession.setChecked(!attendMarrySession.isChecked());
+                    attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
                     relationSpinner.setSelection(attendInformation.getInt("Relation"));
                 }
                 checkDeadline();
@@ -166,9 +202,6 @@ public class JoinSurveyFragment extends Fragment {
                 minusVegetableNumber();
             }
         });
-
-
-
 
 
         attendMarrySession.setOnClickListener(new View.OnClickListener() {
@@ -271,6 +304,36 @@ public class JoinSurveyFragment extends Fragment {
     }
     //儲存資料的按鈕action
     public void saveData(){
+        if (name.getText().length() == 0){
+            showWarning("請輸入姓名。", Toast.LENGTH_LONG);
+            return;
+        }
+        if (phone.getText().length() == 0){
+            showWarning("請輸入聯絡電話。", Toast.LENGTH_LONG);
+            return;
+        }
+        if (attendWillingSwitch.isChecked()){
+            if (addressRegion.getText().length() == 0){
+                showWarning("請選擇喜帖寄送地址的縣市及區域。", Toast.LENGTH_LONG);
+                return;
+            }
+            if (detailAddress.getText().length() == 0){
+                showWarning("請輸入喜帖的寄送地址。", Toast.LENGTH_LONG);
+                return;
+            }
+            if (peopleNumber.getText().toString().equals("0")){
+                showWarning("請輸入參加人次。", Toast.LENGTH_LONG);
+                return;
+            }
+            if (!attendEngageSession.isChecked() && !attendMarrySession.isChecked()){
+                showWarning("請選擇參加場次。", Toast.LENGTH_LONG);
+                return;
+            }
+            if ( Integer.parseInt(vegetableNumber.getText().toString())+Integer.parseInt(meatNumber.getText().toString()) != Integer.parseInt(peopleNumber.getText().toString())){
+                showWarning("請確認個別飲食習慣的人數。", Toast.LENGTH_LONG);
+                return;
+            }
+        }
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         ParseQuery query = ParseQuery.getQuery("AttendantList");
         query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
@@ -295,11 +358,15 @@ public class JoinSurveyFragment extends Fragment {
                 attendInformation.put("MeatNumber",Integer.parseInt(meatNumber.getText().toString()));
                 attendInformation.put("PeopleNumber",Integer.parseInt(peopleNumber.getText().toString()));
                 attendInformation.put("Relation",relationSpinner.getSelectedItemPosition());
-                if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()){
-                    attendInformation.put("Session",0);
+                if(attendWillingSwitch.isChecked()) {
+                    if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()) {
+                        attendInformation.put("Session", 0);
+                    } else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()) {
+                        attendInformation.put("Session", 1);
+                    }
                 }
-                else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()){
-                    attendInformation.put("Session",1);
+                else {
+                    attendInformation.put("Session", -1);
                 }
                 attendInformation.saveInBackground(new SaveCallback() {
                     @Override
@@ -335,6 +402,21 @@ public class JoinSurveyFragment extends Fragment {
                             //不能新增或修改資料。
                             name.setEnabled(false);
                             name.setFocusable(false);
+                            phone.setEnabled(false);
+                            relationSpinner.setEnabled(false);
+                            attendWillingSwitch.setEnabled(false);
+                            addressRegion.setEnabled(false);
+                            detailAddress.setEnabled(false);
+                            attendPeopleAddButton.setEnabled(false);
+                            attendPeopleMinusButton.setEnabled(false);
+                            attendEngageSession.setEnabled(false);
+                            attendMarrySession.setEnabled(false);
+                            vegetableAddButton.setEnabled(false);
+                            vegetableMinusButton.setEnabled(false);
+                            meatAddButton.setEnabled(false);
+                            meatMinusButton.setEnabled(false);
+                            message.setEnabled(false);
+                            surveySaveButton.setEnabled(false);
                         }
                     } catch (java.text.ParseException e1) {
                         Log.d("Neal","ParseDateException = "+e1);
@@ -344,5 +426,17 @@ public class JoinSurveyFragment extends Fragment {
 
         });
 
+    }
+    //顯示訊息的toast。
+    private void showWarning(final String text, final int duration) {
+        if (errorMessageToast == null) {
+            //如果還沒有用過makeText方法，才使用
+            errorMessageToast = android.widget.Toast.makeText(getActivity().getApplicationContext(), text, duration);
+        }
+        else {
+            errorMessageToast.setText(text);
+            errorMessageToast.setDuration(duration);
+        }
+        errorMessageToast.show();
     }
 }
