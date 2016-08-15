@@ -2,6 +2,7 @@ package com.wedding.weddinghelper.fragements;
 
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,9 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.wedding.weddinghelper.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
 public class JoinSurveyFragment extends Fragment {
 
     public static JoinSurveyFragment newInstance() {
@@ -46,6 +50,7 @@ public class JoinSurveyFragment extends Fragment {
     Button attendPeopleAddButton, attendPeopleMinusButton, meatAddButton, meatMinusButton, vegetableAddButton, vegetableMinusButton, surveySaveButton;
     ToggleButton attendMarrySession, attendEngageSession;
     Switch attendWillingSwitch;
+    Calendar modifyDeadline;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,7 +94,7 @@ public class JoinSurveyFragment extends Fragment {
         ParseQuery query = ParseQuery.getQuery("AttendantList");
         query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
         query.whereEqualTo("weddingObjectId", "XA6hDoxtXo");//ToDo:暫時使用
-        Log.d("Neall",currentInstallation.getInstallationId());
+        Log.d("Neal",currentInstallation.getInstallationId());
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject attendInformation, ParseException e) {
@@ -113,6 +118,7 @@ public class JoinSurveyFragment extends Fragment {
                     attendEngageSession.setChecked(!attendMarrySession.isChecked());
                     relationSpinner.setSelection(attendInformation.getInt("Relation"));
                 }
+                checkDeadline();
             }
         });
 
@@ -289,7 +295,6 @@ public class JoinSurveyFragment extends Fragment {
                 attendInformation.put("MeatNumber",Integer.parseInt(meatNumber.getText().toString()));
                 attendInformation.put("PeopleNumber",Integer.parseInt(peopleNumber.getText().toString()));
                 attendInformation.put("Relation",relationSpinner.getSelectedItemPosition());
-                Log.d("Neal", "relationSpinner.SelectedItemPosition = " + relationSpinner.getSelectedItemPosition());
                 if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()){
                     attendInformation.put("Session",0);
                 }
@@ -306,5 +311,38 @@ public class JoinSurveyFragment extends Fragment {
                 });
             }
         });
+    }
+    //檢查目前是否可新增或修改資料
+    public  void  checkDeadline(){
+        ParseQuery query = ParseQuery.getQuery("Information");
+        query.getInBackground("XA6hDoxtXo", new GetCallback<ParseObject>() {//ToDo:暫時使用
+
+            @Override
+            public void done(ParseObject weddingInformation, ParseException e) {
+                //若無法搜尋到此婚宴資訊
+                if (e!=null) {
+                    //ToDo:錯誤處理
+                    Log.d("Neal","query information exception = "+e);
+                }
+                else {
+                    SimpleDateFormat theDateFormat = new SimpleDateFormat("yyyy / MM / dd HH:mm");
+                    try {
+                        modifyDeadline  = Calendar.getInstance();
+                        modifyDeadline.setTime(theDateFormat.parse(weddingInformation.getString("modifyFormDeadline")));
+                        Log.d("Neal", "the modifyDeadline = " + modifyDeadline);
+                        Calendar currentTime = Calendar.getInstance();
+                        if (currentTime.after(modifyDeadline)){
+                            //不能新增或修改資料。
+                            name.setEnabled(false);
+                            name.setFocusable(false);
+                        }
+                    } catch (java.text.ParseException e1) {
+                        Log.d("Neal","ParseDateException = "+e1);
+                    }
+                }
+            }
+
+        });
+
     }
 }
