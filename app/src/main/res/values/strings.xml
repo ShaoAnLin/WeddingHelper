@@ -57,5 +57,15 @@
     <string name="vegetarian">素</string>
     <string name="attend_no">不克參加</string>
     <string name="survey_save">完成送出</string>
+    <string name="time">時間</string>
+    <string name="marry_time">結婚時間</string>
+    <string name="marry_place">結婚餐廳</string>
+    <string name="marry_address">結婚地址</string>
+    <string name="marry_string">結婚</string>
+    <string name="engage_string">訂婚</string>
+    <string name="engage_time">訂婚時間</string>
+    <string name="engage_place">訂婚餐廳</string>
+    <string name="engage_address">訂婚地址</string>
+    <string name="groom_and_bride">新郎＆新娘</string>
 
 </resources>

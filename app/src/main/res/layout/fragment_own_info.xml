@@ -5,12 +5,90 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_own_info"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="23sp"
-        android:lineSpacingExtra="20dip" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal">
 
+        <TextView
+            android:id="@+id/text_own_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="35sp"
+            android:lineSpacingExtra="20dip"
+            android:text="@string/groom_and_bride"
+            android:background="#ffd4d4"
+            android:textColor="@color/white"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/engage_string"
+            android:id="@+id/textView2"
+            android:textSize="30sp"
+            android:textColor="@android:color/holo_red_light" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/engage_time"
+            android:id="@+id/engage_time"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/engage_place"
+            android:id="@+id/engage_place"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/engage_address"
+            android:id="@+id/engage_address"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/marry_string"
+            android:id="@+id/textView"
+            android:textSize="30sp"
+            android:textColor="@android:color/holo_red_light" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/marry_time"
+            android:id="@+id/marry_time"
+            android:background="@android:color/transparent"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/marry_place"
+            android:id="@+id/marry_place"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/marry_address"
+            android:id="@+id/marry_address"
+            style="?android:attr/borderlessButtonStyle"/>
+    </LinearLayout><![CDATA[
+
+    />
+
+]]>
 </RelativeLayout>
