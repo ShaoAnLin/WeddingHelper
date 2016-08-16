@@ -67,5 +67,10 @@
     <string name="engage_place">訂婚餐廳</string>
     <string name="engage_address">訂婚地址</string>
     <string name="groom_and_bride">新郎＆新娘</string>
+    <string name="done">完成送出</string>
+    <string name="groom_name">新郎姓名</string>
+    <string name="bride_name">新娘姓名</string>
+    <string name="marry_website">結婚餐廳網址</string>
+    <string name="engage_website">訂婚餐廳網址</string>
 
 </resources>
