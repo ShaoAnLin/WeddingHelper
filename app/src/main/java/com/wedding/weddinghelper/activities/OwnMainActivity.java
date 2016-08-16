@@ -70,17 +70,17 @@ public class OwnMainActivity extends AppCompatActivity
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
-                OwnInfoFragment.class, null);
+                                OwnInfoFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_collections_24dp, null)),
-                OwnPhotoFragment.class, null);
+                                OwnPhotoFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(tabSettingTag)
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_settings_24dp, null)),
-                OwnSettingFragment.class, null);
+                                OwnSettingFragment.class, null);
 
 
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
