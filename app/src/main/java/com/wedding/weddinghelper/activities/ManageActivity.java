@@ -10,16 +10,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.JoinInfoFragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ManageActivity extends AppCompatActivity
         implements View.OnClickListener, ListView.OnItemClickListener {
 
-    final private String[] wedding_list = {"Test wedding 1","Test wedding 2"};
+    List<HashMap<String , String>> list = new ArrayList<>(); //儲存每場婚宴的婚宴名稱及結婚日期。
+    String[] wedding_name;
+    String[] wedding_date;
+    ListView weddingListView;
+    List <ParseObject> weddingInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +59,45 @@ public class ManageActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setNavigationOnClickListener(this);
         }
+        weddingListView = (ListView)findViewById(R.id.wedding_list_view);
+        ParseQuery query = ParseQuery.getQuery("Information");
+        query.whereEqualTo("managerAccount",ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List <ParseObject>weddingList, ParseException e) {
+                Log.d("Neal", "Weddinglist count = " + weddingList.size());
+                weddingInformation = weddingList;
+                wedding_name = new String[weddingList.size()];
+                wedding_date = new String[weddingList.size()];
+                for (int i = 0 ; i< weddingList.size() ; i++){
+                    ParseObject theWeddingInformation = weddingList.get(i);
+                    wedding_name[i] = theWeddingInformation.getString("weddingAccount");
+                    wedding_date[i] = theWeddingInformation.getString("marryDate");
+                }
 
-        ListView weddingList = (ListView)findViewById(R.id.wedding_list_view);
-        ArrayAdapter listAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, wedding_list);
-        weddingList.setAdapter(listAdapter);
-        weddingList.setOnItemClickListener(this);
+
+                for(int i = 0 ; i < wedding_name.length ; i++){
+                    HashMap<String , String> hashMap = new HashMap<>();
+                    hashMap.put("wedding_name" , wedding_name[i]);
+                    hashMap.put("wedding_date" , wedding_date[i]);
+                    list.add(hashMap);
+                }
+                ListAdapter listAdapter = new SimpleAdapter(getApplicationContext(),list,R.layout.custom_list_view_style, new String[] {"wedding_name","wedding_date"}, new int[]{android.R.id.text2, android.R.id.text1});
+                weddingListView.setAdapter(listAdapter);
+
+            }
+        });
+        weddingListView.setOnItemClickListener(this);
+
+
+
+
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //Toast.makeText(getApplicationContext(), "你選擇的是" + wedding_list[position], Toast.LENGTH_SHORT).show();
-        Log.d("Manage", wedding_list[position]);
+        Log.d("Manage", wedding_name[position]);
         startActivity(new Intent(this, OwnMainActivity.class));
     }
 
