@@ -41,4 +41,23 @@ public class CreateWeddingActivity extends AppCompatActivity
     public void onClick(View v) {
         finish();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.create_wedding_action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.done_button:
+                Log.d(getClass().getSimpleName(), "Done create wedding");
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 }
