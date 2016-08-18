@@ -6,17 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wedding.weddinghelper.R;
 
 public class OwnSettingFragment extends Fragment {
-    public static OwnSettingFragment newInstance() {
-        Log.d("Own setting", "New Instance");
-        return new OwnSettingFragment();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +22,26 @@ public class OwnSettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_own_setting, container, false);
-        Log.d("Own setting", "create view");
+
+        Button mGuestListButton = (Button) view.findViewById(R.id.guest_list_button);
+        if (mGuestListButton != null) {
+            mGuestListButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("Shawn", "Guest list button clicked");
+                }
+            });
+        }
+
+        Button mEditWeddingInfoButton = (Button) view.findViewById(R.id.edit_wedding_info_button);
+        if (mEditWeddingInfoButton != null) {
+            mEditWeddingInfoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("Shawn", "Edit wedding info button clicked");
+                }
+            });
+        }
         return view;
     }
 
@@ -34,8 +49,5 @@ public class OwnSettingFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
-        TextView mText = (TextView) getView().findViewById(R.id.text_own_setting);
-        mText.setText(R.string.setting);
     }
 }

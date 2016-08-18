@@ -73,5 +73,7 @@
     <string name="marry_website">結婚餐廳網址</string>
     <string name="engage_website">訂婚餐廳網址</string>
     <string name="testing_login">工程模式登入！</string>
+    <string name="guest_list">賓客名單</string>
+    <string name="edit_wedding_info">編輯婚宴資訊</string>
 
 </resources>
