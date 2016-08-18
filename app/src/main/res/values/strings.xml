@@ -72,5 +72,6 @@
     <string name="bride_name">新娘姓名</string>
     <string name="marry_website">結婚餐廳網址</string>
     <string name="engage_website">訂婚餐廳網址</string>
+    <string name="testing_login">工程模式登入！</string>
 
 </resources>

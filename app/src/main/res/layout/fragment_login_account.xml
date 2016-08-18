@@ -50,5 +50,14 @@
             android:text="@string/login"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/testing_login_account_login_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/testing_login"
+            android:textStyle="bold" />
+
     </LinearLayout>
 </RelativeLayout>

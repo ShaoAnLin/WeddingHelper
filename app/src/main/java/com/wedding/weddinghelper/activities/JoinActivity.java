@@ -59,6 +59,23 @@ public class JoinActivity extends AppCompatActivity
                 }
             });
         }
+        Button testingSignInButton = (Button) findViewById(R.id.testing_join_wedding_sign_in_button);
+        if (testingSignInButton != null) {
+            testingSignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ParseQuery query = ParseQuery.getQuery("Information");
+                    query.whereEqualTo("weddingAccount", "Neal&Pallas");
+                    query.whereEqualTo("weddingPassword", "nealpallas");
+                    query.getFirstInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject information, ParseException e) {
+                            login();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private void login(){

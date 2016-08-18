@@ -46,14 +46,26 @@ public class LoginAccountFragment extends Fragment {
         Log.d("Login account", "create view");
 
         mLoginButton = (Button) view.findViewById(R.id.login_account_login_button);
-
         if (mLoginButton != null) {
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("Login account", "button clicked!");
-                    //attemptLogin(view);
-                    login();
+                    attemptLogin(view);
+                }
+            });
+        }
+
+        Button testingLoginButton = (Button) view.findViewById(R.id.testing_login_account_login_button);
+        if (testingLoginButton != null) {
+            testingLoginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ParseUser.logInInBackground("neal", "neal", new LogInCallback() {
+                    public void done(ParseUser user, ParseException e) {
+                        login();
+                    }
+                });
                 }
             });
         }
@@ -62,7 +74,6 @@ public class LoginAccountFragment extends Fragment {
     }
 
     private void login(){
-        Log.d("Login Account", "login");
         ((OwnActivity)getActivity()).login();
     }
 
@@ -74,6 +85,7 @@ public class LoginAccountFragment extends Fragment {
                 if (user != null) {
                     //Go to admin UI
                     Log.d("Neal","Login success");
+                    login();
                 } else {
                     //Show a tip to tell user the failed reason.
                     Log.d("Neal","Login failed with exception"  + e);
