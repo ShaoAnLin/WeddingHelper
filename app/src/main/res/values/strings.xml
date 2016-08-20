@@ -76,5 +76,8 @@
     <string name="guest_list">賓客名單</string>
     <string name="edit_wedding_info">編輯婚宴資訊</string>
     <string name="title_activity_guest_list">GuestListActivity</string>
+    <string name="guest_detail">賓客詳細資訊</string>
+    <string name="friend_of_groom">新郎的親朋好友</string>
+    <string name="friend_of_bride">新娘的親朋好友</string>
 
 </resources>

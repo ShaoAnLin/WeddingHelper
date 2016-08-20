@@ -20,10 +20,14 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <ScrollView
-            android:id="@+id/scrollView"
+        <RelativeLayout
+            android:id="@+id/guest_fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp">
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.GuestListFragment;
 
 public class GuestListActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -32,6 +33,14 @@ public class GuestListActivity extends AppCompatActivity
         // set close icon on click listener
         if (actionBar != null) {
             actionBar.setNavigationOnClickListener(this);
+        }
+
+        // set preference fragment
+        if (getSupportFragmentManager().findFragmentById(R.id.guest_fragment) == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.guest_fragment, GuestListFragment.newInstance())
+                    .commit();
         }
     }
 
