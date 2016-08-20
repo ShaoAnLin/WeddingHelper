@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,7 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wedding.weddinghelper.GuestListActivity;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.ManageActivity;
 
 public class OwnSettingFragment extends Fragment {
     @Override
