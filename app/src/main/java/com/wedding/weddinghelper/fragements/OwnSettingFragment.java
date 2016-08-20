@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 public class OwnSettingFragment extends Fragment {
     @Override
@@ -29,6 +30,7 @@ public class OwnSettingFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Log.d("Shawn", "Guest list button clicked");
+                    ((OwnMainActivity)getActivity()).guestListButtonClicked();
                 }
             });
         }
@@ -39,6 +41,7 @@ public class OwnSettingFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Log.d("Shawn", "Edit wedding info button clicked");
+                    ((OwnMainActivity)getActivity()).editWeddingButtonClicked();
                 }
             });
         }

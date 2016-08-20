@@ -27,7 +27,11 @@
         <activity android:name=".activities.JoinMainActivity" />
         <activity android:name=".activities.ManageActivity" />
         <activity android:name=".activities.CreateWeddingActivity" />
-        <activity android:name=".activities.OwnMainActivity"></activity>
+        <activity android:name=".activities.OwnMainActivity" />
+        <activity
+            android:name=".activities.GuestListActivity"
+            android:label="@string/title_activity_guest_list"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

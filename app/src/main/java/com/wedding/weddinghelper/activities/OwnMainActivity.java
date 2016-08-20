@@ -111,4 +111,12 @@ public class OwnMainActivity extends AppCompatActivity
     public void onClick(View v) {
         finish();
     }
+
+    public void guestListButtonClicked(){
+        startActivity(new Intent(this, GuestListActivity.class));
+    }
+
+    public void editWeddingButtonClicked(){
+        startActivity(new Intent(this, CreateWeddingActivity.class));
+    }
 }
