@@ -88,10 +88,6 @@ public class ManageActivity extends AppCompatActivity
             }
         });
         weddingListView.setOnItemClickListener(this);
-
-
-
-
     }
 
     @Override

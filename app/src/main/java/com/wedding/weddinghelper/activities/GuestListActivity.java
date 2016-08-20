@@ -7,11 +7,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.GuestListFragment;
 
+import java.util.List;
+
 public class GuestListActivity extends AppCompatActivity
         implements View.OnClickListener {
+
+    public  int attendMarryCount = 0, attendMarryFriendCount = 0, attendMarryMeatCount = 0, attendMarryVegetableCount = 0;
+    public  int attendEngageCount = 0, attendEngageFriendCount = 0, attendEngageMeatCount = 0, attendEngageVegetableCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,32 @@ public class GuestListActivity extends AppCompatActivity
                     .replace(R.id.guest_fragment, GuestListFragment.newInstance())
                     .commit();
         }
+
+        // Parse data
+
+        ParseQuery query = new ParseQuery("Information");
+        query.whereEqualTo("objectId","XA6hDoxtXo");
+        query.orderByAscending("AttendingWilling");
+        query.orderByAscending("Session");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject formData:list) {
+                    if (formData.getInt("AttendWilling") == 0 && formData.getInt("Session") ==1){
+                        attendMarryCount++;
+                        attendMarryFriendCount = attendMarryFriendCount+formData.getInt("PeopleNumber") - 1;
+                        attendMarryMeatCount = attendMarryMeatCount+formData.getInt("MeatNumber");
+                        attendMarryVegetableCount = attendMarryVegetableCount+formData.getInt("VagetableNumber");
+                    }
+                    else if (formData.getInt("AttendWilling") == 0 && formData.getInt("Session") ==0){
+                        attendEngageCount++;
+                        attendEngageFriendCount = attendEngageFriendCount+formData.getInt("PeopleNumber") - 1;
+                        attendEngageMeatCount = attendEngageMeatCount+formData.getInt("MeatNumber");
+                        attendEngageVegetableCount = attendEngageVegetableCount+formData.getInt("VagetableNumber");
+                    }
+                }
+            }
+        });
     }
 
     @Override

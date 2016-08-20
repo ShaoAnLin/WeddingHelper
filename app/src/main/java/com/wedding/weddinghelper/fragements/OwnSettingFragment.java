@@ -8,12 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.wedding.weddinghelper.GuestListActivity;
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.activities.ManageActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 public class OwnSettingFragment extends Fragment {
