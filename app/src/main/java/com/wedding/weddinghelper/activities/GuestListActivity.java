@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.fragements.GuestDetailFragment;
 import com.wedding.weddinghelper.fragements.GuestListDetailFragment;
 import com.wedding.weddinghelper.fragements.GuestListSummaryFragment;
 
@@ -101,10 +101,6 @@ public class GuestListActivity extends AppCompatActivity
     }
 
     public void listItemClicked(){
-        getSupportActionBar().setTitle(getString(R.string.guest_detail));
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.guest_fragment, GuestDetailFragment.newInstance())
-                .commit();
+        startActivity(new Intent(this, GuestDetailActivity.class));
     }
 }
