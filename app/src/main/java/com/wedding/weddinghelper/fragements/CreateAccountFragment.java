@@ -14,6 +14,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.OwnActivity;
 
 public class CreateAccountFragment extends Fragment {
 
@@ -65,6 +66,7 @@ public class CreateAccountFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    ((OwnActivity)getActivity()).login();
                     Log.d("Neal","Signing up success!!");
                 }
                 else {

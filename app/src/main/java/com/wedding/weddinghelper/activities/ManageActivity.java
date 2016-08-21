@@ -60,14 +60,20 @@ public class ManageActivity extends AppCompatActivity
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List <ParseObject>weddingList, ParseException e) {
-                Log.d("Neal", "Weddinglist count = " + weddingList.size());
+                Log.d("Neal", "Weddinglist count = " + weddingList.size() + "current user = "+ParseUser.getCurrentUser().getUsername());
                 weddingInformation = weddingList;
                 wedding_name = new String[weddingList.size()];
                 wedding_date = new String[weddingList.size()];
                 for (int i = 0 ; i< weddingList.size() ; i++){
                     ParseObject theWeddingInformation = weddingList.get(i);
                     wedding_name[i] = theWeddingInformation.getString("weddingAccount");
-                    wedding_date[i] = theWeddingInformation.getString("marryDate");
+                    if (theWeddingInformation.getBoolean("onlyOneSession")){
+                        wedding_date[i] = theWeddingInformation.getString("engageDate");
+                    }
+                    else {
+                        wedding_date[i] = theWeddingInformation.getString("marryDate");
+                    }
+
                 }
 
 

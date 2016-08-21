@@ -81,5 +81,13 @@
     <string name="friend_of_bride">新娘的親朋好友</string>
     <string name="guest_list_summary">賓客統計資料</string>
     <string name="guest_list_detail">賓客清單</string>
+    <string name="wedding_form">婚宴形式</string>
+    <string name="same_day">訂結同天</string>
+    <string name="different_day">訂結分開</string>
+    <string name="modify_deadline">填寫出席意願期限</string>
+    <string name="wedding_time">婚宴時間</string>
+    <string name="wedding_place">婚宴餐廳</string>
+    <string name="wedding_address">婚宴地址</string>
+    <string name="wedding_website">婚宴餐廳網址</string>
 
 </resources>

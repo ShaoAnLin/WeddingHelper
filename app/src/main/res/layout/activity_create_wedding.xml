@@ -90,6 +90,44 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/row_height"
+                        android:layout_marginBottom="0dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="@string/wedding_form"
+                            android:gravity="center_vertical"
+                            android:id="@+id/textView15" />
+
+                        <ToggleButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/same_day"
+                            android:id="@+id/same_day_toggle_button"
+                            android:layout_weight="1"
+                            android:textOff="@string/same_day"
+                            android:textOn="@string/same_day" />
+
+                        <ToggleButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="New ToggleButton"
+                            android:id="@+id/different_day_toggle_button"
+                            android:layout_weight="1"
+                            android:textOff="@string/different_day"
+                            android:textOn="@string/different_day" />
+                    </TableRow>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -161,7 +199,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="@string/engage_time" />
+                            android:text="@string/engage_time"
+                            android:id="@+id/engage_date_text_view" />
 
                         <EditText
                             android:id="@+id/engage_time_edit_text"
@@ -189,7 +228,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="@string/engage_place" />
+                            android:text="@string/engage_place"
+                            android:id="@+id/engage_place_text_view" />
 
                         <EditText
                             android:id="@+id/engage_place_edit_text"
@@ -216,7 +256,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="@string/engage_address" />
+                            android:text="@string/engage_address"
+                            android:id="@+id/engage_address_text_view" />
 
                         <EditText
                             android:id="@+id/engage_address_edit_text"
@@ -244,7 +285,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="@string/engage_website" />
+                            android:text="@string/engage_website"
+                            android:id="@+id/engage_website_text_view" />
 
                         <EditText
                             android:id="@+id/engage_website_edit_text"
@@ -261,7 +303,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:id="@+id/marry_date_linear_layout">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -289,7 +332,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:id="@+id/marry_place_linear_layout">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -316,7 +360,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:id="@+id/marry_address_linear_layout">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -344,7 +389,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:id="@+id/marry_website_linear_layout">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -360,6 +406,33 @@
 
                         <EditText
                             android:id="@+id/marry_website_edit_text"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:ems="10"
+                            android:inputType="textWebEditText" />
+                    </TableRow>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/row_height"
+                        android:layout_marginBottom="0dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/modify_deadline" />
+
+                        <EditText
+                            android:id="@+id/modify_deadline"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="2"
