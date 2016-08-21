@@ -2,17 +2,20 @@ package com.wedding.weddinghelper.fragements;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
 
-public class GuestListFragment extends Fragment {
-    public static GuestListFragment newInstance() {
-        return new GuestListFragment();
+public class GuestListSummaryFragment extends Fragment {
+
+    public static GuestListSummaryFragment newInstance() {
+        return new GuestListSummaryFragment();
     }
 
     @Override
@@ -23,7 +26,7 @@ public class GuestListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_guest_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_guest_list_summary, container, false);
         return view;
     }
 }

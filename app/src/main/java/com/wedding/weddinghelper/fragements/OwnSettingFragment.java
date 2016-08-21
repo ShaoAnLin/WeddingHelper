@@ -23,13 +23,22 @@ public class OwnSettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_own_setting, container, false);
 
-        Button mGuestListButton = (Button) view.findViewById(R.id.guest_list_button);
-        if (mGuestListButton != null) {
-            mGuestListButton.setOnClickListener(new View.OnClickListener() {
+        Button mGuestListSummaryButton = (Button) view.findViewById(R.id.guest_list_summary_button);
+        if (mGuestListSummaryButton != null) {
+            mGuestListSummaryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("Shawn", "Guest list button clicked");
-                    ((OwnMainActivity)getActivity()).guestListButtonClicked();
+                    ((OwnMainActivity)getActivity()).guestListSummaryButtonClicked();
+                }
+            });
+        }
+
+        Button mGuestDetailListButton = (Button) view.findViewById(R.id.guest_detail_list_button);
+        if (mGuestDetailListButton != null) {
+            mGuestDetailListButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((OwnMainActivity)getActivity()).guestDetailListButtonClicked();
                 }
             });
         }

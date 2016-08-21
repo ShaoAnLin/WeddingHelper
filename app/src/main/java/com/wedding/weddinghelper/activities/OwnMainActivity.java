@@ -1,31 +1,16 @@
 package com.wedding.weddinghelper.activities;
 
 import android.content.Intent;
-import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TabHost;
-import android.widget.Toast;
 
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.fragements.JoinInfoFragment;
-import com.wedding.weddinghelper.fragements.JoinPhotoFragment;
-import com.wedding.weddinghelper.fragements.JoinSettingFragment;
-import com.wedding.weddinghelper.fragements.JoinSurveyFragment;
 import com.wedding.weddinghelper.fragements.OwnInfoFragment;
 import com.wedding.weddinghelper.fragements.OwnPhotoFragment;
 import com.wedding.weddinghelper.fragements.OwnSettingFragment;
@@ -112,8 +97,16 @@ public class OwnMainActivity extends AppCompatActivity
         finish();
     }
 
-    public void guestListButtonClicked(){
-        startActivity(new Intent(this, GuestListActivity.class));
+    public void guestListSummaryButtonClicked(){
+        Intent showIntent = new Intent(this, GuestListActivity.class);
+        showIntent.putExtra(GuestListActivity.PAGE_TYPE_KEY, GuestListActivity.GUEST_LIST_SUMMARY_VAL);
+        startActivity(showIntent);
+    }
+
+    public void guestDetailListButtonClicked(){
+        Intent showIntent = new Intent(this, GuestListActivity.class);
+        showIntent.putExtra(GuestListActivity.PAGE_TYPE_KEY, GuestListActivity.GUEST_LIST_DETAIL_VAL);
+        startActivity(showIntent);
     }
 
     public void editWeddingButtonClicked(){

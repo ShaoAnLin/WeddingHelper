@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.TabHost;
 
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.fragements.JoinInfoFragment;
 import com.wedding.weddinghelper.fragements.JoinPhotoFragment;
 import com.wedding.weddinghelper.fragements.JoinSettingFragment;
 import com.wedding.weddinghelper.fragements.JoinSurveyFragment;
+import com.wedding.weddinghelper.fragements.OwnInfoFragment;
 
 public class JoinMainActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -63,7 +63,7 @@ public class JoinMainActivity extends AppCompatActivity
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
-                JoinInfoFragment.class, null);
+                OwnInfoFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
                         .setIndicator(

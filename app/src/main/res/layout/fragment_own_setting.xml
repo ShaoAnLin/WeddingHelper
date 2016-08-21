@@ -17,8 +17,16 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/guest_list"
-            android:id="@+id/guest_list_button"
+            android:text="@string/guest_list_summary"
+            android:id="@+id/guest_list_summary_button"
+            android:layout_gravity="center_horizontal"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/guest_list_detail"
+            android:id="@+id/guest_detail_list_button"
             android:layout_gravity="center_horizontal"
             style="?android:attr/borderlessButtonStyle" />
 

@@ -79,5 +79,7 @@
     <string name="guest_detail">賓客詳細資訊</string>
     <string name="friend_of_groom">新郎的親朋好友</string>
     <string name="friend_of_bride">新娘的親朋好友</string>
+    <string name="guest_list_summary">賓客統計資料</string>
+    <string name="guest_list_detail">賓客清單</string>
 
 </resources>

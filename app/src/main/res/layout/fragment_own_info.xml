@@ -27,7 +27,7 @@
             android:paddingBottom="10dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/engage_string"
@@ -36,28 +36,28 @@
             android:textColor="@android:color/holo_red_light" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/engage_time"
             android:id="@+id/engage_time"
             style="?android:attr/borderlessButtonStyle"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/engage_place"
             android:id="@+id/engage_place"
             style="?android:attr/borderlessButtonStyle"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/engage_address"
             android:id="@+id/engage_address"
             style="?android:attr/borderlessButtonStyle"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/marry_string"
@@ -66,22 +66,21 @@
             android:textColor="@android:color/holo_red_light" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/marry_time"
             android:id="@+id/marry_time"
-            android:background="@android:color/transparent"
             style="?android:attr/borderlessButtonStyle"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/marry_place"
             android:id="@+id/marry_place"
             style="?android:attr/borderlessButtonStyle"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/marry_address"
             android:id="@+id/marry_address"
