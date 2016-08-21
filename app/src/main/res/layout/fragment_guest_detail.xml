@@ -2,11 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -14,50 +14,57 @@
             android:id="@+id/name_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/real_name"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/real_name" />
+
         <TextView
             android:id="@+id/friend_of_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/friend_of_groom"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/friend_of_groom" />
+
         <TextView
             android:id="@+id/phone_number_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/contact_phone"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/contact_phone" />
+
         <TextView
             android:id="@+id/attend_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/attend_activity"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/attend_activity" />
+
         <TextView
             android:id="@+id/attend_people_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/attend_people_count"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/attend_people_count" />
+
         <TextView
             android:id="@+id/food_preference_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/food_preference"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/food_preference" />
+
         <TextView
             android:id="@+id/address_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/survery_address"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/survery_address" />
+
         <TextView
             android:id="@+id/message_textview"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/row_height"
-            android:text="@string/message_for_newly_wed"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/message_for_newly_wed" />
     </LinearLayout>
 
 </RelativeLayout>

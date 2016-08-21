@@ -2,15 +2,14 @@ package com.wedding.weddinghelper.fragements;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.wedding.weddinghelper.R;
 
 public class GuestDetailFragment extends Fragment {
+
     public static GuestDetailFragment newInstance() {
         return new GuestDetailFragment();
     }
