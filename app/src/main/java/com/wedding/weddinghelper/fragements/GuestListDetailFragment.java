@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.GuestListActivity;
 
 public class GuestListDetailFragment extends Fragment {
 
@@ -35,6 +36,13 @@ public class GuestListDetailFragment extends Fragment {
                 new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1,guestList);
         guestListView.setAdapter(adapter);
+        guestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getActivity().getApplicationContext(), "你選擇的是" + guestList[position], Toast.LENGTH_SHORT).show();
+                ((GuestListActivity)getActivity()).listItemClicked();
+            }
+        });
 
         return view;
     }
