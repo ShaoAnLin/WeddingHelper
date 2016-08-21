@@ -11,9 +11,9 @@ import android.view.View;
 import android.widget.TabHost;
 
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.fragements.OwnInfoFragment;
-import com.wedding.weddinghelper.fragements.OwnPhotoFragment;
+import com.wedding.weddinghelper.fragements.WeddingInfoFragment;
 import com.wedding.weddinghelper.fragements.OwnSettingFragment;
+import com.wedding.weddinghelper.fragements.PhotoFragment;
 
 public class OwnMainActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -55,12 +55,12 @@ public class OwnMainActivity extends AppCompatActivity
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
-                                OwnInfoFragment.class, null);
+                                WeddingInfoFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_collections_24dp, null)),
-                                OwnPhotoFragment.class, null);
+                                PhotoFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(tabSettingTag)
                         .setIndicator(
                                 "",

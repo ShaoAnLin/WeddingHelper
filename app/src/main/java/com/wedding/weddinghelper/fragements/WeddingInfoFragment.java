@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -16,10 +15,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 
-public class OwnInfoFragment extends Fragment {
-    public static OwnInfoFragment newInstance() {
+public class WeddingInfoFragment extends Fragment {
+    public static WeddingInfoFragment newInstance() {
         Log.d("Own info", "New Instance");
-        return new OwnInfoFragment();
+        return new WeddingInfoFragment();
     }
 
     @Override
@@ -30,7 +29,7 @@ public class OwnInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_own_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_wedding_info, container, false);
         Log.d("Own info", "create view");
         return view;
     }

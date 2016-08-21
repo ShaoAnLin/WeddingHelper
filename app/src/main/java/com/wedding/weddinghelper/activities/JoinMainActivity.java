@@ -10,10 +10,9 @@ import android.view.View;
 import android.widget.TabHost;
 
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.fragements.JoinPhotoFragment;
-import com.wedding.weddinghelper.fragements.JoinSettingFragment;
+import com.wedding.weddinghelper.fragements.PhotoFragment;
 import com.wedding.weddinghelper.fragements.JoinSurveyFragment;
-import com.wedding.weddinghelper.fragements.OwnInfoFragment;
+import com.wedding.weddinghelper.fragements.WeddingInfoFragment;
 
 public class JoinMainActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -63,19 +62,13 @@ public class JoinMainActivity extends AppCompatActivity
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_place_24dp, null)),
-                OwnInfoFragment.class, null);
+                WeddingInfoFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(tabPhotoTag)
                         .setIndicator(
                                 "",
                                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_collections_24dp, null)),
-                JoinPhotoFragment.class, null);
-
-        mTabHost.addTab(mTabHost.newTabSpec(tabSettingTag)
-                        .setIndicator(
-                                "",
-                                ResourcesCompat.getDrawable(getResources(), R.drawable.ic_settings_24dp, null)),
-                JoinSettingFragment.class, null);
+                PhotoFragment.class, null);
 
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             public void onTabChanged(String str) {
@@ -95,12 +88,6 @@ public class JoinMainActivity extends AppCompatActivity
                     Log.d("Tab", "Photo");
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(getString(R.string.wedding_photo));
-                    }
-                }
-                else if (str.equals(tabSettingTag)){
-                    Log.d("Tab", "Setting");
-                    if (getSupportActionBar() != null) {
-                        getSupportActionBar().setTitle(getString(R.string.setting));
                     }
                 }
             }

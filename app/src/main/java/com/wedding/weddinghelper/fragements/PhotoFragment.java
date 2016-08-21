@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import com.wedding.weddinghelper.R;
 
-public class JoinSettingFragment extends Fragment {
-    public static JoinSettingFragment newInstance() {
-        Log.d("Setting", "New Instance");
-        JoinSettingFragment fragment = new JoinSettingFragment();
+public class PhotoFragment extends Fragment {
+    public static PhotoFragment newInstance() {
+        PhotoFragment fragment = new PhotoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -28,8 +27,7 @@ public class JoinSettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_join_setting, container, false);
-        Log.d("Setting", "create view");
+        View view = inflater.inflate(R.layout.fragment_photo, container, false);
         return(view);
     }
 
@@ -37,11 +35,5 @@ public class JoinSettingFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
-        TextView mText = (TextView) getView().findViewById(R.id.text_setting);
-        mText.setText(R.string.setting);
-
-        ImageView mImg = (ImageView) getActivity().findViewById(R.id.img_setting);
-        mImg.setImageResource(R.drawable.ic_settings_24dp);
     }
 }
