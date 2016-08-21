@@ -1,6 +1,8 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +13,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.GuestDetailFragment;
 import com.wedding.weddinghelper.fragements.GuestListDetailFragment;
 import com.wedding.weddinghelper.fragements.GuestListSummaryFragment;
 
@@ -97,10 +100,32 @@ public class GuestListActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
-        finish();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment guestFragment = getSupportFragmentManager().findFragmentById(R.id.guest_fragment);
+        if (guestFragment instanceof GuestDetailFragment) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(getString(R.string.guest_list_detail));
+            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.guest_fragment, GuestListDetailFragment.newInstance())
+                    .commit();
+        }
+        else{
+            finish();
+        }
     }
 
     public void listItemClicked(){
-        startActivity(new Intent(this, GuestDetailActivity.class));
+        //startActivity(new Intent(this, GuestDetailActivity.class));
+        getSupportActionBar().setTitle(getString(R.string.guest_detail));
+        this.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.guest_fragment, GuestDetailFragment.newInstance())
+                .commit();
     }
 }
