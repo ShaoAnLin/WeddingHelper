@@ -90,6 +90,8 @@ public class OwnMainActivity extends AppCompatActivity
                 }
             }
         });
+        Bundle bundle = this.getIntent().getExtras();
+        weddingInfoObjectId = bundle.getString("weddingInfoObjectId");
     }
 
     @Override
@@ -111,5 +113,9 @@ public class OwnMainActivity extends AppCompatActivity
 
     public void editWeddingButtonClicked(){
         startActivity(new Intent(this, CreateWeddingActivity.class));
+    }
+    private String weddingInfoObjectId;
+    public String getWeddingInfoObjectId(){
+        return weddingInfoObjectId;
     }
 }

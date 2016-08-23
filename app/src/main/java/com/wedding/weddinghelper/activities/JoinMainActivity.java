@@ -14,6 +14,7 @@ import com.wedding.weddinghelper.fragements.PhotoFragment;
 import com.wedding.weddinghelper.fragements.JoinSurveyFragment;
 import com.wedding.weddinghelper.fragements.WeddingInfoFragment;
 
+
 public class JoinMainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
@@ -92,10 +93,17 @@ public class JoinMainActivity extends AppCompatActivity
                 }
             }
         });
+        Bundle bundle = this.getIntent().getExtras();
+        weddingInfoObjectId = bundle.getString("weddingInfoObjectId");
     }
 
     @Override
     public void onClick(View v){
         finish();
     }
+    private String weddingInfoObjectId;
+    public String getWeddingInfoObjectId(){
+        return weddingInfoObjectId;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,12 +15,31 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.JoinMainActivity;
+import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 public class WeddingInfoFragment extends Fragment {
+    public String weddingInfoObjectId;
     public static WeddingInfoFragment newInstance() {
         Log.d("Own info", "New Instance");
         return new WeddingInfoFragment();
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d("Neal","activity class = "+activity.getLocalClassName());
+        if (activity.getLocalClassName().equals("activities.OwnMainActivity")){
+            OwnMainActivity mMainActivity = (OwnMainActivity) activity;
+            weddingInfoObjectId = mMainActivity.getWeddingInfoObjectId();
+        }
+        else {
+            JoinMainActivity mMainActivity = (JoinMainActivity) activity;
+            weddingInfoObjectId = mMainActivity.getWeddingInfoObjectId();
+        }
+        Log.d("Neal", weddingInfoObjectId);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +68,7 @@ public class WeddingInfoFragment extends Fragment {
 
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         ParseQuery query = ParseQuery.getQuery("Information");
-        query.getInBackground("XA6hDoxtXo",new GetCallback<ParseObject>() {//ToDo:暫時使用
+        query.getInBackground(weddingInfoObjectId,new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject weddingInformation, ParseException e) {
                 groomAndBrideName.setText(weddingInformation.getString("groomName")+"&"+weddingInformation.getString("brideName"));

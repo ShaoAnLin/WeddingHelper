@@ -70,7 +70,7 @@ public class JoinActivity extends AppCompatActivity
                     query.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject information, ParseException e) {
-                            login();
+                            login(information.getObjectId());
                         }
                     });
                 }
@@ -78,10 +78,15 @@ public class JoinActivity extends AppCompatActivity
         }
     }
 
-    private void login(){
-        Intent showIntent;
-        showIntent = new Intent(this, JoinMainActivity.class);
-        startActivity(showIntent);
+    private void login(String weddingInfoObjectId){
+        Intent intent = new Intent();
+        intent.setClass(this, JoinMainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("weddingInfoObjectId", weddingInfoObjectId);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
+
     }
 
     private void attemptLogin() {
@@ -138,7 +143,7 @@ public class JoinActivity extends AppCompatActivity
                     //有搜尋到婚宴資訊，則進入至下一個畫面且夾帶婚宴資訊。
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
-                        login();
+                        login(information.getObjectId());
                     }
                 }
             });

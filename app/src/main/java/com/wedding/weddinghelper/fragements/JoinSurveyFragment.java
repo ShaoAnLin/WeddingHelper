@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
@@ -27,6 +28,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.JoinMainActivity;
+import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,7 +43,14 @@ public class JoinSurveyFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+    public String weddingInfoObjectId;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
+        JoinMainActivity mMainActivity = (JoinMainActivity) activity;
+        weddingInfoObjectId = mMainActivity.getWeddingInfoObjectId();
+        Log.d("Neal", weddingInfoObjectId);
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +139,7 @@ public class JoinSurveyFragment extends Fragment {
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         ParseQuery query = ParseQuery.getQuery("AttendantList");
         query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
-        query.whereEqualTo("weddingObjectId", "XA6hDoxtXo");//ToDo:暫時使用
+        query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
         Log.d("Neal",currentInstallation.getInstallationId());
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
@@ -337,7 +347,7 @@ public class JoinSurveyFragment extends Fragment {
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         ParseQuery query = ParseQuery.getQuery("AttendantList");
         query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
-        query.whereEqualTo("weddingObjectId", "XA6hDoxtXo");//ToDo:暫時使用
+        query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject attendInformation, ParseException e) {
@@ -349,7 +359,7 @@ public class JoinSurveyFragment extends Fragment {
                 attendInformation.put("weddingObjectId","XA6hDoxtXo");
                 attendInformation.put("Name",name.getText().toString());
                 attendInformation.put("Phone",phone.getText().toString());
-                attendInformation.put("weddingObjectId","XA6hDoxtXo"); //ToDo:暫時使用
+                attendInformation.put("weddingObjectId",weddingInfoObjectId);
                 attendInformation.put("AddressRegion",addressRegion.getText().toString());
                 attendInformation.put("AddressDetail",detailAddress.getText().toString());
                 attendInformation.put("Notation",message.getText().toString());
@@ -374,6 +384,25 @@ public class JoinSurveyFragment extends Fragment {
                         if (e!=null){
                             Log.d("Neal","saveInbackground.exception = " +e);
                         }
+                        else {
+                            name.setEnabled(false);
+                            name.setFocusable(false);
+                            phone.setEnabled(false);
+                            relationSpinner.setEnabled(false);
+                            attendWillingSwitch.setEnabled(false);
+                            addressRegion.setEnabled(false);
+                            detailAddress.setEnabled(false);
+                            attendPeopleAddButton.setEnabled(false);
+                            attendPeopleMinusButton.setEnabled(false);
+                            attendEngageSession.setEnabled(false);
+                            attendMarrySession.setEnabled(false);
+                            vegetableAddButton.setEnabled(false);
+                            vegetableMinusButton.setEnabled(false);
+                            meatAddButton.setEnabled(false);
+                            meatMinusButton.setEnabled(false);
+                            message.setEnabled(false);
+                            surveySaveButton.setEnabled(false);
+                        }
                     }
                 });
             }
@@ -382,7 +411,7 @@ public class JoinSurveyFragment extends Fragment {
     //檢查目前是否可新增或修改資料
     public  void  checkDeadline(){
         ParseQuery query = ParseQuery.getQuery("Information");
-        query.getInBackground("XA6hDoxtXo", new GetCallback<ParseObject>() {//ToDo:暫時使用
+        query.getInBackground(weddingInfoObjectId, new GetCallback<ParseObject>() {
 
             @Override
             public void done(ParseObject weddingInformation, ParseException e) {

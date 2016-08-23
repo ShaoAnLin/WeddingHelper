@@ -95,7 +95,13 @@ public class ManageActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         //Toast.makeText(getApplicationContext(), "你選擇的是" + wedding_list[position], Toast.LENGTH_SHORT).show();
         Log.d("Manage", wedding_name[position]);
-        startActivity(new Intent(this, OwnMainActivity.class));
+        Intent intent = new Intent();
+        intent.setClass(this, OwnMainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("weddingInfoObjectId", weddingInformation.get(position).getObjectId());
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
