@@ -1,12 +1,15 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -20,6 +23,10 @@ import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 public class WeddingInfoFragment extends Fragment {
     public String weddingInfoObjectId;
+    private TextView groomAndBrideName;
+    private Button engageTime, engagePlace, engageAddress, marryTime, marryPlace, marryAddress;
+    String engagePlaceUrl, marryPlaceUrl;
+
     public static WeddingInfoFragment newInstance() {
         Log.d("Own info", "New Instance");
         return new WeddingInfoFragment();
@@ -54,17 +61,18 @@ public class WeddingInfoFragment extends Fragment {
         return view;
     }
 
-    TextView groomAndBrideName, engageTime, engagePlace, engageAddress, marryTime, marryPlace, marryAddress;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        groomAndBrideName = (TextView) getView().findViewById(R.id.text_own_info);
-        engageTime = (TextView) getView().findViewById(R.id.engage_time);
-        engagePlace = (TextView) getView().findViewById(R.id.engage_place);
-        engageAddress = (TextView) getView().findViewById(R.id.engage_address);
-        marryTime = (TextView) getView().findViewById(R.id.marry_time);
-        marryPlace = (TextView) getView().findViewById(R.id.marry_place);
-        marryAddress = (TextView) getView().findViewById(R.id.marry_address);
+        View view = getView();
+
+        groomAndBrideName = (TextView) view.findViewById(R.id.text_own_info);
+        engageTime = (Button) view.findViewById(R.id.engage_time);
+        engagePlace = (Button) view.findViewById(R.id.engage_place);
+        engageAddress = (Button) view.findViewById(R.id.engage_address);
+        marryTime = (Button) view.findViewById(R.id.marry_time);
+        marryPlace = (Button) view.findViewById(R.id.marry_place);
+        marryAddress = (Button) view.findViewById(R.id.marry_address);
 
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         ParseQuery query = ParseQuery.getQuery("Information");
@@ -78,6 +86,25 @@ public class WeddingInfoFragment extends Fragment {
                 marryTime.setText(weddingInformation.getString("marryDate"));
                 marryPlace.setText(weddingInformation.getString("marryPlace"));
                 marryAddress.setText(weddingInformation.getString("marryAddress"));
+
+                // get the Url of restaurants
+                engagePlaceUrl = weddingInformation.getString("engagePlaceIntroduce");
+                marryPlaceUrl = weddingInformation.getString("marryPlaceIntroduce");
+
+                engagePlace.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(engagePlaceUrl));
+                        startActivity(browserIntent);
+                    }
+                });
+                marryPlace.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryPlaceUrl));
+                        startActivity(browserIntent);
+                    }
+                });
             }
         });
     }
