@@ -25,7 +25,7 @@ public class WeddingInfoFragment extends Fragment {
     public String weddingInfoObjectId;
     private TextView groomAndBrideName;
     private Button engageTime, engagePlace, engageAddress, marryTime, marryPlace, marryAddress;
-    String engagePlaceUrl, marryPlaceUrl;
+    String engagePlaceUrl, engageAddressUrl, marryPlaceUrl, marryAddressUrl;
 
     public static WeddingInfoFragment newInstance() {
         Log.d("Own info", "New Instance");
@@ -89,7 +89,9 @@ public class WeddingInfoFragment extends Fragment {
 
                 // get the Url of restaurants
                 engagePlaceUrl = weddingInformation.getString("engagePlaceIntroduce");
+                engageAddressUrl = "http://maps.google.co.in/maps?q=" + weddingInformation.getString("engageAddress");
                 marryPlaceUrl = weddingInformation.getString("marryPlaceIntroduce");
+                marryAddressUrl = "http://maps.google.co.in/maps?q=" + weddingInformation.getString("marryAddress");
 
                 engagePlace.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -98,11 +100,25 @@ public class WeddingInfoFragment extends Fragment {
                         startActivity(browserIntent);
                     }
                 });
+                engageAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(engageAddressUrl));
+                        startActivity(mapIntent);
+                    }
+                });
                 marryPlace.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryPlaceUrl));
                         startActivity(browserIntent);
+                    }
+                });
+                marryAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryAddressUrl));
+                        startActivity(mapIntent);
                     }
                 });
             }
