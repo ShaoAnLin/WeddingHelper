@@ -102,12 +102,14 @@ public class OwnMainActivity extends AppCompatActivity
     public void guestListSummaryButtonClicked(){
         Intent showIntent = new Intent(this, GuestListActivity.class);
         showIntent.putExtra(GuestListActivity.PAGE_TYPE_KEY, GuestListActivity.GUEST_LIST_SUMMARY_VAL);
+        showIntent.putExtra("weddingInfoObjectId", weddingInfoObjectId);
         startActivity(showIntent);
     }
 
     public void guestDetailListButtonClicked(){
         Intent showIntent = new Intent(this, GuestListActivity.class);
         showIntent.putExtra(GuestListActivity.PAGE_TYPE_KEY, GuestListActivity.GUEST_LIST_DETAIL_VAL);
+        showIntent.putExtra("weddingInfoObjectId", weddingInfoObjectId);
         startActivity(showIntent);
     }
 

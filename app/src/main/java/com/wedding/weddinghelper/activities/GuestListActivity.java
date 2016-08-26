@@ -26,11 +26,13 @@ public class GuestListActivity extends AppCompatActivity
     public static final int GUEST_LIST_SUMMARY_VAL = 0;
     public static final int GUEST_LIST_DETAIL_VAL = 1;
 
+    public  String weddingInfoObjectId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_list);
-
+        weddingInfoObjectId = getIntent().getStringExtra("weddingInfoObjectId");
         // initiate action bar
         Toolbar actionBar = (Toolbar) findViewById(R.id.guest_list_action_bar);
         setSupportActionBar(actionBar);
@@ -101,5 +103,8 @@ public class GuestListActivity extends AppCompatActivity
                 .beginTransaction()
                 .replace(R.id.guest_fragment, GuestDetailFragment.newInstance())
                 .commit();
+    }
+    public String getWeddingInfoObjectId(){
+        return weddingInfoObjectId;
     }
 }

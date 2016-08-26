@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.TextViewCompat;
@@ -18,6 +19,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.activities.GuestListActivity;
+import com.wedding.weddinghelper.activities.JoinMainActivity;
+import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +44,16 @@ public class GuestListSummaryFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
+    public  String weddingInfoObjectId;
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        GuestListActivity mMainActivity = (GuestListActivity) activity;
+        weddingInfoObjectId = mMainActivity.getWeddingInfoObjectId();
+        Log.d("Neal", "guestlistsummaryfragment = "+weddingInfoObjectId);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,7 +73,7 @@ public class GuestListSummaryFragment extends Fragment {
         notAttendNumber = (TextView)view.findViewById(R.id.not_attend_number);
         // Parse data
         ParseQuery query = new ParseQuery("AttendantList");
-        query.whereEqualTo("weddingObjectId", "XA6hDoxtXo");
+        query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
         query.orderByAscending("AttendingWilling");
         query.orderByAscending("Session");
         query.findInBackground(new FindCallback<ParseObject>() {
