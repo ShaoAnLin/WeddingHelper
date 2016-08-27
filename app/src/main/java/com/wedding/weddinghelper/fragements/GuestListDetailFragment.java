@@ -50,14 +50,13 @@ public class GuestListDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_guest_list_detail, container, false);
-
         ParseQuery query = new ParseQuery("AttendantList");
         query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
         query.orderByAscending("AttendingWilling");
         query.orderByAscending("Session");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
+            public void done(final List<ParseObject> list, ParseException e) {
                 String [] guestNameList = new String[list.size()];
                 for (int i = 0 ; i<list.size() ; i++) {
                     //ToDo:將下載的賓客資料塞進list view
@@ -72,8 +71,8 @@ public class GuestListDetailFragment extends Fragment {
                 guestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        //Toast.makeText(getActivity().getApplicationContext(), "你選擇的是" + guestList[position], Toast.LENGTH_SHORT).show();
-                        ((GuestListActivity)getActivity()).listItemClicked();
+                        //Toast.makeText(getActivity().getApplicationContext(), "你選擇的是" + list.get(position).getString("Name"), Toast.LENGTH_SHORT).show();
+                        ((GuestListActivity)getActivity()).listItemClicked(list.get(position));
                     }
                 });
             }

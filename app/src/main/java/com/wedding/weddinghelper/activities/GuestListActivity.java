@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -95,9 +96,10 @@ public class GuestListActivity extends AppCompatActivity
             finish();
         }
     }
-
-    public void listItemClicked(){
+    public ParseObject guestDetail;
+    public void listItemClicked(ParseObject theGuestDetail){
         //startActivity(new Intent(this, GuestDetailActivity.class));
+        guestDetail = theGuestDetail;
         getSupportActionBar().setTitle(getString(R.string.guest_detail));
         this.getSupportFragmentManager()
                 .beginTransaction()
@@ -106,5 +108,9 @@ public class GuestListActivity extends AppCompatActivity
     }
     public String getWeddingInfoObjectId(){
         return weddingInfoObjectId;
+    }
+
+    public  ParseObject getGuestDetail(){
+        return guestDetail;
     }
 }
