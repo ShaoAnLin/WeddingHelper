@@ -1,7 +1,10 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,17 +83,57 @@ public class LoginAccountFragment extends Fragment {
     private void attemptLogin(View v){
         EditText userNameEditText = (EditText) getActivity().findViewById(R.id.login_user_account);
         EditText userPasswordEditText = (EditText) getActivity().findViewById(R.id.login_user_password);
-        ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    //Go to admin UI
-                    Log.d("Neal","Login success");
-                    login();
-                } else {
-                    //Show a tip to tell user the failed reason.
-                    Log.d("Neal","Login failed with exception"  + e);
+        if (userNameEditText.getText().toString().length() == 0 || userPasswordEditText.getText().toString().length() == 0){
+            boolean emptyUserName = false;
+            if (TextUtils.isEmpty(userNameEditText.getText().toString())) {
+                userNameEditText.setError(getString(R.string.error_field_required));
+                userNameEditText.requestFocus();
+                emptyUserName = true;
+            }
+            if (TextUtils.isEmpty(userPasswordEditText.getText().toString())) {
+                userPasswordEditText.setError(getString(R.string.error_field_required));
+                if (!emptyUserName) {
+                    userPasswordEditText.requestFocus();
                 }
             }
-        });
+        }
+        else {
+            ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
+                public void done(ParseUser user, ParseException e) {
+                    if (user != null) {
+                        //Go to admin UI
+                        Log.d("Neal", "Login success");
+                        login();
+                    } else if (e != null) {
+                        //Show a tip to tell user the failed reason.
+                        Log.d("Neal", "Login failed with exception" + e + "    " + e.getCode());
+                        if (e.getCode() == 100) { //未連上網路
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("請連上網路！")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                        else if (e.getCode() == 101) { //帳號密碼錯誤
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("帳號或密碼輸入錯誤！")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                        else{ //其餘錯誤
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("未知的錯誤發生，請稍候再試。")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                    }
+                }
+            });
+        }
     }
 }

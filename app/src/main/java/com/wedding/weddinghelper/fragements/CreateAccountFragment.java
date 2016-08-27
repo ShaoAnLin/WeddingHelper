@@ -2,6 +2,8 @@ package com.wedding.weddinghelper.fragements;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,33 +60,80 @@ public class CreateAccountFragment extends Fragment {
         EditText userName = (EditText) getActivity().findViewById(R.id.create_user_account);
         EditText userPassword = (EditText) getActivity().findViewById(R.id.create_user_password);
         EditText userEmail = (EditText) getActivity().findViewById(R.id.create_user_email);
-        ParseUser user = new ParseUser();
-        user.setUsername(userName.getText().toString());
-        user.setPassword(userPassword.getText().toString());
-        user.setEmail(userEmail.getText().toString());
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    ((OwnActivity)getActivity()).login();
-                    Log.d("Neal","Signing up success!!");
+
+        boolean emptyUserName = false, emptyPassword = false;
+        if (TextUtils.isEmpty(userName.getText().toString()) || TextUtils.isEmpty(userPassword.getText().toString()) || TextUtils.isEmpty(userEmail.getText().toString())){
+            // Check for a valid user name, if the user entered one.
+            if (TextUtils.isEmpty(userName.getText().toString())) {
+                userName.setError(getString(R.string.error_field_required));
+                userName.requestFocus();
+                emptyUserName = true;
+            }
+            // Check for a valid password, if the user entered one.
+            if (TextUtils.isEmpty(userPassword.getText().toString())) {
+                userPassword.setError(getString(R.string.error_field_required));
+                if (!emptyUserName) {
+                    userPassword.requestFocus();
                 }
-                else {
-                    Log.d("Neal","Signing up failed..."+e.getCode()+ "     " +e);
-                    if (e.getCode() == 202){
-                        Log.d("Neal","使用者名稱已被使用");
-                    }
-                    else if (e.getCode() == 203){
-                        Log.d("Neal","E-mail已被使用");
-                    }
-                    else if (e.getCode() == 125){
-                        Log.d("Neal","E-mail格式錯誤");
-                    }
-                    else {
-                        Log.d("Neal","不知名錯誤");
-                    }
+                emptyPassword = true;
+            }
+            // Check for a valid email, if the user entered one.
+            if (TextUtils.isEmpty(userEmail.getText().toString())) {
+                userEmail.setError(getString(R.string.error_field_required));
+                if (!emptyPassword && !emptyUserName) {
+                    userEmail.requestFocus();
                 }
             }
-        });
+        }
+        else {
+            ParseUser user = new ParseUser();
+            user.setUsername(userName.getText().toString());
+            user.setPassword(userPassword.getText().toString());
+            user.setEmail(userEmail.getText().toString());
+            user.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        ((OwnActivity) getActivity()).login();
+                        Log.d("Neal", "Signing up success!!");
+                    } else {
+                        Log.d("Neal", "Signing up failed..." + e.getCode() + "     " + e);
+                        if (e.getCode() == 202) {
+                            Log.d("Neal", "使用者名稱已被使用");
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("此帳號已被使用。")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        } else if (e.getCode() == 203) {
+                            Log.d("Neal", "E-mail已被使用");
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("此E-Mail已註冊過！")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        } else if (e.getCode() == 125) {
+                            Log.d("Neal", "E-mail格式錯誤");
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("E-Mail格式錯誤！")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        } else {
+                            Log.d("Neal", "不知名錯誤");
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("訊息")
+                                    .setMessage("不知名的錯誤發生，請稍候再試。")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                    }
+                }
+            });
+        }
     }
 }

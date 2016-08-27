@@ -1,6 +1,8 @@
 package com.wedding.weddinghelper.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,8 @@ public class JoinActivity extends AppCompatActivity
     private EditText mNameView;
     private EditText mPasswordView;
 
+
+    final Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,27 +99,20 @@ public class JoinActivity extends AppCompatActivity
         String password = mPasswordView.getText().toString();
 
         boolean emptyName = false;
-        boolean emptyPassword = false;
-        final View focusView = null;
 
         //先判斷組婚宴名稱及通關密語是否為空，若任一個為空，則在文字框旁顯示error。
         // Check for a valid userName.
         if (TextUtils.isEmpty(name)) {
             mNameView.setError(getString(R.string.error_field_required));
+            mNameView.requestFocus();
             emptyName = true;
         }
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
-            emptyPassword = true;
-        }
-
-        //若mNameView為空，則focus在mNameView。若mNameView不為空，但mPasswordView為空，則focus在mPasswordView。
-        if (emptyName) {
-            mNameView.requestFocus();
-        }
-        else if (emptyPassword){
-            mPasswordView.requestFocus();
+            if (!emptyName) {
+                mPasswordView.requestFocus();
+            }
         }
 
         //若皆不為空，才嘗試以此組婚宴名稱及通關密語搜尋。
@@ -126,18 +123,35 @@ public class JoinActivity extends AppCompatActivity
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject information, ParseException e) {
-                    Log.d("Neal", "Exception = " + e);
+                    Log.d("Neal", "Exception = " + e + " code = " + e.getCode());
                     //有其他錯誤發生，如連線異常、伺服器掛掉等。
                     if (e != null) {
-                        mNameView.setError(getString(R.string.error_not_foune));
-                        mNameView.requestFocus();
-                        if (e.getCode() == 101) {
-                            //目前只能判斷是否有婚宴使用此組婚宴名稱及通關密語，因此較適合使用提示視窗告知使用者此組合是錯誤的。
+                        if (e.getCode() == 101) { //婚宴名稱及通關密語錯誤
+                            new AlertDialog.Builder(context)
+                                    .setTitle("訊息")
+                                    .setMessage("無法取得婚禮資訊，請與新郎/新娘確認婚宴名稱及通關密語！")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+                        }
+                        else if (e.getCode() == 100) { //未連上網路
+                            new AlertDialog.Builder(context)
+                                    .setTitle("訊息")
+                                    .setMessage("請連上網路！")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
 
                         }
                         else {
                             //其他錯誤。
-                            Log.d("Neal", "Another Exception = " + e + "   " +e.getCode());
+                            new AlertDialog.Builder(context)
+                                    .setTitle("訊息")
+                                    .setMessage("未知的錯誤發生，請稍候再試。")
+                                    .setPositiveButton("好！", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
                         }
                     }
                     //有搜尋到婚宴資訊，則進入至下一個畫面且夾帶婚宴資訊。
