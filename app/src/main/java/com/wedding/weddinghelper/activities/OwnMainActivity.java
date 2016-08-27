@@ -113,8 +113,11 @@ public class OwnMainActivity extends AppCompatActivity
         startActivity(showIntent);
     }
 
-    public void editWeddingButtonClicked(){
-        startActivity(new Intent(this, CreateWeddingActivity.class));
+    public void editWeddingButtonClicked(boolean isEditWedding){
+        Intent showIntent = new Intent(this, CreateWeddingActivity.class);
+        showIntent.putExtra("isEditWedding", isEditWedding);
+        showIntent.putExtra("weddingInfoObjectId", weddingInfoObjectId);
+        startActivity(showIntent);
     }
     private String weddingInfoObjectId;
     public String getWeddingInfoObjectId(){

@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/engage_string"
-            android:id="@+id/textView2"
+            android:id="@+id/engage_label"
             android:textSize="30sp"
             android:textColor="@android:color/holo_red_light" />
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/marry_string"
-            android:id="@+id/textView"
+            android:id="@+id/marry_label"
             android:textSize="30sp"
             android:textColor="@android:color/holo_red_light" />
 

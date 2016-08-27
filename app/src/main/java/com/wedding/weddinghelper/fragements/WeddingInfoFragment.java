@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ import com.wedding.weddinghelper.activities.OwnMainActivity;
 
 public class WeddingInfoFragment extends Fragment {
     public String weddingInfoObjectId;
-    private TextView groomAndBrideName;
+    private TextView groomAndBrideName, engageTitle, marryTitle;
     private Button engageTime, engagePlace, engageAddress, marryTime, marryPlace, marryAddress;
     String engagePlaceUrl, engageAddressUrl, marryPlaceUrl, marryAddressUrl;
 
@@ -66,6 +67,8 @@ public class WeddingInfoFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         View view = getView();
 
+        engageTitle = (TextView)view.findViewById(R.id.engage_label);
+        marryTitle = (TextView)view.findViewById(R.id.marry_label);
         groomAndBrideName = (TextView) view.findViewById(R.id.text_own_info);
         engageTime = (Button) view.findViewById(R.id.engage_time);
         engagePlace = (Button) view.findViewById(R.id.engage_place);
@@ -83,9 +86,25 @@ public class WeddingInfoFragment extends Fragment {
                 engageTime.setText(weddingInformation.getString("engageDate"));
                 engagePlace.setText(weddingInformation.getString("engagePlace"));
                 engageAddress.setText(weddingInformation.getString("engageAddress"));
-                marryTime.setText(weddingInformation.getString("marryDate"));
-                marryPlace.setText(weddingInformation.getString("marryPlace"));
-                marryAddress.setText(weddingInformation.getString("marryAddress"));
+
+                if (!weddingInformation.getBoolean("onlyOneSession")){
+                    marryTime.setVisibility(View.VISIBLE);
+                    marryPlace.setVisibility(View.VISIBLE);
+                    marryAddress.setVisibility(View.VISIBLE);
+                    marryTime.setText(weddingInformation.getString("marryDate"));
+                    marryPlace.setText(weddingInformation.getString("marryPlace"));
+                    marryAddress.setText(weddingInformation.getString("marryAddress"));
+                    engageTitle.setText(getString(R.string.engage_string));
+                }
+                else {
+                    engageTitle.setText(getString(R.string.wedding));
+                    marryTitle.setVisibility(View.GONE);
+                    marryTime.setVisibility(View.GONE);
+                    marryPlace.setVisibility(View.GONE);
+                    marryAddress.setVisibility(View.GONE);
+                }
+
+
 
                 // get the Url of restaurants
                 engagePlaceUrl = weddingInformation.getString("engagePlaceIntroduce");
@@ -96,8 +115,10 @@ public class WeddingInfoFragment extends Fragment {
                 engagePlace.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(engagePlaceUrl));
-                        startActivity(browserIntent);
+                        if (!TextUtils.isEmpty(engagePlaceUrl)){
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(engagePlaceUrl));
+                            startActivity(browserIntent);
+                        }
                     }
                 });
                 engageAddress.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +131,10 @@ public class WeddingInfoFragment extends Fragment {
                 marryPlace.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryPlaceUrl));
-                        startActivity(browserIntent);
+                        if (!TextUtils.isEmpty(marryPlaceUrl)) {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryPlaceUrl));
+                            startActivity(browserIntent);
+                        }
                     }
                 });
                 marryAddress.setOnClickListener(new View.OnClickListener() {

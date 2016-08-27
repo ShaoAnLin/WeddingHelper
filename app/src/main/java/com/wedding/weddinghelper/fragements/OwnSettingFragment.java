@@ -49,7 +49,7 @@ public class OwnSettingFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Log.d("Shawn", "Edit wedding info button clicked");
-                    ((OwnMainActivity)getActivity()).editWeddingButtonClicked();
+                    ((OwnMainActivity)getActivity()).editWeddingButtonClicked(true);
                 }
             });
         }
