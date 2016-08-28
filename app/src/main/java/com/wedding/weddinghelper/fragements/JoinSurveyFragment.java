@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -64,6 +66,7 @@ public class JoinSurveyFragment extends Fragment {
     Switch attendWillingSwitch;
     Calendar modifyDeadline;
     Toast errorMessageToast;
+    LinearLayout weddingSessionLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,7 +83,7 @@ public class JoinSurveyFragment extends Fragment {
         meatNumber = (TextView)view.findViewById(R.id.meat_count_text);
         relationSpinner = (Spinner)view.findViewById(R.id.relation_spinner);
 
-
+        weddingSessionLayout = (LinearLayout)view.findViewById(R.id.wedding_session_layout);
         attendMarrySession = (ToggleButton)view.findViewById(R.id.survey_marry_toggle_button);
         attendEngageSession = (ToggleButton)view.findViewById(R.id.survey_engage_toggle_button);
         attendWillingSwitch = (Switch)view.findViewById(R.id.survey_attend_switch);
@@ -247,6 +250,7 @@ public class JoinSurveyFragment extends Fragment {
                     meatNumber.setText(attendInformation.get("MeatNumber").toString());
                     detailAddress.setText(attendInformation.get("AddressDetail").toString());
                     attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
+
                     attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
                     attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
                     relationSpinner.setSelection(attendInformation.getInt("Relation"));
@@ -459,6 +463,13 @@ public class JoinSurveyFragment extends Fragment {
                             meatMinusButton.setEnabled(false);
                             message.setEnabled(false);
                             surveySaveButton.setEnabled(false);
+                        }
+                        Log.d("Neal", "weddingInformation.getBoolean(onlyOneSession = " + weddingInformation.getBoolean("onlyOneSession"));
+                        if (weddingInformation.getBoolean("onlyOneSession")){
+                            weddingSessionLayout.setVisibility(View.GONE);
+                        }
+                        else {
+                            weddingSessionLayout.setVisibility(View.VISIBLE);
                         }
                     } catch (java.text.ParseException e1) {
                         Log.d("Neal","ParseDateException = "+e1);
