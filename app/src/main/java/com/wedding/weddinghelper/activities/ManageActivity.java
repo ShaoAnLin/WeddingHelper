@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class ManageActivity extends AppCompatActivity
     String[] wedding_date;
     ListView weddingListView;
     List <ParseObject> weddingInformation;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,13 @@ public class ManageActivity extends AppCompatActivity
             getSupportActionBar().setShowHideAnimationEnabled(true);
         }
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
+
+        progressDialog.show();
         // set close icon on click listener
         if (actionBar != null) {
             actionBar.setNavigationOnClickListener(this);
@@ -85,6 +94,7 @@ public class ManageActivity extends AppCompatActivity
                 }
                 ListAdapter listAdapter = new SimpleAdapter(getApplicationContext(),list,R.layout.custom_list_view_style, new String[] {"wedding_name","wedding_date"}, new int[]{android.R.id.text2, android.R.id.text1});
                 weddingListView.setAdapter(listAdapter);
+                progressDialog.dismiss();
 
             }
         });

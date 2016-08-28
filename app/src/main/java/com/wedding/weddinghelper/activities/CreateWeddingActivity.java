@@ -1,6 +1,8 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +33,8 @@ public class CreateWeddingActivity extends AppCompatActivity
 
     boolean isEditWedding;
     final Context context = this;
+    ProgressDialog progressDialog;
+    ParseObject currentWeddingInformation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,13 @@ public class CreateWeddingActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setNavigationOnClickListener(this);
         }
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
+
         weddingName = (EditText) findViewById(R.id.create_wedding_name_edit_text);
 
         weddingPassword = (EditText) findViewById(R.id.create_wedding_password_edit_text);
@@ -123,11 +134,13 @@ public class CreateWeddingActivity extends AppCompatActivity
         });
         //若是編輯婚宴，則先取回原本資料。
         if (isEditWedding){
+            progressDialog.show();
             weddingInformationObjectId = getIntent().getStringExtra("weddingInfoObjectId");
             ParseQuery query = ParseQuery.getQuery("Information");
             query.getInBackground(weddingInformationObjectId,new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject weddingInformation, ParseException e) {
+                    currentWeddingInformation = weddingInformation;
                     weddingName.setText(weddingInformation.getString("weddingAccount"));
                     weddingPassword.setText(weddingInformation.getString("weddingPassword"));
                     groomName.setText(weddingInformation.getString("groomName"));
@@ -165,6 +178,7 @@ public class CreateWeddingActivity extends AppCompatActivity
                         engageAddressTextView.setText(getString(R.string.engage_address));
                         engageWebsiteTextView.setText(getString(R.string.engage_website));
                     }
+                    progressDialog.dismiss();
                 }
             });
         }
@@ -255,6 +269,7 @@ public class CreateWeddingActivity extends AppCompatActivity
                 }
 
                 if (!contentError) {
+                    progressDialog.show();
                     if (!isEditWedding) {
                         Log.d(getClass().getSimpleName(), "Done create wedding");
                         ParseQuery checkWeddingExist = ParseQuery.getQuery("Information");
@@ -263,8 +278,8 @@ public class CreateWeddingActivity extends AppCompatActivity
                         checkWeddingExist.countInBackground(new CountCallback() {
                             @Override
                             public void done(int i, ParseException e) {
+                                progressDialog.dismiss();
                                 if (e == null) {
-                                    Log.d("Neal", "number of the wedding name = " + i);
                                     if (i != 0) {
                                         new AlertDialog.Builder(context)
                                                 .setTitle("訊息")
@@ -304,12 +319,46 @@ public class CreateWeddingActivity extends AppCompatActivity
                                         });
                                     }
                                 }
-
                             }
                         });
                     }
                     else {
-                        //ToDo: 將修改過後的內容上傳。
+                        currentWeddingInformation.put("weddingAccount", weddingName.getText().toString());
+                        currentWeddingInformation.put("weddingPassword", weddingPassword.getText().toString());
+                        currentWeddingInformation.put("groomName", groomName.getText().toString());
+                        currentWeddingInformation.put("brideName", brideName.getText().toString());
+                        currentWeddingInformation.put("engageDate", engageDate.getText().toString());
+                        currentWeddingInformation.put("engagePlace", engagePlace.getText().toString());
+                        currentWeddingInformation.put("engageAddress", engageAddress.getText().toString());
+                        currentWeddingInformation.put("engagePlaceIntroduce", engagePlaceIntroduce.getText().toString());
+                        currentWeddingInformation.put("marryDate", marryDate.getText().toString());
+                        currentWeddingInformation.put("marryPlace", marryPlace.getText().toString());
+                        currentWeddingInformation.put("marryAddress", marryAddress.getText().toString());
+                        currentWeddingInformation.put("marryPlaceIntroduce", marryPlaceIntroduce.getText().toString());
+                        currentWeddingInformation.put("managerAccount", ParseUser.getCurrentUser().getUsername());
+                        currentWeddingInformation.put("modifyFormDeadline", modifyFormDeadline.getText().toString());
+                        if (sameDayToggleButton.isChecked() && !differentDayToggleButton.isChecked()) {
+                            currentWeddingInformation.put("onlyOneSession", true);
+                        } else {
+                            currentWeddingInformation.put("onlyOneSession", false);
+                        }
+                        currentWeddingInformation.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                progressDialog.dismiss();
+                                new AlertDialog.Builder(context)
+                                        .setTitle("訊息")
+                                        .setMessage("修改完成！")
+                                        .setPositiveButton("好！", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                finish();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        });
                     }
                 }
                 return true;

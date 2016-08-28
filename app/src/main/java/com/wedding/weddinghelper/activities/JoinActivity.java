@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -27,7 +28,7 @@ public class JoinActivity extends AppCompatActivity
     private EditText mNameView;
     private EditText mPasswordView;
 
-
+    ProgressDialog progressDialog;
     final Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,21 +81,28 @@ public class JoinActivity extends AppCompatActivity
                 }
             });
         }
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
     }
+
 
     private void login(String weddingInfoObjectId){
         Intent intent = new Intent();
         intent.setClass(this, JoinMainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("weddingInfoObjectId", weddingInfoObjectId);
-
         intent.putExtras(bundle);
+
         startActivity(intent);
 
     }
 
     private void attemptLogin() {
-
         String name = mNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -117,15 +125,16 @@ public class JoinActivity extends AppCompatActivity
 
         //若皆不為空，才嘗試以此組婚宴名稱及通關密語搜尋。
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+            progressDialog.show();
             ParseQuery query = ParseQuery.getQuery("Information");
             query.whereEqualTo("weddingAccount", name);
             query.whereEqualTo("weddingPassword", password);
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject information, ParseException e) {
-                    Log.d("Neal", "Exception = " + e + " code = " + e.getCode());
                     //有其他錯誤發生，如連線異常、伺服器掛掉等。
                     if (e != null) {
+                        progressDialog.dismiss();
                         if (e.getCode() == 101) { //婚宴名稱及通關密語錯誤
                             new AlertDialog.Builder(context)
                                     .setTitle("訊息")
@@ -157,6 +166,7 @@ public class JoinActivity extends AppCompatActivity
                     //有搜尋到婚宴資訊，則進入至下一個畫面且夾帶婚宴資訊。
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
+                        progressDialog.dismiss();
                         login(information.getObjectId());
                     }
                 }

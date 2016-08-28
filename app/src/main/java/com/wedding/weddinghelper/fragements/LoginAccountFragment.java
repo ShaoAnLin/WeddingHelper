@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,11 +43,18 @@ public class LoginAccountFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    ProgressDialog progressDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login_account, container, false);
         Log.d("Login account", "create view");
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
 
         mLoginButton = (Button) view.findViewById(R.id.login_account_login_button);
         if (mLoginButton != null) {
@@ -98,15 +106,19 @@ public class LoginAccountFragment extends Fragment {
             }
         }
         else {
+            progressDialog.show();
             ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
                         //Go to admin UI
+                        progressDialog.dismiss();
                         Log.d("Neal", "Login success");
                         login();
-                    } else if (e != null) {
+                    }
+                    else if (e != null) {
                         //Show a tip to tell user the failed reason.
                         Log.d("Neal", "Login failed with exception" + e + "    " + e.getCode());
+                        progressDialog.dismiss();
                         if (e.getCode() == 100) { //未連上網路
                             new AlertDialog.Builder(getContext())
                                     .setTitle("訊息")

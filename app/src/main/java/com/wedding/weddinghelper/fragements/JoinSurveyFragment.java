@@ -30,7 +30,7 @@ import com.parse.SaveCallback;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
-
+import android.app.ProgressDialog;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
@@ -69,7 +69,7 @@ public class JoinSurveyFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_join_survey, container, false);
-
+        Log.d("Neal","onCreateView infJoinSurveyFragment");
         name = (EditText)view.findViewById(R.id.survey_name_edit_text);
         phone = (EditText)view.findViewById(R.id.survey_phone_edit_text);
         addressRegion = (EditText)view.findViewById(R.id.survey_address_city_edit_text);
@@ -136,37 +136,7 @@ public class JoinSurveyFragment extends Fragment {
         relationSpinner.setAdapter(adapter);
 
 
-        final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
-        ParseQuery query = ParseQuery.getQuery("AttendantList");
-        query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
-        query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
-        Log.d("Neal",currentInstallation.getInstallationId());
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject attendInformation, ParseException e) {
-                //若無法搜尋到此裝置(errorCode = 101)，表示第一次填寫資料，所有欄位內容清空。
-                if (attendInformation == null && e.getCode() == 101) {
-                    //所有欄位內容清空
-                }
-                else {
-                    //將取得的資料放入個欄位內。
-                    //ToDo:須針對attendInformation內容為null時，作例外處理
-                    name.setText(attendInformation.get("Name").toString());
-                    phone.setText(attendInformation.get("Phone").toString());
-                    addressRegion.setText(attendInformation.get("AddressRegion").toString());
-                    message.setText(attendInformation.get("Notation").toString());
-                    peopleNumber.setText(attendInformation.get("PeopleNumber").toString());
-                    vegetableNumber.setText(attendInformation.get("VagetableNumber").toString());
-                    meatNumber.setText(attendInformation.get("MeatNumber").toString());
-                    detailAddress.setText(attendInformation.get("AddressDetail").toString());
-                    attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
-                    attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
-                    attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
-                    relationSpinner.setSelection(attendInformation.getInt("Relation"));
-                }
-                checkDeadline();
-            }
-        });
+
 
         attendPeopleAddButton = (Button) view.findViewById(R.id.attend_people_add_button);
         attendPeopleAddButton.setOnClickListener(new Button.OnClickListener(){
@@ -246,6 +216,44 @@ public class JoinSurveyFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("Neal","onActivityCreated infJoinSurveyFragment");
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
+        progressDialog.show();
+        final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
+        ParseQuery query = ParseQuery.getQuery("AttendantList");
+        query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
+        query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
+        Log.d("Neal",currentInstallation.getInstallationId());
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject attendInformation, ParseException e) {
+                //若無法搜尋到此裝置(errorCode = 101)，表示第一次填寫資料，所有欄位內容清空。
+                if (attendInformation == null && e.getCode() == 101) {
+                    //所有欄位內容清空
+                }
+                else {
+                    //將取得的資料放入個欄位內。
+                    //ToDo:須針對attendInformation內容為null時，作例外處理
+                    name.setText(attendInformation.get("Name").toString());
+                    phone.setText(attendInformation.get("Phone").toString());
+                    addressRegion.setText(attendInformation.get("AddressRegion").toString());
+                    message.setText(attendInformation.get("Notation").toString());
+                    peopleNumber.setText(attendInformation.get("PeopleNumber").toString());
+                    vegetableNumber.setText(attendInformation.get("VagetableNumber").toString());
+                    meatNumber.setText(attendInformation.get("MeatNumber").toString());
+                    detailAddress.setText(attendInformation.get("AddressDetail").toString());
+                    attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
+                    attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
+                    attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
+                    relationSpinner.setSelection(attendInformation.getInt("Relation"));
+                }
+                checkDeadline();
+            }
+        });
 
     }
     //增加參加人數的按鈕action
@@ -312,24 +320,26 @@ public class JoinSurveyFragment extends Fragment {
             vegetableNumber.setText(Integer.toString(currentVegetableNumber - 1));
         }
     }
+    ProgressDialog progressDialog;
     //儲存資料的按鈕action
     public void saveData(){
+        boolean contentError = false;
         if (name.getText().length() == 0){
-            showWarning("請輸入姓名。", Toast.LENGTH_LONG);
-            return;
+            name.setError("請輸入姓名。");
+            contentError = true;
         }
         if (phone.getText().length() == 0){
-            showWarning("請輸入聯絡電話。", Toast.LENGTH_LONG);
-            return;
+            phone.setError("請輸入聯絡電話。");
+            contentError = true;
         }
         if (attendWillingSwitch.isChecked()){
             if (addressRegion.getText().length() == 0){
-                showWarning("請選擇喜帖寄送地址的縣市及區域。", Toast.LENGTH_LONG);
-                return;
+                addressRegion.setError("請選擇喜帖寄送地址的縣市及區域。");
+                contentError = true;
             }
             if (detailAddress.getText().length() == 0){
-                showWarning("請輸入喜帖的寄送地址。", Toast.LENGTH_LONG);
-                return;
+                detailAddress.setError("請輸入喜帖的寄送地址。");
+                contentError = true;
             }
             if (peopleNumber.getText().toString().equals("0")){
                 showWarning("請輸入參加人次。", Toast.LENGTH_LONG);
@@ -344,69 +354,72 @@ public class JoinSurveyFragment extends Fragment {
                 return;
             }
         }
-        final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
-        ParseQuery query = ParseQuery.getQuery("AttendantList");
-        query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
-        query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject attendInformation, ParseException e) {
-                //若無法搜尋到此裝置(errorCode = 101)，表示第一次填寫資料，要加入InstallationID。
-                if (attendInformation == null && e.getCode() == 101) {
-                    attendInformation = new ParseObject("AttendantList");
-                }
-                attendInformation.put("InstallationID",currentInstallation.getInstallationId());
-                attendInformation.put("weddingObjectId","XA6hDoxtXo");
-                attendInformation.put("Name",name.getText().toString());
-                attendInformation.put("Phone",phone.getText().toString());
-                attendInformation.put("weddingObjectId",weddingInfoObjectId);
-                attendInformation.put("AddressRegion",addressRegion.getText().toString());
-                attendInformation.put("AddressDetail",detailAddress.getText().toString());
-                attendInformation.put("Notation",message.getText().toString());
-                attendInformation.put("AttendingWilling", attendWillingSwitch.isChecked()?0:1);
-                attendInformation.put("VagetableNumber",Integer.parseInt(vegetableNumber.getText().toString()));
-                attendInformation.put("MeatNumber",Integer.parseInt(meatNumber.getText().toString()));
-                attendInformation.put("PeopleNumber",Integer.parseInt(peopleNumber.getText().toString()));
-                attendInformation.put("Relation",relationSpinner.getSelectedItemPosition());
-                if(attendWillingSwitch.isChecked()) {
-                    if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()) {
-                        attendInformation.put("Session", 0);
-                    } else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()) {
-                        attendInformation.put("Session", 1);
+        if (!contentError) {
+
+            progressDialog.show();
+            final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
+            ParseQuery query = ParseQuery.getQuery("AttendantList");
+            query.whereEqualTo("InstallationID", currentInstallation.getInstallationId());
+            query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject attendInformation, ParseException e) {
+                    //若無法搜尋到此裝置(errorCode = 101)，表示第一次填寫資料，要加入InstallationID。
+                    if (attendInformation == null && e.getCode() == 101) {
+                        attendInformation = new ParseObject("AttendantList");
                     }
-                }
-                else {
-                    attendInformation.put("Session", -1);
-                }
-                attendInformation.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e!=null){
-                            Log.d("Neal","saveInbackground.exception = " +e);
+                    attendInformation.put("InstallationID", currentInstallation.getInstallationId());
+                    attendInformation.put("weddingObjectId", "XA6hDoxtXo");
+                    attendInformation.put("Name", name.getText().toString());
+                    attendInformation.put("Phone", phone.getText().toString());
+                    attendInformation.put("weddingObjectId", weddingInfoObjectId);
+                    attendInformation.put("AddressRegion", addressRegion.getText().toString());
+                    attendInformation.put("AddressDetail", detailAddress.getText().toString());
+                    attendInformation.put("Notation", message.getText().toString());
+                    attendInformation.put("AttendingWilling", attendWillingSwitch.isChecked() ? 0 : 1);
+                    attendInformation.put("VagetableNumber", Integer.parseInt(vegetableNumber.getText().toString()));
+                    attendInformation.put("MeatNumber", Integer.parseInt(meatNumber.getText().toString()));
+                    attendInformation.put("PeopleNumber", Integer.parseInt(peopleNumber.getText().toString()));
+                    attendInformation.put("Relation", relationSpinner.getSelectedItemPosition());
+                    if (attendWillingSwitch.isChecked()) {
+                        if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()) {
+                            attendInformation.put("Session", 0);
+                        } else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()) {
+                            attendInformation.put("Session", 1);
                         }
-                        else {
-                            name.setEnabled(false);
-                            name.setFocusable(false);
-                            phone.setEnabled(false);
-                            relationSpinner.setEnabled(false);
-                            attendWillingSwitch.setEnabled(false);
-                            addressRegion.setEnabled(false);
-                            detailAddress.setEnabled(false);
-                            attendPeopleAddButton.setEnabled(false);
-                            attendPeopleMinusButton.setEnabled(false);
-                            attendEngageSession.setEnabled(false);
-                            attendMarrySession.setEnabled(false);
-                            vegetableAddButton.setEnabled(false);
-                            vegetableMinusButton.setEnabled(false);
-                            meatAddButton.setEnabled(false);
-                            meatMinusButton.setEnabled(false);
-                            message.setEnabled(false);
-                            surveySaveButton.setEnabled(false);
-                        }
+                    } else {
+                        attendInformation.put("Session", -1);
                     }
-                });
-            }
-        });
+                    attendInformation.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.d("Neal", "saveInbackground.exception = " + e);
+                            } else {
+                                name.setEnabled(false);
+                                name.setFocusable(false);
+                                phone.setEnabled(false);
+                                relationSpinner.setEnabled(false);
+                                attendWillingSwitch.setEnabled(false);
+                                addressRegion.setEnabled(false);
+                                detailAddress.setEnabled(false);
+                                attendPeopleAddButton.setEnabled(false);
+                                attendPeopleMinusButton.setEnabled(false);
+                                attendEngageSession.setEnabled(false);
+                                attendMarrySession.setEnabled(false);
+                                vegetableAddButton.setEnabled(false);
+                                vegetableMinusButton.setEnabled(false);
+                                meatAddButton.setEnabled(false);
+                                meatMinusButton.setEnabled(false);
+                                message.setEnabled(false);
+                                surveySaveButton.setEnabled(false);
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+        }
     }
     //檢查目前是否可新增或修改資料
     public  void  checkDeadline(){
@@ -451,6 +464,7 @@ public class JoinSurveyFragment extends Fragment {
                         Log.d("Neal","ParseDateException = "+e1);
                     }
                 }
+                progressDialog.dismiss();
             }
 
         });
