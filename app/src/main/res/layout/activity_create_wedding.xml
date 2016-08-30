@@ -202,13 +202,27 @@
                             android:text="@string/engage_time"
                             android:id="@+id/engage_date_text_view" />
 
-                        <EditText
-                            android:id="@+id/engage_time_edit_text"
+                        <Button
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:ems="10"
-                            android:inputType="datetime" />
+                            android:layout_height="wrap_content"
+                            android:text="請選擇日期"
+                            android:id="@+id/pick_engage_date"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:singleLine="true"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textSize="14dp" />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="請選擇時間"
+                            android:id="@+id/pick_engage_time"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:singleLine="false"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textSize="14dp" />
+
                     </TableRow>
                 </LinearLayout>
 
@@ -317,14 +331,26 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:text="@string/marry_time" />
-
-                        <EditText
-                            android:id="@+id/marry_time_edit_text"
+                        <Button
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:ems="10"
-                            android:inputType="datetime" />
+                            android:layout_height="wrap_content"
+                            android:text="請選擇日期"
+                            android:id="@+id/pick_marry_date"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:singleLine="true"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textSize="14dp" />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="請選擇時間"
+                            android:id="@+id/pick_marry_time"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:singleLine="false"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textSize="14dp" />
                     </TableRow>
                 </LinearLayout>
 
@@ -431,13 +457,26 @@
                             android:gravity="center_vertical"
                             android:text="@string/modify_deadline" />
 
-                        <EditText
-                            android:id="@+id/modify_deadline"
+                        <Button
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:ems="10"
-                            android:inputType="textWebEditText" />
+                            android:layout_height="wrap_content"
+                            android:text="請選擇日期"
+                            android:id="@+id/pick_modify_deadline_date"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:singleLine="true"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textSize="14dp" />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="請選擇時間"
+                            android:id="@+id/pick_modify_deadline_time"
+                            android:layout_weight="1"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:singleLine="false"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textSize="14dp" />
                     </TableRow>
                 </LinearLayout>
             </TableLayout>
