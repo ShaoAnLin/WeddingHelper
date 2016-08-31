@@ -239,10 +239,10 @@ public class CreateWeddingActivity extends AppCompatActivity
             java.util.Date theDate = null;
             try {
                 theDate = form.parse(theDateString);
+                c.setTime(theDate);
             } catch (java.text.ParseException e) {
                 Log.d("Neal","Parse Date Error");
             }
-            c.setTime(theDate);
         }
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -265,15 +265,15 @@ public class CreateWeddingActivity extends AppCompatActivity
 
         String theDateString = theButton.getText().toString();
         Calendar c = Calendar.getInstance();
-        if (!theDateString.equals("請選擇日期")){
+        if (!theDateString.equals("請選擇時間")){
             SimpleDateFormat form = new SimpleDateFormat("HH:mm");
             java.util.Date theDate = null;
             try {
                 theDate = form.parse(theDateString);
+                c.setTime(theDate);
             } catch (java.text.ParseException e) {
                 Log.d("Neal","Parse Date Error");
             }
-            c.setTime(theDate);
         }
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);

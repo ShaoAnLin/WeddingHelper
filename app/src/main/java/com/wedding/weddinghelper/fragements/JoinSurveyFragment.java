@@ -311,6 +311,7 @@ public class JoinSurveyFragment extends Fragment {
                     phone.setText(attendInformation.get("Phone").toString());
 
                     String cityAndRegionString = attendInformation.get("AddressRegion").toString();
+                    Log.d("Neal","City and RegionString = "+cityAndRegionString);
                     if (cityAndRegionString != null){
                         if (cityAndRegionString.length()!=0) {
                             String cityString = cityAndRegionString.substring(0, 3);
