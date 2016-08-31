@@ -10,9 +10,13 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,8 +66,82 @@ public class JoinSurveyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_edit){
+            enableEditSurvey(attendWillingSwitch.isChecked());
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    boolean surveyEditable = false;
+    public void disableEditSurvey(){
+        name.setEnabled(false);
+        phone.setEnabled(false);
+        relationSpinner.setEnabled(false);
+        attendWillingSwitch.setEnabled(false);
+        regionSpinner.setEnabled(false);
+        citySpinner.setEnabled(false);
+        detailAddress.setEnabled(false);
+        attendPeopleAddButton.setEnabled(false);
+        attendPeopleMinusButton.setEnabled(false);
+        attendEngageSession.setEnabled(false);
+        attendMarrySession.setEnabled(false);
+        vegetableAddButton.setEnabled(false);
+        vegetableMinusButton.setEnabled(false);
+        meatAddButton.setEnabled(false);
+        meatMinusButton.setEnabled(false);
+        message.setEnabled(false);
+        surveySaveButton.setEnabled(false);
+        surveyEditable = false;
+    }
+    public void enableEditSurvey(boolean attend){
+        name.setEnabled(true);
+        phone.setEnabled(true);
+        relationSpinner.setEnabled(true);
+        attendWillingSwitch.setEnabled(true);
+        message.setEnabled(true);
+        surveySaveButton.setEnabled(true);
+        if (attend){
+            regionSpinner.setEnabled(true);
+            citySpinner.setEnabled(true);
+            detailAddress.setEnabled(true);
+            attendPeopleAddButton.setEnabled(true);
+            attendPeopleMinusButton.setEnabled(true);
+            attendEngageSession.setEnabled(true);
+            attendMarrySession.setEnabled(true);
+            vegetableAddButton.setEnabled(true);
+            vegetableMinusButton.setEnabled(true);
+            meatAddButton.setEnabled(true);
+            meatMinusButton.setEnabled(true);
+        }
+        else {
+            regionSpinner.setEnabled(false);
+            citySpinner.setEnabled(false);
+            detailAddress.setEnabled(false);
+            attendPeopleAddButton.setEnabled(false);
+            attendPeopleMinusButton.setEnabled(false);
+            attendEngageSession.setEnabled(false);
+            attendMarrySession.setEnabled(false);
+            vegetableAddButton.setEnabled(false);
+            vegetableMinusButton.setEnabled(false);
+            meatAddButton.setEnabled(false);
+            meatMinusButton.setEnabled(false);
+        }
+        surveyEditable = true;
+    }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.edit_join_survey_menu, menu);  // Use filter.xml from step 1
+        MenuItem theMenuItem = menu.getItem(0);
+        theMenuItem.setEnabled(!surveyEditable);
+    }
+
     EditText name, phone, detailAddress, message;
     TextView peopleNumber, vegetableNumber, meatNumber;
     Spinner relationSpinner, citySpinner, regionSpinner;
@@ -136,8 +214,6 @@ public class JoinSurveyFragment extends Fragment {
                     attendEngageSession.setChecked(false);
                     attendMarrySession.setEnabled(false);
                     attendMarrySession.setChecked(false);
-
-
                 }
             }
         });
@@ -277,6 +353,7 @@ public class JoinSurveyFragment extends Fragment {
                 saveData();
             }
         });
+        disableEditSurvey();
         return(view);
     }
 
@@ -302,7 +379,8 @@ public class JoinSurveyFragment extends Fragment {
             public void done(ParseObject attendInformation, ParseException e) {
                 //若無法搜尋到此裝置(errorCode = 101)，表示第一次填寫資料，所有欄位內容清空。
                 if (attendInformation == null && e.getCode() == 101) {
-                    //所有欄位內容清空
+                    //開放所有欄位填寫
+                    enableEditSurvey(true);
                 }
                 else {
                     //將取得的資料放入個欄位內。
@@ -328,7 +406,6 @@ public class JoinSurveyFragment extends Fragment {
                     meatNumber.setText(attendInformation.get("MeatNumber").toString());
                     detailAddress.setText(attendInformation.get("AddressDetail").toString());
                     attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
-
                     attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
                     attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
                     relationSpinner.setSelection(attendInformation.getInt("Relation"));
@@ -408,10 +485,12 @@ public class JoinSurveyFragment extends Fragment {
         boolean contentError = false;
         if (name.getText().length() == 0){
             name.setError("請輸入姓名。");
+            name.requestFocus();
             contentError = true;
         }
         if (phone.getText().length() == 0){
             phone.setError("請輸入聯絡電話。");
+            phone.requestFocus();
             contentError = true;
         }
         if (attendWillingSwitch.isChecked()){
@@ -425,6 +504,7 @@ public class JoinSurveyFragment extends Fragment {
             }
             if (detailAddress.getText().length() == 0){
                 detailAddress.setError("請輸入喜帖的寄送地址。");
+                detailAddress.requestFocus();
                 contentError = true;
             }
             if (peopleNumber.getText().toString().equals("0")){
@@ -482,24 +562,7 @@ public class JoinSurveyFragment extends Fragment {
                             if (e != null) {
                                 Log.d("Neal", "saveInbackground.exception = " + e);
                             } else {
-                                name.setEnabled(false);
-                                name.setFocusable(false);
-                                phone.setEnabled(false);
-                                relationSpinner.setEnabled(false);
-                                attendWillingSwitch.setEnabled(false);
-                                regionSpinner.setEnabled(false);
-                                citySpinner.setEnabled(false);
-                                detailAddress.setEnabled(false);
-                                attendPeopleAddButton.setEnabled(false);
-                                attendPeopleMinusButton.setEnabled(false);
-                                attendEngageSession.setEnabled(false);
-                                attendMarrySession.setEnabled(false);
-                                vegetableAddButton.setEnabled(false);
-                                vegetableMinusButton.setEnabled(false);
-                                meatAddButton.setEnabled(false);
-                                meatMinusButton.setEnabled(false);
-                                message.setEnabled(false);
-                                surveySaveButton.setEnabled(false);
+                                disableEditSurvey();
                                 progressDialog.dismiss();
                             }
                         }
@@ -529,24 +592,8 @@ public class JoinSurveyFragment extends Fragment {
                         Calendar currentTime = Calendar.getInstance();
                         if (currentTime.after(modifyDeadline)){
                             //不能新增或修改資料。
-                            name.setEnabled(false);
-                            name.setFocusable(false);
-                            phone.setEnabled(false);
-                            relationSpinner.setEnabled(false);
-                            attendWillingSwitch.setEnabled(false);
-                            regionSpinner.setEnabled(false);
-                            citySpinner.setEnabled(false);
-                            detailAddress.setEnabled(false);
-                            attendPeopleAddButton.setEnabled(false);
-                            attendPeopleMinusButton.setEnabled(false);
-                            attendEngageSession.setEnabled(false);
-                            attendMarrySession.setEnabled(false);
-                            vegetableAddButton.setEnabled(false);
-                            vegetableMinusButton.setEnabled(false);
-                            meatAddButton.setEnabled(false);
-                            meatMinusButton.setEnabled(false);
-                            message.setEnabled(false);
-                            surveySaveButton.setEnabled(false);
+                            disableEditSurvey();
+                            surveyEditable = false;
                         }
                         Log.d("Neal", "weddingInformation.getBoolean(onlyOneSession = " + weddingInformation.getBoolean("onlyOneSession"));
                         if (weddingInformation.getBoolean("onlyOneSession")){
