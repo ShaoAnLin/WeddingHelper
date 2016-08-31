@@ -22,11 +22,14 @@ import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 
+import java.util.Calendar;
+
 public class WeddingInfoFragment extends Fragment {
     public String weddingInfoObjectId;
     private TextView groomAndBrideName, engageTitle, marryTitle;
     private Button engageTime, engagePlace, engageAddress, marryTime, marryPlace, marryAddress;
-    String engagePlaceUrl, engageAddressUrl, marryPlaceUrl, marryAddressUrl;
+    private String engageDate, engagePlaceUrl, engageAddressUrl, marryDate, marryPlaceUrl, marryAddressUrl;
+    private String[] engageDateSplit, marryDateSplit;
 
     public static WeddingInfoFragment newInstance() {
         Log.d("Own info", "New Instance");
@@ -104,13 +107,30 @@ public class WeddingInfoFragment extends Fragment {
                     marryAddress.setVisibility(View.GONE);
                 }
 
-
+                // set date and split the date with ':', '/' or ' '
+                engageDate = weddingInformation.getString("engageDate");
+                engageDateSplit = engageDate.split("[/: s]+");
+                engageTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!TextUtils.isEmpty(engageDate)){
+                            Calendar cal = Calendar.getInstance();
+                            cal.set(Integer.valueOf(engageDateSplit[0]), Integer.valueOf(engageDateSplit[1]) - 1,
+                                    Integer.valueOf(engageDateSplit[2]), Integer.valueOf(engageDateSplit[3]),
+                                    Integer.valueOf(engageDateSplit[4]));
+                            Intent intent = new Intent(Intent.ACTION_EDIT);
+                            intent.setType("vnd.android.cursor.item/event");
+                            intent.putExtra("beginTime", cal.getTimeInMillis());
+                            intent.putExtra("endTime", cal.getTimeInMillis() + 3*60*60*1000);
+                            intent.putExtra("title", groomAndBrideName.getText());
+                            startActivity(intent);
+                        }
+                    }
+                });
 
                 // get the Url of restaurants
                 engagePlaceUrl = weddingInformation.getString("engagePlaceIntroduce");
                 engageAddressUrl = "http://maps.google.co.in/maps?q=" + weddingInformation.getString("engageAddress");
-                marryPlaceUrl = weddingInformation.getString("marryPlaceIntroduce");
-                marryAddressUrl = "http://maps.google.co.in/maps?q=" + weddingInformation.getString("marryAddress");
 
                 engagePlace.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,22 +148,50 @@ public class WeddingInfoFragment extends Fragment {
                         startActivity(mapIntent);
                     }
                 });
-                marryPlace.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!TextUtils.isEmpty(marryPlaceUrl)) {
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryPlaceUrl));
-                            startActivity(browserIntent);
+
+
+                if (!weddingInformation.getBoolean("onlyOneSession")) {
+                    // set date and split the date with ':', '/' or ' '
+                    marryDate = weddingInformation.getString("marryDate");
+                    marryDateSplit = marryDate.split("[/: s]+");
+                    marryTime.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!TextUtils.isEmpty(marryDate)){
+                                Calendar cal = Calendar.getInstance();
+                                cal.set(Integer.valueOf(marryDateSplit[0]), Integer.valueOf(marryDateSplit[1]) - 1,
+                                        Integer.valueOf(marryDateSplit[2]), Integer.valueOf(marryDateSplit[3]),
+                                        Integer.valueOf(marryDateSplit[4]));
+                                Intent intent = new Intent(Intent.ACTION_EDIT);
+                                intent.setType("vnd.android.cursor.item/event");
+                                intent.putExtra("beginTime", cal.getTimeInMillis());
+                                intent.putExtra("endTime", cal.getTimeInMillis() + 3*60*60*1000);
+                                intent.putExtra("title", groomAndBrideName.getText());
+                                startActivity(intent);
+                            }
                         }
-                    }
-                });
-                marryAddress.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryAddressUrl));
-                        startActivity(mapIntent);
-                    }
-                });
+                    });
+
+                    // get the Url of restaurants
+                    marryPlaceUrl = weddingInformation.getString("marryPlaceIntroduce");
+                    marryAddressUrl = "http://maps.google.co.in/maps?q=" + weddingInformation.getString("marryAddress");
+                    marryPlace.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!TextUtils.isEmpty(marryPlaceUrl)) {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryPlaceUrl));
+                                startActivity(browserIntent);
+                            }
+                        }
+                    });
+                    marryAddress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(marryAddressUrl));
+                            startActivity(mapIntent);
+                        }
+                    });
+                }
             }
         });
     }
