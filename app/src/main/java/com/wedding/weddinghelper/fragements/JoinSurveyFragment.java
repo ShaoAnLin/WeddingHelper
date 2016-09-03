@@ -262,7 +262,6 @@ public class JoinSurveyFragment extends Fragment {
 
         final FragmentActivity theFragmentActivity = this.getActivity();
 
-
         citySpinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

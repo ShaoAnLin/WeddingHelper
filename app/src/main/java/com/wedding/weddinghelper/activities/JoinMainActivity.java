@@ -1,6 +1,8 @@
 package com.wedding.weddinghelper.activities;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -75,38 +79,65 @@ public class JoinMainActivity extends AppCompatActivity
 
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             public void onTabChanged(String str) {
-                if (str.equals(tabSurveyTag)){
+                if (str.equals(tabSurveyTag)) {
                     Log.d("Tab", "Survey");
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(getString(R.string.attend_survey));
                     }
-                }
-                else if (str.equals(tabInfoTag)){
+                } else if (str.equals(tabInfoTag)) {
                     Log.d("Tab", "Info");
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(getString(R.string.wedding_info));
                     }
-                }
-                else if (str.equals(tabPhotoTag)){
+                } else if (str.equals(tabPhotoTag)) {
                     Log.d("Tab", "Photo");
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(getString(R.string.wedding_photo));
-                        //mTabHost.setVisibility( View.GONE );
-                        //mTabHost.setVisibility( View.VISIBLE );
                     }
                 }
             }
         });
         Bundle bundle = this.getIntent().getExtras();
         weddingInfoObjectId = bundle.getString("weddingInfoObjectId");
+
+        final View activityRootView = findViewById(R.id.container);
+        activityRootView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        activityRootView.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = activityRootView.getRootView().getHeight();
+
+                        // r.bottom is the position above soft keypad or device button.
+                        // if keypad is shown, the r.bottom is smaller than that before.
+                        int keypadHeight = screenHeight - r.bottom;
+
+                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                            // keyboard is opened
+                            //mTabHost.setVisibility( View.GONE );
+                            mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
+                            mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
+                            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+                        } else {
+                            // keyboard is closed
+                            //mTabHost.setVisibility( View.VISIBLE );
+                            mTabHost.getTabWidget().getChildAt(0).setVisibility(View.VISIBLE);
+                            mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+                            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         finish();
     }
+
     private String weddingInfoObjectId;
-    public String getWeddingInfoObjectId(){
+
+    public String getWeddingInfoObjectId() {
         return weddingInfoObjectId;
     }
 }
