@@ -333,11 +333,11 @@ public class CreateWeddingActivity extends AppCompatActivity
                     contentError = true;
                 }
                 if (sameDayToggleButton.isChecked() && !differentDayToggleButton.isChecked()) {
-                    if (pickEngageDate.getText().equals("請選擇日期")) {
+                    if (pickEngageDate.getText().equals("日期")) {
                         showWarning("請選擇婚宴日期。", Toast.LENGTH_LONG);
                         return true;
                     }
-                    else if (pickEngageTime.getText().equals("請選擇時間")) {
+                    else if (pickEngageTime.getText().equals("時間")) {
                         showWarning("請選擇婚宴時間。", Toast.LENGTH_LONG);
                         return true;
                     }
@@ -351,11 +351,11 @@ public class CreateWeddingActivity extends AppCompatActivity
                     }
                 }
                 else{
-                    if (pickEngageDate.getText().equals("請選擇日期")) {
+                    if (pickEngageDate.getText().equals("日期")) {
                         showWarning("請選擇訂婚日期。", Toast.LENGTH_LONG);
                         return true;
                     }
-                    else if (pickEngageTime.getText().equals("請選擇時間")) {
+                    else if (pickEngageTime.getText().equals("時間")) {
                         showWarning("請選擇訂婚時間。", Toast.LENGTH_LONG);
                         return true;
                     }
@@ -367,11 +367,11 @@ public class CreateWeddingActivity extends AppCompatActivity
                         engageAddress.setError("請輸入訂婚餐廳地址。");
                         contentError = true;
                     }
-                    if (pickMarryDate.getText().equals("請選擇日期")) {
+                    if (pickMarryDate.getText().equals("日期")) {
                         showWarning("請選擇結婚日期。", Toast.LENGTH_LONG);
                         return true;
                     }
-                    else if (pickMarryTime.getText().equals("請選擇時間")) {
+                    else if (pickMarryTime.getText().equals("時間")) {
                         showWarning("請選擇結婚時間。", Toast.LENGTH_LONG);
                         return true;
                     }
@@ -384,11 +384,11 @@ public class CreateWeddingActivity extends AppCompatActivity
                         contentError = true;
                     }
                 }
-                if (pickModifyDeadlineDate.getText().equals("請選擇日期")) {
+                if (pickModifyDeadlineDate.getText().equals("日期")) {
                     showWarning("請選擇\"填寫出席意願期限\"日期。", Toast.LENGTH_LONG);
                     return true;
                 }
-                else if (pickModifyDeadlineTime.getText().equals("請選擇時間")) {
+                else if (pickModifyDeadlineTime.getText().equals("時間")) {
                     showWarning("請選擇\"填寫出席意願期限\"時間。", Toast.LENGTH_LONG);
                     return true;
                 }

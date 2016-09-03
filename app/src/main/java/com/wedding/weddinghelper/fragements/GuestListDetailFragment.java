@@ -26,9 +26,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class GuestListDetailFragment extends Fragment {
-
-    private String[] guestList = {"Alex", "Bob", "Cindy"};
-
     public static GuestListDetailFragment newInstance() {
         return new GuestListDetailFragment();
     }

@@ -82,9 +82,7 @@ public class ManageActivity extends AppCompatActivity
                     else {
                         wedding_date[i] = theWeddingInformation.getString("marryDate");
                     }
-
                 }
-
 
                 for(int i = 0 ; i < wedding_name.length ; i++){
                     HashMap<String , String> hashMap = new HashMap<>();
@@ -103,7 +101,6 @@ public class ManageActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //Toast.makeText(getApplicationContext(), "你選擇的是" + wedding_list[position], Toast.LENGTH_SHORT).show();
         Log.d("Manage", wedding_name[position]);
         Intent intent = new Intent();
         intent.setClass(this, OwnMainActivity.class);

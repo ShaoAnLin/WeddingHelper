@@ -18,7 +18,7 @@
                 android:id="@+id/text_own_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffd4d4"
+                android:background="@color/colorAccent"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="20dip"
                 android:paddingBottom="10dp"

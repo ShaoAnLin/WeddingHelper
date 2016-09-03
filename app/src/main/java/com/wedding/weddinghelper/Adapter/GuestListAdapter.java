@@ -70,18 +70,18 @@ public class GuestListAdapter extends BaseAdapter{
         if (guestInfo.getNumber("AttendingWilling").intValue() == 0){
             if (guestInfo.getNumber("Session").intValue() == 1) {
                 holder.sessionTxt.setText("結婚場");
-                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.design_textinput_error_color_light));
-                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.design_textinput_error_color_light));
+                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorRedDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorRedDark));
             }
             else if (guestInfo.getNumber("Session").intValue() == 0){
                 holder.sessionTxt.setText("訂婚場");
-                holder.sessionTxt.setBackgroundColor(Color.parseColor("#fed2e2"));
-                holder.peopleNumberTxt.setBackgroundColor(Color.parseColor("#fed2e2"));
+                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
             }
             else if (guestInfo.getNumber("Session").intValue() == -1){
                 holder.sessionTxt.setText("參加");
-                holder.sessionTxt.setBackgroundColor(Color.parseColor("#fed2e2"));
-                holder.peopleNumberTxt.setBackgroundColor(Color.parseColor("#fed2e2"));
+                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
             }
             holder.dietTxt.setText(guestInfo.getNumber("MeatNumber").toString()+"人葷食，"+guestInfo.getNumber("VagetableNumber").toString()+"人素食");
             holder.peopleNumberTxt.setText(guestInfo.getNumber("PeopleNumber").toString()+"人\n"+"出席");
@@ -89,8 +89,10 @@ public class GuestListAdapter extends BaseAdapter{
         }
         else {
             holder.sessionTxt.setText("不出席");
-            holder.sessionTxt.setBackgroundColor(Color.parseColor("#ffe0e0e0"));
-            holder.peopleNumberTxt.setVisibility(View.INVISIBLE);
+            holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorGrayDark));
+            //holder.peopleNumberTxt.setVisibility(View.INVISIBLE);
+            holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorGrayDark));
+            holder.peopleNumberTxt.setText("");
             String notation = guestInfo.getString("Notation");
             if (notation.length() != 0){
                 holder.dietTxt.setText(guestInfo.getString("Notation"));

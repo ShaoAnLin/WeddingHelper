@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:text="xxx的婚宴"
         android:textSize="35dp"
-        android:textColor="#f9b5b5"
+        android:textColor="@android:color/holo_red_light"
         android:textStyle="bold" />
 
 </LinearLayout>
