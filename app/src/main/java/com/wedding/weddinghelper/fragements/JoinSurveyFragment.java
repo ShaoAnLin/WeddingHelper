@@ -490,11 +490,7 @@ public class JoinSurveyFragment extends Fragment {
         }
         if (attendWillingSwitch.isChecked()){
             if (citySpinner.getSelectedItemPosition() == 0) {
-                showWarning("請選擇地址所在縣市。", Toast.LENGTH_LONG);
-                return;
-            }
-            if (regionSpinner.getSelectedItemPosition() == 0) {
-                showWarning("請選擇地址所在區域。", Toast.LENGTH_LONG);
+                showWarning("請選擇地址所在縣市及區域。", Toast.LENGTH_LONG);
                 return;
             }
             if (detailAddress.getText().length() == 0){
@@ -506,7 +502,7 @@ public class JoinSurveyFragment extends Fragment {
                 showWarning("請輸入參加人次。", Toast.LENGTH_LONG);
                 return;
             }
-            if (!attendEngageSession.isChecked() && !attendMarrySession.isChecked()){
+            if (!theWeddingIsOnlySession && (!attendEngageSession.isChecked() && !attendMarrySession.isChecked())){
                 showWarning("請選擇參加場次。", Toast.LENGTH_LONG);
                 return;
             }
@@ -543,13 +539,16 @@ public class JoinSurveyFragment extends Fragment {
                     attendInformation.put("PeopleNumber", Integer.parseInt(peopleNumber.getText().toString()));
                     attendInformation.put("Relation", relationSpinner.getSelectedItemPosition());
                     if (attendWillingSwitch.isChecked()) {
-                        if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()) {
-                            attendInformation.put("Session", 0);
-                        } else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()) {
-                            attendInformation.put("Session", 1);
+                        if (theWeddingIsOnlySession){
+                            attendInformation.put("Session", -1);
                         }
-                    } else {
-                        attendInformation.put("Session", -1);
+                        else {
+                            if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()) {
+                                attendInformation.put("Session", 0);
+                            } else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()) {
+                                attendInformation.put("Session", 1);
+                            }
+                        }
                     }
                     attendInformation.saveInBackground(new SaveCallback() {
                         @Override
@@ -566,6 +565,7 @@ public class JoinSurveyFragment extends Fragment {
             });
         }
     }
+    boolean theWeddingIsOnlySession;
     //檢查目前是否可新增或修改資料
     public  void  checkDeadline(){
         ParseQuery query = ParseQuery.getQuery("Information");
@@ -590,8 +590,8 @@ public class JoinSurveyFragment extends Fragment {
                             disableEditSurvey();
                             surveyEditable = false;
                         }
-                        Log.d("Neal", "weddingInformation.getBoolean(onlyOneSession = " + weddingInformation.getBoolean("onlyOneSession"));
-                        if (weddingInformation.getBoolean("onlyOneSession")){
+                        theWeddingIsOnlySession = weddingInformation.getBoolean("onlyOneSession");
+                        if (theWeddingIsOnlySession){
                             weddingSessionLayout.setVisibility(View.GONE);
                         }
                         else {

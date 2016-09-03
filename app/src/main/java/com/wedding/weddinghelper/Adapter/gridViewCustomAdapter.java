@@ -1,4 +1,4 @@
-package com.wedding.weddinghelper.fragements;
+package com.wedding.weddinghelper.Adapter;
 
 /**
  * Created by Neal on 2016/9/3.

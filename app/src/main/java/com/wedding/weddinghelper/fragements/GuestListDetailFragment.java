@@ -16,11 +16,14 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.wedding.weddinghelper.Adapter.GuestListAdapter;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.GuestListActivity;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class GuestListDetailFragment extends Fragment {
 
@@ -45,7 +48,7 @@ public class GuestListDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    public GuestListAdapter guestListAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,25 +56,17 @@ public class GuestListDetailFragment extends Fragment {
         ParseQuery query = new ParseQuery("AttendantList");
         query.whereEqualTo("weddingObjectId", weddingInfoObjectId);
         query.orderByAscending("AttendingWilling");
-        query.orderByAscending("Session");
+        query.addAscendingOrder("Session");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                String [] guestNameList = new String[list.size()];
-                for (int i = 0 ; i<list.size() ; i++) {
-                    //ToDo:將下載的賓客資料塞進list view
-                    ParseObject formData = list.get(i);
-                    guestNameList[i] = formData.getString("Name");
-                }
                 ListView guestListView = (ListView) view.findViewById(R.id.guest_list_view);
-                ArrayAdapter<String> adapter =
-                        new ArrayAdapter<String>(getActivity(),
-                                android.R.layout.simple_list_item_1,guestNameList);
-                guestListView.setAdapter(adapter);
+                guestListAdapter = new GuestListAdapter(getActivity(), list);
+                guestListView.setAdapter(guestListAdapter);
+                Log.d("Neal","the List Size = "+list.size());
                 guestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        //Toast.makeText(getActivity().getApplicationContext(), "你選擇的是" + list.get(position).getString("Name"), Toast.LENGTH_SHORT).show();
                         ((GuestListActivity)getActivity()).listItemClicked(list.get(position));
                     }
                 });
