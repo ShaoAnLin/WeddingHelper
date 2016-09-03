@@ -3,12 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
 
-
     <item
         android:id="@+id/action_edit"
         android:title="編輯"
         android:orderInCategory="10"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_done"
+        android:title="@string/done"
+        android:orderInCategory="10"
+        app:showAsAction="ifRoom" />
 
 </menu>

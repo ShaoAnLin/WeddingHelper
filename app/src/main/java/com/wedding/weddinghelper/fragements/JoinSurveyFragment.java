@@ -77,6 +77,10 @@ public class JoinSurveyFragment extends Fragment {
             enableEditSurvey(attendWillingSwitch.isChecked());
             return true;
         }
+        else if(id == R.id.action_done){
+            saveData();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -98,7 +102,6 @@ public class JoinSurveyFragment extends Fragment {
         meatAddButton.setEnabled(false);
         meatMinusButton.setEnabled(false);
         message.setEnabled(false);
-        surveySaveButton.setEnabled(false);
         surveyEditable = false;
     }
     public void enableEditSurvey(boolean attend){
@@ -107,7 +110,6 @@ public class JoinSurveyFragment extends Fragment {
         relationSpinner.setEnabled(true);
         attendWillingSwitch.setEnabled(true);
         message.setEnabled(true);
-        surveySaveButton.setEnabled(true);
         if (attend){
             regionSpinner.setEnabled(true);
             citySpinner.setEnabled(true);
@@ -138,14 +140,16 @@ public class JoinSurveyFragment extends Fragment {
     }
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.edit_join_survey_menu, menu);  // Use filter.xml from step 1
-        MenuItem theMenuItem = menu.getItem(0);
-        theMenuItem.setEnabled(!surveyEditable);
+        MenuItem theMenuItemEdit = menu.getItem(0);
+        theMenuItemEdit.setEnabled(!surveyEditable);
+        MenuItem theMenuItemDone = menu.getItem(1);
+        theMenuItemDone.setEnabled(!surveyEditable);
     }
 
     EditText name, phone, detailAddress, message;
     TextView peopleNumber, vegetableNumber, meatNumber;
     Spinner relationSpinner, citySpinner, regionSpinner;
-    Button attendPeopleAddButton, attendPeopleMinusButton, meatAddButton, meatMinusButton, vegetableAddButton, vegetableMinusButton, surveySaveButton;
+    Button attendPeopleAddButton, attendPeopleMinusButton, meatAddButton, meatMinusButton, vegetableAddButton, vegetableMinusButton;
     ToggleButton attendMarrySession, attendEngageSession;
     Switch attendWillingSwitch;
     Calendar modifyDeadline;
@@ -343,14 +347,6 @@ public class JoinSurveyFragment extends Fragment {
                     attendEngageSession.setChecked(true);
                 }
                 attendMarrySession.setChecked(false);
-            }
-        });
-
-        surveySaveButton = (Button)view.findViewById(R.id.survey_save_button);
-        surveySaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveData();
             }
         });
         disableEditSurvey();

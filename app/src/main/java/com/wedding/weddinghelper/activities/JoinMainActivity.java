@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.activities;
 
+import android.content.res.Configuration;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.PhotoFragment;
@@ -89,6 +91,8 @@ public class JoinMainActivity extends AppCompatActivity
                     Log.d("Tab", "Photo");
                     if (getSupportActionBar() != null) {
                         getSupportActionBar().setTitle(getString(R.string.wedding_photo));
+                        //mTabHost.setVisibility( View.GONE );
+                        //mTabHost.setVisibility( View.VISIBLE );
                     }
                 }
             }
@@ -105,5 +109,4 @@ public class JoinMainActivity extends AppCompatActivity
     public String getWeddingInfoObjectId(){
         return weddingInfoObjectId;
     }
-
 }
