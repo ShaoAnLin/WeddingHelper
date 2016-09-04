@@ -3,12 +3,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:id="@+id/login_account_login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorBackground"
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
@@ -48,7 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/login"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="@color/colorButtonBackground"/>
 
         <Button
             android:id="@+id/testing_login_account_login_button"
@@ -57,7 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/testing_login"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:background="@color/colorButtonBackground" />
 
     </LinearLayout>
 </RelativeLayout>

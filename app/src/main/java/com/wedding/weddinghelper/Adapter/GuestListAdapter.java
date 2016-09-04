@@ -54,7 +54,7 @@ public class GuestListAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
 
-        if(convertView==null){
+        if( convertView == null ){
             convertView = myInflater.inflate(R.layout.guest_detail_custom_list, null);
             holder = new ViewHolder(
                     (TextView) convertView.findViewById(R.id.session),
@@ -62,26 +62,34 @@ public class GuestListAdapter extends BaseAdapter{
                     (TextView) convertView.findViewById(R.id.people_number),
                     (TextView) convertView.findViewById(R.id.diet));
             convertView.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
         ParseObject guestInfo = (ParseObject) getItem(position);
         holder.nameTxt.setText(guestInfo.getString("Name"));
+
         if (guestInfo.getNumber("AttendingWilling").intValue() == 0){
             if (guestInfo.getNumber("Session").intValue() == 1) {
                 holder.sessionTxt.setText("結婚場");
-                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorRedDark));
-                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorRedDark));
+                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorMarryDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorMarryDark));
+                holder.nameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorMarryLight));
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorMarryLight));
             }
             else if (guestInfo.getNumber("Session").intValue() == 0){
                 holder.sessionTxt.setText("訂婚場");
-                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
-                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
+                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageDark));
+                holder.nameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageLight));
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageLight));
             }
             else if (guestInfo.getNumber("Session").intValue() == -1){
                 holder.sessionTxt.setText("參加");
-                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
-                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAccent));
+                holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageDark));
+                holder.nameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageLight));
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorEngageLight));
             }
             holder.dietTxt.setText(guestInfo.getNumber("MeatNumber").toString()+"人葷食，"+guestInfo.getNumber("VagetableNumber").toString()+"人素食");
             holder.peopleNumberTxt.setText(guestInfo.getNumber("PeopleNumber").toString()+"人\n"+"出席");
@@ -89,10 +97,11 @@ public class GuestListAdapter extends BaseAdapter{
         }
         else {
             holder.sessionTxt.setText("不出席");
-            holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorGrayDark));
-            //holder.peopleNumberTxt.setVisibility(View.INVISIBLE);
-            holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorGrayDark));
+            holder.sessionTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAbsentDark));
+            holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAbsentDark));
             holder.peopleNumberTxt.setText("");
+            holder.nameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAbsentLight));
+            holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(),R.color.colorAbsentLight));
             String notation = guestInfo.getString("Notation");
             if (notation.length() != 0){
                 holder.dietTxt.setText(guestInfo.getString("Notation"));
@@ -100,7 +109,6 @@ public class GuestListAdapter extends BaseAdapter{
             else {
                 holder.dietTxt.setText("無備注");
             }
-
         }
         return convertView;
     }

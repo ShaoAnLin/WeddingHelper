@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorRedDark">#871B00</color>
-    <color name="colorGrayDark">#5E5C5C</color>
+    <color name="colorPrimary">#F0A7BA</color>
+    <color name="colorPrimaryDark">#F0A7BA</color>
+    <color name="colorAccent">#E88381</color>
+
+    <color name="colorEngageDark">#FDEB89</color>
+    <color name="colorEngageLight">#FCFDDD</color>
+    <color name="colorMarryDark">#FBB8AF</color>
+    <color name="colorMarryLight">#FEE3D0</color>
+    <color name="colorAbsentDark">#B0AEB9</color>
+    <color name="colorAbsentLight">#DADADE</color>
+
+    <color name="colorBlueDark">#79D6DE</color>
+    <color name="colorBlueLight">#E1F5F6</color>
+    <color name="colorPurpleDark">#CDBFE3</color>
+    <color name="colorPurpleLight">#EFECF7</color>
+    <color name="colorYellowDark">#FDEB89</color>
+    <color name="colorYellowLight">#FCFDDD</color>
+    <color name="colorGrayDark">#B0AEB9</color>
+    <color name="colorGrayLight">#DADADE</color>
+
+    <color name="colorBackground">#FEE7EB</color>
+    <color name="colorButtonBackground">#FFC8B4</color>
+    <color name="colorButtonBackground2">#E88381</color>
+    <color name="colorWordLightBackground">#E88381</color>
+    <color name="colorWordDarkBackground">#FFC8B4</color>
+
+    <color name="colorPurple">#91508B</color>
+    <color name="colorTiffinyBlue">#60DFE5</color>
+    <color name="colorPink">#FFA7A7</color>
+    <color name="colorPink2">#F0A7BA</color>
+    <color name="colorPink3">#FBCAE0</color>
+    <color name="colorPink4">#FFF5F6</color>
+    <color name="colorYellow">#F9FFA7</color>
+    <color name="colorTiffinyBlueLight">#A4F4FF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWeddingBackground">#FFC8B4</color>
+
 </resources>

@@ -15,8 +15,7 @@
             android:text="結婚場"
             android:gravity="center_vertical"
             android:id="@+id/session"
-            android:background="@color/design_textinput_error_color_light"
-            android:textColor="@android:color/white"
+            android:textColor="@color/abc_secondary_text_material_light"
             android:layout_weight="3"
             android:textAlignment="center"
             android:textSize="20dp" />
@@ -27,8 +26,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="2人\n出席"
             android:gravity="center_vertical"
-            android:background="@color/design_textinput_error_color_light"
-            android:textColor="@android:color/white"
+            android:textColor="@color/abc_secondary_text_material_light"
             android:textAlignment="center"
             android:layout_weight="3"
             android:id="@+id/people_number" />
@@ -43,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/abc_secondary_text_material_light"
                 android:text="陳志豪"
                 android:layout_weight="1"
                 android:id="@+id/name" />
@@ -51,6 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/abc_secondary_text_material_light"
                 android:text="2人葷食，1人素食"
                 android:layout_weight="1"
                 android:id="@+id/diet" />

@@ -70,8 +70,10 @@ public class JoinActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     ParseQuery query = ParseQuery.getQuery("Information");
-                    query.whereEqualTo("weddingAccount", "Neal&Pallas");
-                    query.whereEqualTo("weddingPassword", "nealpallas");
+                    //query.whereEqualTo("weddingAccount", "Neal&Pallas");
+                    //query.whereEqualTo("weddingPassword", "nealpallas");
+                    query.whereEqualTo("weddingAccount", "BigWedding");
+                    query.whereEqualTo("weddingPassword", "BigWedding");
                     query.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject information, ParseException e) {

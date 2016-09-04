@@ -69,11 +69,6 @@ public class GuestListDetailFragment extends Fragment {
                 });
             }
         });
-
-
-
-
-
         return view;
     }
 }

@@ -4,6 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="show_icon_table_vertical_margin">48dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="margin_lower">8dp</dimen>
+    <dimen name="margin_higher">32dp</dimen>
 
     <dimen name="icon_width">64dp</dimen>
     <dimen name="icon_height">64dp</dimen>

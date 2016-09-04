@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -18,89 +19,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorGrayDark"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
-
-                <TextView
-                    android:id="@+id/total_Form"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="總填單數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/not_attend_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="無法出席人數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorRedDark"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
-
-                <TextView
-                    android:id="@+id/attend_marry_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="出席結婚場次人數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/attend_marry_friend_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="攜友人數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/total_marry_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="總人數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/attend_marry_meat"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="葷食人數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:id="@+id/attend_marry_vegetable"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/row_height_lower"
-                    android:text="素食人數"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
+                android:background="@color/colorEngageLight"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
@@ -109,47 +28,129 @@
                     android:id="@+id/attend_engage_number"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
                     android:text="出席訂婚場次人數"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
+                    android:textColor="@color/abc_secondary_text_material_light" />
 
                 <TextView
                     android:id="@+id/attend_engage_friend_number"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
                     android:text="攜友人數"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
+                    android:textColor="@color/abc_secondary_text_material_light" />
 
                 <TextView
                     android:id="@+id/total_engage_number"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
                     android:text="總人數"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
+                    android:textColor="@color/abc_secondary_text_material_light" />
 
                 <TextView
                     android:id="@+id/attend_engage_meat"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
                     android:text="葷食人數"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
+                    android:textColor="@color/abc_secondary_text_material_light" />
 
                 <TextView
                     android:id="@+id/attend_engage_vegetable"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
                     android:text="素食人數"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical" />
+                    android:textColor="@color/abc_secondary_text_material_light" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorMarryLight"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/attend_marry_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="出席結婚場次人數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+                <TextView
+                    android:id="@+id/attend_marry_friend_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="攜友人數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+                <TextView
+                    android:id="@+id/total_marry_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="總人數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+                <TextView
+                    android:id="@+id/attend_marry_meat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="葷食人數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+                <TextView
+                    android:id="@+id/attend_marry_vegetable"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="素食人數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAbsentLight"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/total_Form"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="總填單數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
+
+                <TextView
+                    android:id="@+id/not_attend_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/row_height_lower"
+                    android:gravity="center_vertical"
+                    android:text="無法出席人數"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/abc_secondary_text_material_light" />
             </LinearLayout>
         </LinearLayout>
 
