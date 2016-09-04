@@ -65,28 +65,41 @@ public class PhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
         photoGridView = (GridView)view.findViewById(R.id.photo_grid_view);
         ParseQuery query = ParseQuery.getQuery(weddingInfoObjectId+"Photo");
-        query.orderByAscending("Shooter");
+        query.orderByAscending("OriginalPhotoObjectID");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                PhotoViewActivity.photoUrls = new String[list.size()];
+                String [] microPhotoUrls = new String[list.size()];
                 for (int i = 0 ; i<list.size() ; i++){
                     ParseFile photoFile = list.get(i).getParseFile("microPhoto");
-                    PhotoViewActivity.photoUrls[i] = photoFile.getUrl();
+                    microPhotoUrls[i] = photoFile.getUrl();
                 }
-                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), PhotoViewActivity.photoUrls ));
-                photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), microPhotoUrls ));
+                ParseQuery query2 = ParseQuery.getQuery(weddingInfoObjectId+"OriginalPhoto");
+                query2.orderByAscending("objectId");
+                query2.findInBackground(new FindCallback<ParseObject>() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
-                        intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
-                        startActivity(intent);
+                    public void done(final List<ParseObject> list2, ParseException e) {
+                        PhotoViewActivity.photoUrls = new String[list2.size()];
+                        for (int i = 0 ; i<list2.size() ; i++){
+                            ParseFile photoFile = list2.get(i).getParseFile("Photo");
+                            PhotoViewActivity.photoUrls[i] = photoFile.getUrl();
+                        }
+                        photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
+                                intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 });
             }
         });
         return(view);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

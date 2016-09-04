@@ -72,7 +72,7 @@ public class LoginAccountFragment extends Fragment {
             testingLoginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ParseUser.logInInBackground("neal", "neal", new LogInCallback() {
+                    ParseUser.logInInBackground("applereviewer", "applereviewer", new LogInCallback() {
                     //ParseUser.logInInBackground("applereviewer", "applereviewer", new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         login();

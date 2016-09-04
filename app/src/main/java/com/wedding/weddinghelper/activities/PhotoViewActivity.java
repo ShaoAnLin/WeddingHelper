@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,12 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.PhotoFragment;
 
 public class PhotoViewActivity extends AppCompatActivity {
-
+    ProgressDialog progressDialog;
     ImageView mImageView;
     public static String [] photoUrls;
     public static final String EXTRA_MESSAGE = "PHOTO_EXTRA";
@@ -23,7 +25,11 @@ public class PhotoViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_photo_view);
 
         fullScreen();
-        
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
         mImageView = (ImageView) findViewById(R.id.photo_image_view);
         if (mImageView != null){
             mImageView.setOnClickListener(new View.OnClickListener() {
@@ -33,13 +39,23 @@ public class PhotoViewActivity extends AppCompatActivity {
                 }
             });
         }
+        progressDialog.show();
         int position = getIntent().getIntExtra(EXTRA_MESSAGE, 0);
         String url = photoUrls[position];
         Picasso.with(getApplicationContext())
                 .load(url)
-                .resize(200,200)
-                .centerCrop()
-                .into(mImageView);
+                .centerInside()
+                .fit()
+                .into(mImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressDialog.dismiss();
+                    }
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
     public void fullScreen() {
