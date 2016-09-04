@@ -70,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/attend_wedding"
+                android:background="@color/colorButtonBackground"
                 android:textStyle="bold" />
 
             <Button
@@ -79,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/testing_login"
+                android:background="@color/colorButtonBackground"
                 android:textStyle="bold" />
 
         </LinearLayout>

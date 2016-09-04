@@ -56,7 +56,6 @@ public class PhotoFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    String [] photoUrls;
     private GridView photoGridView;
     private ParseFile[]photos;
 
@@ -70,17 +69,17 @@ public class PhotoFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                photoUrls = new String[list.size()];
+                PhotoViewActivity.photoUrls = new String[list.size()];
                 for (int i = 0 ; i<list.size() ; i++){
                     ParseFile photoFile = list.get(i).getParseFile("microPhoto");
-                    photoUrls[i] = photoFile.getUrl();
+                    PhotoViewActivity.photoUrls[i] = photoFile.getUrl();
                 }
-                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), photoUrls));
+                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), PhotoViewActivity.photoUrls ));
                 photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
-                        intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, photoUrls[position]);
+                        intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
                         startActivity(intent);
                     }
                 });

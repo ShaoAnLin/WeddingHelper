@@ -220,6 +220,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
+                            android:background="@color/colorButtonBackground"
                             android:text="@string/minus" />
 
                         <Button
@@ -227,6 +228,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
+                            android:background="@color/colorButtonBackground"
                             android:text="@string/add" />
                     </TableRow>
                 </LinearLayout>
@@ -362,6 +364,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="0.5"
+                                android:background="@color/colorButtonBackground"
                                 android:text="@string/minus"
                                 android:gravity="center" />
 
@@ -370,6 +373,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="0.5"
+                                android:background="@color/colorButtonBackground"
                                 android:text="@string/minus"
                                 android:gravity="center" />
                         </LinearLayout>
@@ -386,6 +390,7 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="0.5"
                                 android:text="@string/add"
+                                android:background="@color/colorButtonBackground"
                                 android:gravity="center" />
 
                             <Button
@@ -394,6 +399,7 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="0.5"
                                 android:text="@string/add"
+                                android:background="@color/colorButtonBackground"
                                 android:gravity="center" />
                         </LinearLayout>
                     </TableRow>

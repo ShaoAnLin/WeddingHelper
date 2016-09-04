@@ -9,10 +9,12 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.PhotoFragment;
 
 public class PhotoViewActivity extends AppCompatActivity {
 
     ImageView mImageView;
+    public static String [] photoUrls;
     public static final String EXTRA_MESSAGE = "PHOTO_EXTRA";
 
     @Override
@@ -20,21 +22,24 @@ public class PhotoViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_view);
 
+        fullScreen();
+        
         mImageView = (ImageView) findViewById(R.id.photo_image_view);
         if (mImageView != null){
             mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    fullScreen();
                 }
             });
         }
-        String url = getIntent().getStringExtra(EXTRA_MESSAGE);
+        int position = getIntent().getIntExtra(EXTRA_MESSAGE, 0);
+        String url = photoUrls[position];
         Picasso.with(getApplicationContext())
                 .load(url)
                 .resize(200,200)
                 .centerCrop()
                 .into(mImageView);
-        fullScreen();
     }
 
     public void fullScreen() {
