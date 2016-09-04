@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -26,11 +27,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class GuestListDetailFragment extends Fragment {
+    List<ParseObject> newList = new ArrayList<ParseObject>();
+    public  String weddingInfoObjectId;
+    public GuestListAdapter guestListAdapter;
+
     public static GuestListDetailFragment newInstance() {
         return new GuestListDetailFragment();
     }
 
-    public  String weddingInfoObjectId;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -40,12 +44,11 @@ public class GuestListDetailFragment extends Fragment {
         Log.d("Neal", "guestListDetailFragment = "+weddingInfoObjectId);
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    public GuestListAdapter guestListAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,17 +61,72 @@ public class GuestListDetailFragment extends Fragment {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
                 ListView guestListView = (ListView) view.findViewById(R.id.guest_list_view);
-                guestListAdapter = new GuestListAdapter(getActivity(), list);
+
+                // add header items into the list
+                newList = addHeader(list);
+
+                guestListAdapter = new GuestListAdapter(getActivity(), newList);
                 guestListView.setAdapter(guestListAdapter);
-                Log.d("Neal","the List Size = "+list.size());
                 guestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        ((GuestListActivity)getActivity()).listItemClicked(list.get(position));
+                        if (position != GuestListAdapter.headerAbsentPos && position != GuestListAdapter.headerEngagePos
+                                && position != GuestListAdapter.headerMarryPos) {
+                            ((GuestListActivity) getActivity()).listItemClicked(newList.get(position));
+                        }
                     }
                 });
             }
         });
         return view;
+    }
+
+    private List<ParseObject> addHeader(List<ParseObject> list){
+        List<ParseObject> newList = new ArrayList<ParseObject>();
+        boolean hasData [] = {false, false, false};
+        int pos = 0;
+        for (ParseObject obj : list){
+            if (obj.getNumber("AttendingWilling").intValue() == 0){
+                if (obj.getNumber("Session").intValue() == 1) {
+                    // 結婚
+                    if (!hasData[1]){
+                        hasData[1] = true;
+                        GuestListAdapter.headerMarryPos = pos;
+                        newList.add(obj);
+                        pos++;
+                    }
+                }
+                else if (obj.getNumber("Session").intValue() == 0){
+                    // 訂婚
+                    if (!hasData[0]){
+                        hasData[0] = true;
+                        GuestListAdapter.headerEngagePos = pos;
+                        newList.add(obj);
+                        pos++;
+                    }
+                }
+                else if (obj.getNumber("Session").intValue() == -1) {
+                    // 參加
+                    if (!hasData[0]){
+                        hasData[0] = true;
+                        GuestListAdapter.headerEngagePos = pos;
+                        newList.add(obj);
+                        pos++;
+                    }
+                }
+            }
+            else {
+                // 不參加
+                if (!hasData[2]){
+                    hasData[2] = true;
+                    GuestListAdapter.headerAbsentPos = pos;
+                    newList.add(obj);
+                    pos++;
+                }
+            }
+            newList.add(obj);
+            pos++;
+        }
+        return newList;
     }
 }

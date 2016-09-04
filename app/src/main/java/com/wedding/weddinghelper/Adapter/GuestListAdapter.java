@@ -25,18 +25,21 @@ import java.util.StringTokenizer;
  * Created by Neal on 2016/9/3.
  */
 
-public class GuestListAdapter extends BaseAdapter{
+public class GuestListAdapter extends BaseAdapter {
     private LayoutInflater myInflater;
     private List<ParseObject> guestList;
+    public static int headerAbsentPos = -1;
+    public static int headerEngagePos = -1;
+    public static int headerMarryPos = -1;
 
-    public GuestListAdapter(Context context, List<ParseObject> theGuestList){
+    public GuestListAdapter(Context context, List<ParseObject> theGuestList) {
         myInflater = LayoutInflater.from(context);
         guestList = theGuestList;
     }
 
     @Override
     public int getCount() {
-        Log.d("Neal","GuestListAdapter.size = "+guestList.size());
+        Log.d("Neal", "GuestListAdapter.size = " + guestList.size());
         return guestList.size();
     }
 
@@ -51,6 +54,107 @@ public class GuestListAdapter extends BaseAdapter{
     }
 
     @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewNewHolder holder = null;
+
+        if (convertView == null) {
+            convertView = myInflater.inflate(R.layout.guest_detail_custom_list_new, null);
+            holder = new ViewNewHolder(
+                    (TextView) convertView.findViewById(R.id.session_or_name),
+                    (TextView) convertView.findViewById(R.id.people_number),
+                    (TextView) convertView.findViewById(R.id.diet));
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewNewHolder) convertView.getTag();
+        }
+
+        ParseObject guestInfo = (ParseObject) getItem(position);
+
+        if (headerAbsentPos == position) {
+            holder.sessionOrNameTxt.setText("不出席");
+            holder.peopleNumberTxt.setText("");
+            holder.dietTxt.setText("");
+            holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorAbsentDark));
+            holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorAbsentDark));
+            holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorAbsentDark));
+        }
+        else if (headerEngagePos == position) {
+            if (headerMarryPos != -1) {
+                holder.sessionOrNameTxt.setText("訂婚場");
+                holder.peopleNumberTxt.setText("");
+                holder.dietTxt.setText("");
+                holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageDark));
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageDark));
+            }
+            else {
+                holder.sessionOrNameTxt.setText("參加");
+                holder.peopleNumberTxt.setText("");
+                holder.dietTxt.setText("");
+                holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageDark));
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageDark));
+            }
+        }
+        else if (headerMarryPos == position){
+                holder.sessionOrNameTxt.setText("結婚場");
+                holder.peopleNumberTxt.setText("");
+                holder.dietTxt.setText("");
+                holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorMarryDark));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorMarryDark));
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorMarryDark));
+        }
+        else{
+            // not the header
+            holder.sessionOrNameTxt.setText(guestInfo.getString("Name"));
+            if (guestInfo.getNumber("AttendingWilling").intValue() == 0) {
+                if (guestInfo.getNumber("Session").intValue() == 1) {
+                    holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorMarryLight));
+                    holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorMarryLight));
+                    holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorMarryLight));
+                } else if (guestInfo.getNumber("Session").intValue() == 0) {
+                    holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageLight));
+                    holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageLight));
+                    holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageLight));
+                } else if (guestInfo.getNumber("Session").intValue() == -1) {
+                    holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageLight));
+                    holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageLight));
+                    holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorEngageLight));
+                }
+                holder.dietTxt.setText(guestInfo.getNumber("MeatNumber").toString() + "人葷食，" + guestInfo.getNumber("VagetableNumber").toString() + "人素食");
+                holder.peopleNumberTxt.setText(guestInfo.getNumber("PeopleNumber").toString() + "人");
+                holder.peopleNumberTxt.setVisibility(View.VISIBLE);
+            } else {
+                holder.sessionOrNameTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorAbsentLight));
+                holder.peopleNumberTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorAbsentLight));
+                holder.peopleNumberTxt.setText("");
+                holder.dietTxt.setBackgroundColor(ContextCompat.getColor(myInflater.getContext(), R.color.colorAbsentLight));
+                String notation = guestInfo.getString("Notation");
+                if (notation.length() != 0) {
+                    holder.dietTxt.setText(guestInfo.getString("Notation"));
+                } else {
+                    holder.dietTxt.setText("無備注");
+                }
+            }
+        }
+
+
+        return convertView;
+    }
+
+
+    private class ViewNewHolder {
+        TextView sessionOrNameTxt;
+        TextView peopleNumberTxt;
+        TextView dietTxt;
+        public ViewNewHolder(TextView sessionOrNameTxt, TextView peopleNumberTxt, TextView dietTxt){
+            this.sessionOrNameTxt = sessionOrNameTxt;
+            this.peopleNumberTxt = peopleNumberTxt;
+            this.dietTxt = dietTxt;
+        }
+    }
+
+    /*@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
 
@@ -124,7 +228,8 @@ public class GuestListAdapter extends BaseAdapter{
             this.peopleNumberTxt = peopleNumberTxt;
             this.dietTxt = dietTxt;
         }
-    }
+    }*/
+
 }
 
 
