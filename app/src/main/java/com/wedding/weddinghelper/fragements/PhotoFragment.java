@@ -70,29 +70,22 @@ public class PhotoFragment extends Fragment {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
                 String [] microPhotoUrls = new String[list.size()];
+                String [] miniPhotoUrls = new String[list.size()];
                 for (int i = 0 ; i<list.size() ; i++){
-                    ParseFile photoFile = list.get(i).getParseFile("microPhoto");
-                    microPhotoUrls[i] = photoFile.getUrl();
+                    ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
+                    microPhotoUrls[i] = microPhotoFile.getUrl();
+                    ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
+                    miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
                 photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), microPhotoUrls ));
-                ParseQuery query2 = ParseQuery.getQuery(weddingInfoObjectId+"OriginalPhoto");
-                query2.orderByAscending("objectId");
-                query2.findInBackground(new FindCallback<ParseObject>() {
+
+                PhotoViewActivity.photoUrls = miniPhotoUrls;
+                photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                     @Override
-                    public void done(final List<ParseObject> list2, ParseException e) {
-                        PhotoViewActivity.photoUrls = new String[list2.size()];
-                        for (int i = 0 ; i<list2.size() ; i++){
-                            ParseFile photoFile = list2.get(i).getParseFile("Photo");
-                            PhotoViewActivity.photoUrls[i] = photoFile.getUrl();
-                        }
-                        photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
-                                intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
-                                startActivity(intent);
-                            }
-                        });
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
+                        intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
+                        startActivity(intent);
                     }
                 });
             }
