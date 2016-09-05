@@ -48,7 +48,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:ems="10"
-                            android:hint="@string/survey_name_hint"
                             android:inputType="textPersonName" />
                     </TableRow>
                 </LinearLayout>
@@ -76,7 +75,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:ems="10"
-                            android:hint="@string/survey_phone_hint"
                             android:inputType="phone" />
                     </TableRow>
                 </LinearLayout>
@@ -138,7 +136,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:text="@string/attend"
-                            android:checked="true"/>
+                            android:checked="true"
+                            android:gravity="left"
+                            android:layout_marginLeft="16dp" />
                     </TableRow>
                 </LinearLayout>
 
@@ -205,15 +205,16 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
-                            android:gravity="center_vertical"
-                            android:text="@string/zero" />
+                            android:text="@string/zero"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.5"
-                            android:gravity="center_vertical"
-                            android:text="@string/people" />
+                            android:text="@string/people"
+                            android:gravity="center" />
 
                         <LinearLayout
                             android:orientation="vertical"
@@ -538,7 +539,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:ems="10"
-                            android:hint="@string/survey_message_hint"
                             android:inputType="textLongMessage" />
                     </TableRow>
                 </LinearLayout>

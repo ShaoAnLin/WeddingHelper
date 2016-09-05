@@ -20,12 +20,11 @@
                 android:id="@+id/text_own_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/margin_lower"
+                android:paddingBottom="@dimen/margin_lower"
                 android:background="@color/colorButtonBackground2"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="20dip"
-                android:text="@string/groom_and_bride"
                 android:textColor="@color/white"
                 android:textSize="35sp" />
 
@@ -34,9 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/margin_lower"
-                android:paddingBottom="@dimen/margin_lower"
                 android:gravity="center_horizontal"
-                android:text="@string/engage_string"
                 android:textColor="@color/colorWordLightBackground"
                 android:textSize="30sp" />
 
@@ -44,31 +41,25 @@
                 android:id="@+id/engage_time"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/engage_time" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/engage_place"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/engage_place" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/engage_address"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/engage_address" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/marry_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_lower"
-                android:paddingBottom="@dimen/margin_lower"
                 android:gravity="center_horizontal"
-                android:text="@string/marry_string"
                 android:textColor="@color/colorWordLightBackground"
                 android:textSize="30sp" />
 
@@ -76,22 +67,19 @@
                 android:id="@+id/marry_time"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/marry_time" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/marry_place"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/marry_place" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/marry_address"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/marry_address" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
