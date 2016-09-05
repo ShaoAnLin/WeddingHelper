@@ -430,8 +430,6 @@
                             android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:ems="10"
-                            android:hint="@string/survey_message_hint"
-                            android:textColorHint="@color/colorGrayDark"
                             android:inputType="textLongMessage" />
                     </TableRow>
                 </LinearLayout>

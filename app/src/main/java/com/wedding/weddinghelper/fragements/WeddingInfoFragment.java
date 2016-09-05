@@ -94,6 +94,7 @@ public class WeddingInfoFragment extends Fragment {
                     marryTime.setVisibility(View.VISIBLE);
                     marryPlace.setVisibility(View.VISIBLE);
                     marryAddress.setVisibility(View.VISIBLE);
+                    marryTitle.setText(getString(R.string.marry));
                     marryTime.setText(weddingInformation.getString("marryDate"));
                     marryPlace.setText(weddingInformation.getString("marryPlace"));
                     marryAddress.setText(weddingInformation.getString("marryAddress"));
