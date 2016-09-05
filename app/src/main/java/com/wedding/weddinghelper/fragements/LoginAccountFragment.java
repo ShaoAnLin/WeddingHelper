@@ -1,8 +1,11 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -28,6 +31,13 @@ import com.wedding.weddinghelper.activities.OwnActivity;
 
 public class LoginAccountFragment extends Fragment {
 
+    private final String NAME_KEY = "OWN_NAME_KEY";
+    private final String PASSWORD_KEY = "OWN_PASSWORD_KEY";
+
+    private static String mName;
+    private static String mPassword;
+
+    private EditText mUserNameEditText, mUserPasswordEditText;
     private Button mLoginButton;
 
     public static LoginAccountFragment newInstance() {
@@ -48,7 +58,12 @@ public class LoginAccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login_account, container, false);
-        Log.d("Login account", "create view");
+
+        mUserNameEditText = (EditText) view.findViewById(R.id.login_user_account);
+        mUserPasswordEditText = (EditText) view.findViewById(R.id.login_user_password);
+
+        mUserNameEditText.setText(readString(getActivity().getApplicationContext(), NAME_KEY));
+        mUserPasswordEditText.setText(readString(getActivity().getApplicationContext(), PASSWORD_KEY));
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
@@ -90,30 +105,33 @@ public class LoginAccountFragment extends Fragment {
     }
 
     private void attemptLogin(View v){
-        EditText userNameEditText = (EditText) getActivity().findViewById(R.id.login_user_account);
-        EditText userPasswordEditText = (EditText) getActivity().findViewById(R.id.login_user_password);
-        if (userNameEditText.getText().toString().length() == 0 || userPasswordEditText.getText().toString().length() == 0){
+        mName = mUserNameEditText.getText().toString();
+        mPassword = mUserPasswordEditText.getText().toString();
+
+        if (mName.length() == 0 || mPassword.length() == 0){
             boolean emptyUserName = false;
-            if (TextUtils.isEmpty(userNameEditText.getText().toString())) {
-                userNameEditText.setError(getString(R.string.error_field_required));
-                userNameEditText.requestFocus();
+            if (TextUtils.isEmpty(mName)) {
+                mUserNameEditText.setError(getString(R.string.error_field_required));
+                mUserNameEditText.requestFocus();
                 emptyUserName = true;
             }
-            if (TextUtils.isEmpty(userPasswordEditText.getText().toString())) {
-                userPasswordEditText.setError(getString(R.string.error_field_required));
+            if (TextUtils.isEmpty(mPassword)) {
+                mUserPasswordEditText.setError(getString(R.string.error_field_required));
                 if (!emptyUserName) {
-                    userPasswordEditText.requestFocus();
+                    mUserPasswordEditText.requestFocus();
                 }
             }
         }
         else {
             progressDialog.show();
-            ParseUser.logInInBackground(userNameEditText.getText().toString(), userPasswordEditText.getText().toString(), new LogInCallback() {
+            ParseUser.logInInBackground(mName, mPassword, new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
                     if (user != null) {
                         //Go to admin UI
                         progressDialog.dismiss();
                         Log.d("Neal", "Login success");
+                        writeString(getActivity().getApplicationContext(), NAME_KEY, mName);
+                        writeString(getActivity().getApplicationContext(), PASSWORD_KEY, mPassword);
                         login();
                     }
                     else if (e != null) {
@@ -148,5 +166,15 @@ public class LoginAccountFragment extends Fragment {
                 }
             });
         }
+    }
+
+    public static void writeString(Context context, final String KEY, String property) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).edit();
+        editor.putString(KEY, property);
+        editor.commit();
+    }
+
+    public static String readString(Context context, final String KEY) {
+        return context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).getString(KEY, null);
     }
 }

@@ -3,6 +3,8 @@ package com.wedding.weddinghelper.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.provider.SyncStateContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,17 +21,26 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+
 public class JoinActivity extends AppCompatActivity
     implements View.OnClickListener {
 
-    final public String NAME = "test";
-    final public String PASSWORD = "123";
+    private final String NAME_KEY = "JOIN_NAME_KEY";
+    private final String PASSWORD_KEY = "JOIN_PASSWORD_KEY";
+
+    private static String mName;
+    private static String mPassword;
 
     private EditText mNameView;
     private EditText mPasswordView;
 
     ProgressDialog progressDialog;
     final Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +65,9 @@ public class JoinActivity extends AppCompatActivity
 
         mNameView = (EditText) findViewById(R.id.join_wedding_name);
         mPasswordView = (EditText) findViewById(R.id.join_wedding_password);
+
+        mNameView.setText(readString(getApplicationContext(), NAME_KEY));
+        mPasswordView.setText(readString(getApplicationContext(), PASSWORD_KEY));
 
         Button mSignInButton = (Button) findViewById(R.id.join_wedding_sign_in_button);
         if (mSignInButton != null) {
@@ -83,8 +97,6 @@ public class JoinActivity extends AppCompatActivity
                 }
             });
         }
-
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMax(100);
@@ -101,24 +113,23 @@ public class JoinActivity extends AppCompatActivity
         intent.putExtras(bundle);
 
         startActivity(intent);
-
     }
 
     private void attemptLogin() {
-        String name = mNameView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        mName = mNameView.getText().toString();
+        mPassword = mPasswordView.getText().toString();
 
         boolean emptyName = false;
 
         //先判斷組婚宴名稱及通關密語是否為空，若任一個為空，則在文字框旁顯示error。
         // Check for a valid userName.
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(mName)) {
             mNameView.setError(getString(R.string.error_field_required));
             mNameView.requestFocus();
             emptyName = true;
         }
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(mPassword)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             if (!emptyName) {
                 mPasswordView.requestFocus();
@@ -126,11 +137,11 @@ public class JoinActivity extends AppCompatActivity
         }
 
         //若皆不為空，才嘗試以此組婚宴名稱及通關密語搜尋。
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(mName) && !TextUtils.isEmpty(mPassword)) {
             progressDialog.show();
             ParseQuery query = ParseQuery.getQuery("Information");
-            query.whereEqualTo("weddingAccount", name);
-            query.whereEqualTo("weddingPassword", password);
+            query.whereEqualTo("weddingAccount", mName);
+            query.whereEqualTo("weddingPassword", mPassword);
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject information, ParseException e) {
@@ -169,6 +180,8 @@ public class JoinActivity extends AppCompatActivity
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
                         progressDialog.dismiss();
+                        writeString(getApplicationContext(), NAME_KEY, mName);
+                        writeString(getApplicationContext(), PASSWORD_KEY, mPassword);
                         login(information.getObjectId());
                     }
                 }
@@ -179,5 +192,15 @@ public class JoinActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         finish();
+    }
+
+    public static void writeString(Context context, final String KEY, String property) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).edit();
+        editor.putString(KEY, property);
+        editor.commit();
+    }
+
+    public static String readString(Context context, final String KEY) {
+        return context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).getString(KEY, null);
     }
 }
