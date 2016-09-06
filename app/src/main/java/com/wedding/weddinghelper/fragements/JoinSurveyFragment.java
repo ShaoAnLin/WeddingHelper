@@ -74,7 +74,6 @@ public class JoinSurveyFragment extends Fragment {
             saveData();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
     boolean surveyEditable = false;
