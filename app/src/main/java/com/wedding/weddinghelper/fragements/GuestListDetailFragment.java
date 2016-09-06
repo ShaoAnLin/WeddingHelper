@@ -8,23 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.Adapter.GuestListAdapter;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.GuestListActivity;
-import com.wedding.weddinghelper.activities.JoinMainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class GuestListDetailFragment extends Fragment {
     List<ParseObject> newList = new ArrayList<ParseObject>();

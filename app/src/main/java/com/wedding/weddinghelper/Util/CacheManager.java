@@ -9,11 +9,16 @@ import android.provider.SyncStateContract;
  */
 public class CacheManager {
 
+    // Own activity: login
     public static String HAVE_ACCOUNT_KEY = "HAVE_ACCOUNT_KEY";
     public static String OWN_NAME_KEY = "OWN_NAME_KEY";
-    public static String JOIN_NAME_KEY = "JOIN_NAME_KEY";
     public static String OWN_PASSWORD_KEY = "OWN_PASSWORD_KEY";
+    public static String OWN_REMEMBER_LOGIN_KEY = "OWN_REMEMBER_LOGIN_KEY";
+
+    // Join activity: login
+    public static String JOIN_NAME_KEY = "JOIN_NAME_KEY";
     public static String JOIN_PASSWORD_KEY = "JOIN_PASSWORD_KEY";
+    public static String JOIN_REMEMBER_LOGIN_KEY = "JOIN_REMEMBER_LOGIN_KEY";
 
     public static void writeString(Context context, final String KEY, String property) {
         SharedPreferences.Editor editor = context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).edit();

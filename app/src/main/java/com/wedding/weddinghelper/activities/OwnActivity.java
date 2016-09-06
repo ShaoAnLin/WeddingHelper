@@ -82,9 +82,11 @@ public class OwnActivity extends AppCompatActivity
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked){
             mHaveAccountSwitch.setText(getString(R.string.have_account));
+            getSupportActionBar().setTitle(getString(R.string.login_account));
         }
         else{
             mHaveAccountSwitch.setText(getString(R.string.no_account));
+            getSupportActionBar().setTitle(getString(R.string.create_account));
         }
 
         CacheManager.writeString(getApplicationContext(), CacheManager.HAVE_ACCOUNT_KEY, Boolean.toString(isChecked));

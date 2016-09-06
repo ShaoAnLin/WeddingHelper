@@ -63,6 +63,14 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/remember_login"
+                android:id="@+id/remember_login_checkbox"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp" />
+
             <Button
                 android:id="@+id/join_wedding_sign_in_button"
                 style="?android:textAppearanceSmall"

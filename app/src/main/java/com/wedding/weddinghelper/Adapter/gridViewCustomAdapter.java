@@ -7,10 +7,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import com.wedding.weddinghelper.R;
+
 import com.squareup.picasso.Picasso;
 public class gridViewCustomAdapter extends BaseAdapter {
 

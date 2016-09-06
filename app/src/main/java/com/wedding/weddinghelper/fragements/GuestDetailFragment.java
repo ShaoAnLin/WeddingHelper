@@ -1,6 +1,5 @@
 package com.wedding.weddinghelper.fragements;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import com.parse.ParseObject;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.GuestListActivity;
-
-import org.w3c.dom.Text;
 
 public class GuestDetailFragment extends Fragment {
 

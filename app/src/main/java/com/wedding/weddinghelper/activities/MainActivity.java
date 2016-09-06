@@ -9,10 +9,6 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 import com.wedding.weddinghelper.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
