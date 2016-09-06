@@ -9,11 +9,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/photo_grid_view"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:columnWidth="200px"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="20dp"
         android:verticalSpacing="20dp"
-        android:numColumns="auto_fit"/>
+        android:stretchMode="columnWidth"
+        android:numColumns="2"/>
 </RelativeLayout>

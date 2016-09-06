@@ -4,6 +4,8 @@ package com.wedding.weddinghelper.Adapter;
  * Created by Neal on 2016/9/3.
  */
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -45,12 +47,10 @@ public class gridViewCustomAdapter extends BaseAdapter {
             image = new ImageView(context);
         }
         String url = (String) getItem(position);
-
         Picasso.with(context)
-                .load(url)
-                .resize(200,200)
-                .centerCrop()
+                .load(url).centerCrop().resize(context.getResources().getDisplayMetrics().widthPixels/2,context.getResources().getDisplayMetrics().widthPixels/2)
                 .into(image);
+
         return image;
     }
 }
