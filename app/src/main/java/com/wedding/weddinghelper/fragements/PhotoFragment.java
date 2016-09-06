@@ -2,7 +2,6 @@ package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -21,7 +19,6 @@ import com.parse.ParseQuery;
 import com.wedding.weddinghelper.Adapter.gridViewCustomAdapter;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
-import com.wedding.weddinghelper.activities.OwnActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 import com.wedding.weddinghelper.activities.PhotoViewActivity;
 

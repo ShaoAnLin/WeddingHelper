@@ -3,16 +3,11 @@ package com.wedding.weddinghelper.fragements;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -20,10 +15,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.GuestListActivity;
-import com.wedding.weddinghelper.activities.JoinMainActivity;
-import com.wedding.weddinghelper.activities.OwnMainActivity;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

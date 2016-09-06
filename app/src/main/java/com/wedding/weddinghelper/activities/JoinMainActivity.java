@@ -1,7 +1,5 @@
 package com.wedding.weddinghelper.activities;
 
-import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.res.ResourcesCompat;
@@ -11,9 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.PhotoFragment;

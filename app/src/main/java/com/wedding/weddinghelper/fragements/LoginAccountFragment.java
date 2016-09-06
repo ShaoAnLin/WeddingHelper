@@ -1,11 +1,7 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -14,31 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.ParseInstallation;
-import com.squareup.picasso.Cache;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.CacheManager;
 import com.wedding.weddinghelper.activities.OwnActivity;
 
 public class LoginAccountFragment extends Fragment {
 
-
     private static String mName;
     private static String mPassword;
 
     private EditText mUserNameEditText, mUserPasswordEditText;
     private Button mLoginButton;
+    private CheckBox mRememberLoginCheckBox;
 
     public static LoginAccountFragment newInstance() {
         Log.d("Login account", "New Instance");
@@ -61,9 +50,25 @@ public class LoginAccountFragment extends Fragment {
 
         mUserNameEditText = (EditText) view.findViewById(R.id.login_user_account);
         mUserPasswordEditText = (EditText) view.findViewById(R.id.login_user_password);
+        mRememberLoginCheckBox = (CheckBox) view.findViewById(R.id.remember_login_checkbox);
 
-        mUserNameEditText.setText(CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_NAME_KEY));
-        mUserPasswordEditText.setText(CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_PASSWORD_KEY));
+        String cacheName = CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_NAME_KEY);
+        String cachePassword = CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_PASSWORD_KEY);
+        String cacheRememberLogin = CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_REMEMBER_LOGIN_KEY);
+        if (cacheName != null) {
+            mUserNameEditText.setText(cacheName);
+        }
+        if (cachePassword != null) {
+            mUserPasswordEditText.setText(cachePassword);
+        }
+        if (cacheRememberLogin != null){
+            if (cacheRememberLogin.equals("true")){
+                mRememberLoginCheckBox.setChecked(true);
+            }
+            else{
+                mRememberLoginCheckBox.setChecked(false);
+            }
+        }
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
@@ -76,7 +81,6 @@ public class LoginAccountFragment extends Fragment {
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("Login account", "button clicked!");
                     attemptLogin(view);
                 }
             });
@@ -89,14 +93,13 @@ public class LoginAccountFragment extends Fragment {
                 public void onClick(View view) {
                     ParseUser.logInInBackground("neal", "neal", new LogInCallback() {
                     //ParseUser.logInInBackground("applereviewer", "applereviewer", new LogInCallback() {
-                    public void done(ParseUser user, ParseException e) {
-                        login();
-                    }
-                });
+                        public void done(ParseUser user, ParseException e) {
+                            login();
+                        }
+                    });
                 }
             });
         }
-
         return(view);
     }
 
@@ -130,8 +133,16 @@ public class LoginAccountFragment extends Fragment {
                         //Go to admin UI
                         progressDialog.dismiss();
                         Log.d("Neal", "Login success");
+
+                        boolean isChecked = mRememberLoginCheckBox.isChecked();
+                        if (!isChecked) {
+                            mName = "";
+                            mPassword = "";
+                        }
                         CacheManager.writeString(getActivity().getApplicationContext(), CacheManager.OWN_NAME_KEY, mName);
                         CacheManager.writeString(getActivity().getApplicationContext(), CacheManager.OWN_PASSWORD_KEY, mPassword);
+                        CacheManager.writeString(getActivity().getApplicationContext(), CacheManager.OWN_REMEMBER_LOGIN_KEY,
+                                Boolean.toString(isChecked));
                         login();
                     }
                     else if (e != null) {

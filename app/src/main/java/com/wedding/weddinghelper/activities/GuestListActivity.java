@@ -1,24 +1,16 @@
 package com.wedding.weddinghelper.activities;
 
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.parse.FindCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.fragements.GuestDetailFragment;
 import com.wedding.weddinghelper.fragements.GuestListDetailFragment;
 import com.wedding.weddinghelper.fragements.GuestListSummaryFragment;
-
-import java.util.List;
 
 public class GuestListActivity extends AppCompatActivity
         implements View.OnClickListener {

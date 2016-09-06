@@ -3,8 +3,6 @@ package com.wedding.weddinghelper.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.parse.GetCallback;
@@ -22,11 +21,6 @@ import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.CacheManager;
 
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-
 public class JoinActivity extends AppCompatActivity
     implements View.OnClickListener {
 
@@ -35,6 +29,7 @@ public class JoinActivity extends AppCompatActivity
 
     private EditText mNameView;
     private EditText mPasswordView;
+    private CheckBox mRememberLoginCheckBox;
 
     ProgressDialog progressDialog;
     final Context context = this;
@@ -63,9 +58,25 @@ public class JoinActivity extends AppCompatActivity
 
         mNameView = (EditText) findViewById(R.id.join_wedding_name);
         mPasswordView = (EditText) findViewById(R.id.join_wedding_password);
+        mRememberLoginCheckBox = (CheckBox) findViewById(R.id.remember_login_checkbox);
 
-        mNameView.setText(CacheManager.readString(getApplicationContext(), CacheManager.JOIN_NAME_KEY));
-        mPasswordView.setText(CacheManager.readString(getApplicationContext(), CacheManager.JOIN_PASSWORD_KEY));
+        String cacheName = CacheManager.readString(getApplicationContext(), CacheManager.JOIN_NAME_KEY);
+        String cachePassword = CacheManager.readString(getApplicationContext(), CacheManager.JOIN_PASSWORD_KEY);
+        String cacheRememberLogin = CacheManager.readString(getApplicationContext(), CacheManager.JOIN_REMEMBER_LOGIN_KEY);
+        if (cacheName != null){
+            mNameView.setText(cacheName);
+        }
+        if (cachePassword != null){
+            mPasswordView.setText(cachePassword);
+        }
+        if (cacheRememberLogin != null){
+            if (cacheRememberLogin.equals("true")){
+                mRememberLoginCheckBox.setChecked(true);
+            }
+            else{
+                mRememberLoginCheckBox.setChecked(false);
+            }
+        }
 
         Button mSignInButton = (Button) findViewById(R.id.join_wedding_sign_in_button);
         if (mSignInButton != null) {
@@ -178,8 +189,15 @@ public class JoinActivity extends AppCompatActivity
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
                         progressDialog.dismiss();
+
+                        boolean isChecked = mRememberLoginCheckBox.isChecked();
+                        if (!isChecked) {
+                            mName = "";
+                            mPassword = "";
+                        }
                         CacheManager.writeString(getApplicationContext(), CacheManager.JOIN_NAME_KEY, mName);
                         CacheManager.writeString(getApplicationContext(), CacheManager.JOIN_PASSWORD_KEY, mPassword);
+                        CacheManager.writeString(getApplicationContext(), CacheManager.JOIN_REMEMBER_LOGIN_KEY, Boolean.toString(isChecked));
                         login(information.getObjectId());
                     }
                 }

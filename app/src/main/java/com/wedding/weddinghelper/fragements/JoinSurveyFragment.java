@@ -1,13 +1,9 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -38,13 +33,11 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
-import com.wedding.weddinghelper.activities.OwnMainActivity;
+
 import android.app.ProgressDialog;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Calendar;
 public class JoinSurveyFragment extends Fragment {
 
