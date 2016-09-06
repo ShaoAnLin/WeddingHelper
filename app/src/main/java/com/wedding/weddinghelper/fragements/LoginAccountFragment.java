@@ -26,13 +26,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.ParseInstallation;
+import com.squareup.picasso.Cache;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.CacheManager;
 import com.wedding.weddinghelper.activities.OwnActivity;
 
 public class LoginAccountFragment extends Fragment {
 
-    private final String NAME_KEY = "OWN_NAME_KEY";
-    private final String PASSWORD_KEY = "OWN_PASSWORD_KEY";
 
     private static String mName;
     private static String mPassword;
@@ -62,8 +62,8 @@ public class LoginAccountFragment extends Fragment {
         mUserNameEditText = (EditText) view.findViewById(R.id.login_user_account);
         mUserPasswordEditText = (EditText) view.findViewById(R.id.login_user_password);
 
-        mUserNameEditText.setText(readString(getActivity().getApplicationContext(), NAME_KEY));
-        mUserPasswordEditText.setText(readString(getActivity().getApplicationContext(), PASSWORD_KEY));
+        mUserNameEditText.setText(CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_NAME_KEY));
+        mUserPasswordEditText.setText(CacheManager.readString(getActivity().getApplicationContext(), CacheManager.OWN_PASSWORD_KEY));
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
@@ -130,8 +130,8 @@ public class LoginAccountFragment extends Fragment {
                         //Go to admin UI
                         progressDialog.dismiss();
                         Log.d("Neal", "Login success");
-                        writeString(getActivity().getApplicationContext(), NAME_KEY, mName);
-                        writeString(getActivity().getApplicationContext(), PASSWORD_KEY, mPassword);
+                        CacheManager.writeString(getActivity().getApplicationContext(), CacheManager.OWN_NAME_KEY, mName);
+                        CacheManager.writeString(getActivity().getApplicationContext(), CacheManager.OWN_PASSWORD_KEY, mPassword);
                         login();
                     }
                     else if (e != null) {
@@ -166,15 +166,5 @@ public class LoginAccountFragment extends Fragment {
                 }
             });
         }
-    }
-
-    public static void writeString(Context context, final String KEY, String property) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).edit();
-        editor.putString(KEY, property);
-        editor.commit();
-    }
-
-    public static String readString(Context context, final String KEY) {
-        return context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).getString(KEY, null);
     }
 }

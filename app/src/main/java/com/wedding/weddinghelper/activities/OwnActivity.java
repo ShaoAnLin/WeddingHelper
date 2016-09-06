@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.CacheManager;
 import com.wedding.weddinghelper.fragements.CreateAccountFragment;
 import com.wedding.weddinghelper.fragements.LoginAccountFragment;
 
@@ -53,18 +54,41 @@ public class OwnActivity extends AppCompatActivity
         // get switch
         mHaveAccountSwitch = (Switch) findViewById(R.id.have_account_switch);
         if (mHaveAccountSwitch != null) {
-            Log.d("Switch", "set listener");
             mHaveAccountSwitch.setChecked(false);
+            mHaveAccountSwitch.setText(getString(R.string.no_account));
             mHaveAccountSwitch.setOnCheckedChangeListener(this);
         }
 
         // set preference fragment
         if (getSupportFragmentManager().findFragmentById(R.id.own_login_fragment) == null) {
-            replaceLoginFormFragment(CreateAccountFragment.newInstance(), createAccountFragmentTag);
+            String haveAccountCache = CacheManager.readString(getApplicationContext(), CacheManager.HAVE_ACCOUNT_KEY);
+            if (haveAccountCache != null){
+                if (haveAccountCache.equals("true")) {
+                    mHaveAccountSwitch.setChecked(true);
+                    replaceLoginFormFragment(LoginAccountFragment.newInstance(), loginAccountFragmentTag);
+                }
+                else{
+                    mHaveAccountSwitch.setChecked(false);
+                    replaceLoginFormFragment(CreateAccountFragment.newInstance(), createAccountFragmentTag);
+                }
+            }
+            else{
+                mHaveAccountSwitch.setChecked(false);
+                replaceLoginFormFragment(CreateAccountFragment.newInstance(), createAccountFragmentTag);
+            }
         }
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked){
+            mHaveAccountSwitch.setText(getString(R.string.have_account));
+        }
+        else{
+            mHaveAccountSwitch.setText(getString(R.string.no_account));
+        }
+
+        CacheManager.writeString(getApplicationContext(), CacheManager.HAVE_ACCOUNT_KEY, Boolean.toString(isChecked));
+
         Fragment loginFormFragment = getSupportFragmentManager().findFragmentById(R.id.own_login_fragment);
         if (loginFormFragment instanceof CreateAccountFragment && isChecked) {
             Log.d("Create -> Login", "!!!");

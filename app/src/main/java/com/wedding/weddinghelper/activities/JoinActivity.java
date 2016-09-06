@@ -20,6 +20,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.CacheManager;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -28,9 +29,6 @@ import java.io.FileWriter;
 
 public class JoinActivity extends AppCompatActivity
     implements View.OnClickListener {
-
-    private final String NAME_KEY = "JOIN_NAME_KEY";
-    private final String PASSWORD_KEY = "JOIN_PASSWORD_KEY";
 
     private static String mName;
     private static String mPassword;
@@ -66,8 +64,8 @@ public class JoinActivity extends AppCompatActivity
         mNameView = (EditText) findViewById(R.id.join_wedding_name);
         mPasswordView = (EditText) findViewById(R.id.join_wedding_password);
 
-        mNameView.setText(readString(getApplicationContext(), NAME_KEY));
-        mPasswordView.setText(readString(getApplicationContext(), PASSWORD_KEY));
+        mNameView.setText(CacheManager.readString(getApplicationContext(), CacheManager.JOIN_NAME_KEY));
+        mPasswordView.setText(CacheManager.readString(getApplicationContext(), CacheManager.JOIN_PASSWORD_KEY));
 
         Button mSignInButton = (Button) findViewById(R.id.join_wedding_sign_in_button);
         if (mSignInButton != null) {
@@ -180,8 +178,8 @@ public class JoinActivity extends AppCompatActivity
                     else if (information != null) {
                         Log.d("Neal", "WeddingInformation = " + information.get("groomName"));
                         progressDialog.dismiss();
-                        writeString(getApplicationContext(), NAME_KEY, mName);
-                        writeString(getApplicationContext(), PASSWORD_KEY, mPassword);
+                        CacheManager.writeString(getApplicationContext(), CacheManager.JOIN_NAME_KEY, mName);
+                        CacheManager.writeString(getApplicationContext(), CacheManager.JOIN_PASSWORD_KEY, mPassword);
                         login(information.getObjectId());
                     }
                 }
@@ -192,15 +190,5 @@ public class JoinActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         finish();
-    }
-
-    public static void writeString(Context context, final String KEY, String property) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).edit();
-        editor.putString(KEY, property);
-        editor.commit();
-    }
-
-    public static String readString(Context context, final String KEY) {
-        return context.getSharedPreferences(SyncStateContract.Constants.CONTENT_DIRECTORY, context.MODE_PRIVATE).getString(KEY, null);
     }
 }
