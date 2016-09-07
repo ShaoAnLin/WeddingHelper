@@ -377,7 +377,7 @@ public class JoinSurveyFragment extends Fragment {
 
                     String cityAndRegionString = attendInformation.get("AddressRegion").toString();
                     Log.d("Neal","City and RegionString = "+cityAndRegionString);
-                    if (cityAndRegionString != null){
+                    if (cityAndRegionString != null && !cityAndRegionString.equals("縣市區域")){
                         if (cityAndRegionString.length()!=0) {
                             String cityString = cityAndRegionString.substring(0, 3);
                             String regionString = cityAndRegionString.substring(3, cityAndRegionString.length());
@@ -504,6 +504,9 @@ public class JoinSurveyFragment extends Fragment {
             }
         }
         if (!contentError) {
+            name.setError(null);
+            phone.setError(null);
+            detailAddress.setError(null);
             progressDialog.show();
             final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
             ParseQuery query = ParseQuery.getQuery("AttendantList");
