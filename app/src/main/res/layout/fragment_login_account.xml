@@ -69,7 +69,8 @@
             android:layout_marginTop="16dp"
             android:text="@string/testing_login"
             android:textStyle="bold"
-            android:background="@color/colorButtonBackground" />
+            android:background="@color/colorButtonBackground"
+            android:visibility="gone" />
 
     </LinearLayout>
 </RelativeLayout>
