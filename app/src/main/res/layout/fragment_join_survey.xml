@@ -92,6 +92,35 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/attend_survey" />
+
+                        <Switch
+                            android:id="@+id/survey_attend_switch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/attend"
+                            android:checked="true"
+                            android:gravity="left"
+                            android:layout_marginLeft="16dp" />
+                    </TableRow>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/row_height"
+                        android:layout_marginBottom="0dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:gravity="center_vertical"
                             android:text="@string/i_am" />
@@ -122,7 +151,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/wedding_session_layout">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -132,62 +162,31 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="@string/attend_survey" />
-
-                        <Switch
-                            android:id="@+id/survey_attend_switch"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@string/attend"
-                            android:checked="true"
-                            android:gravity="left"
-                            android:layout_marginLeft="16dp" />
-                    </TableRow>
-                </LinearLayout>
+                            android:gravity="center_vertical"
+                            android:text="@string/attend_activity" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/engage"
+                            android:id="@+id/engage_radio_button"
+                            android:layout_weight="1.5" />
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/row_height"
-                        android:layout_marginBottom="0dp">
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/marry"
+                            android:id="@+id/marry_radio_button"
+                            android:layout_weight="1.5" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="@string/survery_address" />
-                        <Spinner
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:id="@+id/city_spinner"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:spinnerMode="dropdown" />
-                        <Spinner
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:id="@+id/region_spinner"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:spinnerMode="dropdown" />
+                            android:id="@+id/dummy_text"
+                            android:layout_weight="1" />
                     </TableRow>
                 </LinearLayout>
-
-                <EditText
-                    android:id="@+id/survey_address_detail_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:ems="10"
-                    android:hint="@string/survey_address_detail_hint"
-                    android:inputType="textPostalAddress" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -287,46 +286,6 @@
                                 android:id="@+id/textView12"
                                 android:layout_weight="9.5" />
                         </LinearLayout>>
-                    </TableRow>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:id="@+id/wedding_session_layout">
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/row_height"
-                        android:layout_marginBottom="0dp">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:gravity="center_vertical"
-                            android:text="@string/attend_activity" />
-
-                        <RadioButton
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:text="@string/engage"
-                            android:id="@+id/engage_radio_button"
-                            android:layout_weight="1.5" />
-
-                        <RadioButton
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:text="@string/marry"
-                            android:id="@+id/marry_radio_button"
-                            android:layout_weight="1.5" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:id="@+id/dummy_text"
-                            android:layout_weight="1" />
                     </TableRow>
                 </LinearLayout>
 
@@ -522,6 +481,47 @@
                         </LinearLayout>
                     </TableRow>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/row_height"
+                        android:layout_marginBottom="0dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="@string/survery_address" />
+                        <Spinner
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/city_spinner"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:spinnerMode="dropdown" />
+                        <Spinner
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/region_spinner"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:spinnerMode="dropdown" />
+                    </TableRow>
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/survey_address_detail_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:hint="@string/survey_address_detail_hint"
+                    android:inputType="textPostalAddress" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
