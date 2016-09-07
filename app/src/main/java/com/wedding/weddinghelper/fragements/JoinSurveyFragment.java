@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -81,7 +82,8 @@ public class JoinSurveyFragment extends Fragment {
     public void disableEditSurvey(){
         name.setEnabled(false);
         phone.setEnabled(false);
-        relationSpinner.setEnabled(false);
+        groomRadioButton.setEnabled(false);
+        brideRadioButton.setEnabled(false);
         attendWillingSwitch.setEnabled(false);
         regionSpinner.setEnabled(false);
         citySpinner.setEnabled(false);
@@ -100,7 +102,8 @@ public class JoinSurveyFragment extends Fragment {
     public void enableEditSurvey(boolean attend){
         name.setEnabled(true);
         phone.setEnabled(true);
-        relationSpinner.setEnabled(true);
+        groomRadioButton.setEnabled(true);
+        brideRadioButton.setEnabled(true);
         attendWillingSwitch.setEnabled(true);
         message.setEnabled(true);
         if (attend){
@@ -141,7 +144,8 @@ public class JoinSurveyFragment extends Fragment {
 
     EditText name, phone, detailAddress, message;
     TextView peopleNumber, vegetableNumber, meatNumber;
-    Spinner relationSpinner, citySpinner, regionSpinner;
+    Spinner citySpinner, regionSpinner;
+    RadioButton groomRadioButton, brideRadioButton;
     Button attendPeopleAddButton, attendPeopleMinusButton, meatAddButton, meatMinusButton, vegetableAddButton, vegetableMinusButton;
     ToggleButton attendMarrySession, attendEngageSession;
     Switch attendWillingSwitch;
@@ -163,7 +167,8 @@ public class JoinSurveyFragment extends Fragment {
         peopleNumber = (TextView)view.findViewById(R.id.attend_people_count_text);
         vegetableNumber = (TextView)view.findViewById(R.id.vegetable_count_text);
         meatNumber = (TextView)view.findViewById(R.id.meat_count_text);
-        relationSpinner = (Spinner)view.findViewById(R.id.relation_spinner);
+        groomRadioButton = (RadioButton)view.findViewById(R.id.groom_radio_button);
+        brideRadioButton = (RadioButton)view.findViewById(R.id.bride_radio_button);
         citySpinner = (Spinner)view.findViewById(R.id.city_spinner);
         regionSpinner = (Spinner)view.findViewById(R.id.region_spinner);
         weddingSessionLayout = (LinearLayout)view.findViewById(R.id.wedding_session_layout);
@@ -215,10 +220,18 @@ public class JoinSurveyFragment extends Fragment {
             }
         });
 
-
-        String[] m={getString(R.string.groom), getString(R.string.bride)};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_dropdown_item, m);
-        relationSpinner.setAdapter(adapter);
+        groomRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                brideRadioButton.setChecked(!isChecked);
+            }
+        });
+        brideRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                groomRadioButton.setChecked(!isChecked);
+            }
+        });
         selectedRegion = 0;
         city = new String[]{"縣市","臺北市","基隆市","新北市","新竹市", "新竹縣", "桃園市", "苗栗縣", "臺中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "臺南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "臺東縣", "澎湖縣", "金門縣", "連江縣"};
         region = new String[][]{
@@ -395,7 +408,8 @@ public class JoinSurveyFragment extends Fragment {
                     attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
                     attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
                     attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
-                    relationSpinner.setSelection(attendInformation.getInt("Relation"));
+                    groomRadioButton.setChecked(attendInformation.getInt("Relation") == 0);
+                    brideRadioButton.setChecked(attendInformation.getInt("Relation") == 1);
                 }
                 checkDeadline();
             }
@@ -532,7 +546,7 @@ public class JoinSurveyFragment extends Fragment {
                     attendInformation.put("VagetableNumber", Integer.parseInt(vegetableNumber.getText().toString()));
                     attendInformation.put("MeatNumber", Integer.parseInt(meatNumber.getText().toString()));
                     attendInformation.put("PeopleNumber", Integer.parseInt(peopleNumber.getText().toString()));
-                    attendInformation.put("Relation", relationSpinner.getSelectedItemPosition());
+                    attendInformation.put("Relation", groomRadioButton.isChecked() ? 0 : 1);
                     if (attendWillingSwitch.isChecked()) {
                         if (theWeddingIsOnlySession){
                             attendInformation.put("Session", -1);

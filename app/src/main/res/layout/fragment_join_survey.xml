@@ -92,17 +92,23 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:gravity="center_vertical"
                             android:text="@string/i_am" />
 
-                        <Spinner
+                        <RadioButton
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:id="@+id/relation_spinner"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:spinnerMode="dropdown" />
+                            android:text="@string/groom"
+                            android:id="@+id/groom_radio_button"
+                            android:layout_weight="1.5" />
+
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/bride"
+                            android:id="@+id/bride_radio_button"
+                            android:layout_weight="1.5" />
 
                         <TextView
                             android:layout_width="0dp"
