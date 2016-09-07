@@ -304,27 +304,29 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
+                            android:layout_weight="2"
                             android:gravity="center_vertical"
                             android:text="@string/attend_activity" />
 
-                        <ToggleButton
-                            android:id="@+id/survey_engage_toggle_button"
+                        <RadioButton
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:text="@string/engage"
-                            android:textOn="@string/engage"
-                            android:textOff="@string/engage"/>
+                            android:id="@+id/engage_radio_button"
+                            android:layout_weight="1.5" />
 
-                        <ToggleButton
-                            android:id="@+id/survey_marry_toggle_button"
+                        <RadioButton
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             android:text="@string/marry"
-                            android:textOn="@string/marry"
-                            android:textOff="@string/marry"/>
+                            android:id="@+id/marry_radio_button"
+                            android:layout_weight="1.5" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/dummy_text"
+                            android:layout_weight="1" />
                     </TableRow>
                 </LinearLayout>
 

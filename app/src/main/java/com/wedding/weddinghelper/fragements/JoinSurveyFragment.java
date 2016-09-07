@@ -90,8 +90,8 @@ public class JoinSurveyFragment extends Fragment {
         detailAddress.setEnabled(false);
         attendPeopleAddButton.setEnabled(false);
         attendPeopleMinusButton.setEnabled(false);
-        attendEngageSession.setEnabled(false);
-        attendMarrySession.setEnabled(false);
+        attendEngageRadioButton.setEnabled(false);
+        attendMarryRadioButton.setEnabled(false);
         vegetableAddButton.setEnabled(false);
         vegetableMinusButton.setEnabled(false);
         meatAddButton.setEnabled(false);
@@ -112,8 +112,8 @@ public class JoinSurveyFragment extends Fragment {
             detailAddress.setEnabled(true);
             attendPeopleAddButton.setEnabled(true);
             attendPeopleMinusButton.setEnabled(true);
-            attendEngageSession.setEnabled(true);
-            attendMarrySession.setEnabled(true);
+            attendEngageRadioButton.setEnabled(true);
+            attendMarryRadioButton.setEnabled(true);
             vegetableAddButton.setEnabled(true);
             vegetableMinusButton.setEnabled(true);
             meatAddButton.setEnabled(true);
@@ -125,8 +125,8 @@ public class JoinSurveyFragment extends Fragment {
             detailAddress.setEnabled(false);
             attendPeopleAddButton.setEnabled(false);
             attendPeopleMinusButton.setEnabled(false);
-            attendEngageSession.setEnabled(false);
-            attendMarrySession.setEnabled(false);
+            attendEngageRadioButton.setEnabled(false);
+            attendMarryRadioButton.setEnabled(false);
             vegetableAddButton.setEnabled(false);
             vegetableMinusButton.setEnabled(false);
             meatAddButton.setEnabled(false);
@@ -145,9 +145,8 @@ public class JoinSurveyFragment extends Fragment {
     EditText name, phone, detailAddress, message;
     TextView peopleNumber, vegetableNumber, meatNumber;
     Spinner citySpinner, regionSpinner;
-    RadioButton groomRadioButton, brideRadioButton;
+    RadioButton groomRadioButton, brideRadioButton, attendEngageRadioButton, attendMarryRadioButton;
     Button attendPeopleAddButton, attendPeopleMinusButton, meatAddButton, meatMinusButton, vegetableAddButton, vegetableMinusButton;
-    ToggleButton attendMarrySession, attendEngageSession;
     Switch attendWillingSwitch;
     Calendar modifyDeadline;
     Toast errorMessageToast;
@@ -172,8 +171,8 @@ public class JoinSurveyFragment extends Fragment {
         citySpinner = (Spinner)view.findViewById(R.id.city_spinner);
         regionSpinner = (Spinner)view.findViewById(R.id.region_spinner);
         weddingSessionLayout = (LinearLayout)view.findViewById(R.id.wedding_session_layout);
-        attendMarrySession = (ToggleButton)view.findViewById(R.id.survey_marry_toggle_button);
-        attendEngageSession = (ToggleButton)view.findViewById(R.id.survey_engage_toggle_button);
+        attendEngageRadioButton = (RadioButton)view.findViewById(R.id.engage_radio_button);
+        attendMarryRadioButton = (RadioButton)view.findViewById(R.id.marry_radio_button);
         attendWillingSwitch = (Switch)view.findViewById(R.id.survey_attend_switch);
         attendWillingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -192,10 +191,10 @@ public class JoinSurveyFragment extends Fragment {
                     meatAddButton.setEnabled(true);
                     meatMinusButton.setEnabled(true);
                     meatNumber.setText("0");
-                    attendEngageSession.setEnabled(true);
-                    attendEngageSession.setChecked(false);
-                    attendMarrySession.setEnabled(true);
-                    attendMarrySession.setChecked(false);
+                    attendEngageRadioButton.setEnabled(true);
+                    attendEngageRadioButton.setChecked(false);
+                    attendMarryRadioButton.setEnabled(true);
+                    attendMarryRadioButton.setChecked(false);
                 }
                 else {
                     attendWillingSwitch.setText(getString(R.string.attend_no));
@@ -212,10 +211,10 @@ public class JoinSurveyFragment extends Fragment {
                     meatAddButton.setEnabled(false);
                     meatMinusButton.setEnabled(false);
                     meatNumber.setText("0");
-                    attendEngageSession.setEnabled(false);
-                    attendEngageSession.setChecked(false);
-                    attendMarrySession.setEnabled(false);
-                    attendMarrySession.setChecked(false);
+                    attendEngageRadioButton.setEnabled(false);
+                    attendMarryRadioButton.setChecked(false);
+                    attendMarryRadioButton.setEnabled(false);
+                    attendMarryRadioButton.setChecked(false);
                 }
             }
         });
@@ -335,22 +334,16 @@ public class JoinSurveyFragment extends Fragment {
             }
         });
 
-        attendMarrySession.setOnClickListener(new View.OnClickListener() {
+        attendEngageRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (!attendMarrySession.isChecked()){
-                    attendMarrySession.setChecked(true);
-                }
-                attendEngageSession.setChecked(false);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                attendMarryRadioButton.setChecked(!isChecked);
             }
         });
-        attendEngageSession.setOnClickListener(new View.OnClickListener() {
+        attendMarryRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (!attendEngageSession.isChecked()){
-                    attendEngageSession.setChecked(true);
-                }
-                attendMarrySession.setChecked(false);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                attendEngageRadioButton.setChecked(!isChecked);
             }
         });
         disableEditSurvey();
@@ -406,8 +399,8 @@ public class JoinSurveyFragment extends Fragment {
                     meatNumber.setText(attendInformation.get("MeatNumber").toString());
                     detailAddress.setText(attendInformation.get("AddressDetail").toString());
                     attendWillingSwitch.setChecked((attendInformation.getInt("AttendingWilling") == 0));
-                    attendMarrySession.setChecked((attendInformation.getInt("Session") == 1));
-                    attendEngageSession.setChecked((attendInformation.getInt("Session") == 0));
+                    attendEngageRadioButton.setChecked((attendInformation.getInt("Session") == 0));
+                    attendMarryRadioButton.setChecked((attendInformation.getInt("Session") == 1));
                     groomRadioButton.setChecked(attendInformation.getInt("Relation") == 0);
                     brideRadioButton.setChecked(attendInformation.getInt("Relation") == 1);
                 }
@@ -508,7 +501,7 @@ public class JoinSurveyFragment extends Fragment {
                 showWarning("請輸入參加人次。", Toast.LENGTH_LONG);
                 return;
             }
-            if (!theWeddingIsOnlySession && (!attendEngageSession.isChecked() && !attendMarrySession.isChecked())){
+            if (!theWeddingIsOnlySession && (!attendEngageRadioButton.isChecked() && !attendMarryRadioButton.isChecked())){
                 showWarning("請選擇參加場次。", Toast.LENGTH_LONG);
                 return;
             }
@@ -552,9 +545,9 @@ public class JoinSurveyFragment extends Fragment {
                             attendInformation.put("Session", -1);
                         }
                         else {
-                            if (attendEngageSession.isChecked() && !attendMarrySession.isChecked()) {
+                            if (attendEngageRadioButton.isChecked() && !attendMarryRadioButton.isChecked()) {
                                 attendInformation.put("Session", 0);
-                            } else if (!attendEngageSession.isChecked() && attendMarrySession.isChecked()) {
+                            } else if (!attendEngageRadioButton.isChecked() && attendMarryRadioButton.isChecked()) {
                                 attendInformation.put("Session", 1);
                             }
                         }
