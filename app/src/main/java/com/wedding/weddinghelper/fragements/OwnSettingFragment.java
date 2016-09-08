@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 
@@ -21,6 +23,11 @@ public class OwnSettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_own_setting, container, false);
+
+        //載入廣告
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         Button mGuestListSummaryButton = (Button) view.findViewById(R.id.guest_list_summary_button);
         if (mGuestListSummaryButton != null) {

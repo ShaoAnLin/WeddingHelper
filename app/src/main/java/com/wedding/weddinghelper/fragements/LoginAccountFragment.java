@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -48,6 +50,10 @@ public class LoginAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login_account, container, false);
 
+        //載入廣告
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         mUserNameEditText = (EditText) view.findViewById(R.id.login_user_account);
         mUserPasswordEditText = (EditText) view.findViewById(R.id.login_user_password);
         mRememberLoginCheckBox = (CheckBox) view.findViewById(R.id.remember_login_checkbox);

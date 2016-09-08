@@ -20,6 +20,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.CacheManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class JoinActivity extends AppCompatActivity
     implements View.OnClickListener {
@@ -38,7 +40,10 @@ public class JoinActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
-
+        //載入廣告
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         // initiate action bar
         Toolbar actionBar = (Toolbar) findViewById(R.id.join_wedding_action_bar);
         setSupportActionBar(actionBar);

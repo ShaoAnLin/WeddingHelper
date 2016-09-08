@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".activities.JoinActivity">
+    tools:context=".activities.JoinActivity"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/join_wedding_action_bar"
@@ -91,8 +92,16 @@
                 android:background="@color/colorButtonBackground"
                 android:textStyle="bold"
                 android:visibility="gone" />
-
         </LinearLayout>
-
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 </RelativeLayout>

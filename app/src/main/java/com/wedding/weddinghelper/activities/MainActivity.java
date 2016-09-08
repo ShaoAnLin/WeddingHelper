@@ -1,6 +1,8 @@
 package com.wedding.weddinghelper.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.wedding.weddinghelper.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -19,8 +22,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Parse.initialize(this,"TlUPVfv4VFf6O5sWppgvE1Koo80oqvhvBB0FePUC", "jObLwhnPEsWGRWkjAhwDVcPv1RUcznytT2X83iet");
 
-        //final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
-        //currentInstallation.saveInBackground();
+        final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
+        PackageInfo pInfo;
+        String version;
+        try{
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionName;
+        }
+        catch(PackageManager.NameNotFoundException ex){
+            version = "";
+        }
+        currentInstallation.put("realAppVersion",version);
+        currentInstallation.saveInBackground();
 
         // initiate action bar
         Toolbar actionBar = (Toolbar) findViewById(R.id.main_action_bar);
