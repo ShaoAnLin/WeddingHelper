@@ -1,14 +1,17 @@
 package com.wedding.weddinghelper.activities;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.CacheManager;
@@ -23,6 +26,7 @@ public class OwnActivity extends AppCompatActivity
     final private String loginAccountFragmentTag = "loginAccountFragment";
 
     private Switch mHaveAccountSwitch;
+    boolean haveAccountFragementShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +69,67 @@ public class OwnActivity extends AppCompatActivity
             if (haveAccountCache != null){
                 if (haveAccountCache.equals("true")) {
                     mHaveAccountSwitch.setChecked(true);
+                    haveAccountFragementShown = true;
                     replaceLoginFormFragment(LoginAccountFragment.newInstance(), loginAccountFragmentTag);
                 }
                 else{
                     mHaveAccountSwitch.setChecked(false);
+                    haveAccountFragementShown = false;
                     replaceLoginFormFragment(CreateAccountFragment.newInstance(), createAccountFragmentTag);
                 }
             }
             else{
                 mHaveAccountSwitch.setChecked(false);
+                haveAccountFragementShown = false;
                 replaceLoginFormFragment(CreateAccountFragment.newInstance(), createAccountFragmentTag);
             }
         }
+
+        // check if keyboard is hidden or shown
+        final View activityRootView = findViewById(R.id.own_wedding_layout);
+        activityRootView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        activityRootView.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = activityRootView.getRootView().getHeight();
+
+                        int keypadHeight = screenHeight - r.bottom;
+                        if (keypadHeight > screenHeight * 0.15) {
+                            Log.d("Shawn", "Opened. Have account: " + haveAccountFragementShown);
+                            // keyboard is opened
+                            if (haveAccountFragementShown){
+                                if (LoginAccountFragment.mLoginAccountAdView != null) {
+                                    LoginAccountFragment.mLoginAccountAdView.destroy();
+                                    LoginAccountFragment.mLoginAccountAdView.setVisibility(View.GONE);
+                                }
+                            }
+                            else {
+                                if (CreateAccountFragment.mCreateAccountAdView != null) {
+                                    CreateAccountFragment.mCreateAccountAdView.destroy();
+                                    CreateAccountFragment.mCreateAccountAdView.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+                        else {
+                            Log.d("Shawn", "Closed. Have account: " + haveAccountFragementShown);
+                            // keyboard is closed
+                            if (haveAccountFragementShown){
+                                if (LoginAccountFragment.mLoginAccountAdView != null) {
+                                    LoginAccountFragment.mLoginAccountAdView.loadAd(LoginAccountFragment.mLoginAccountAdRequest);
+                                    LoginAccountFragment.mLoginAccountAdView.setVisibility(View.VISIBLE);
+                                }
+                            }
+                            else {
+                                if (CreateAccountFragment.mCreateAccountAdView != null) {
+                                    CreateAccountFragment.mCreateAccountAdView.loadAd(CreateAccountFragment.mCreateAccountAdRquest);
+                                    CreateAccountFragment.mCreateAccountAdView.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -103,6 +156,7 @@ public class OwnActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.own_login_fragment, LoginAccountFragment.newInstance(), loginAccountFragmentTag)
                     .commit();
+            haveAccountFragementShown = true;
         }
         else if (loginFormFragment instanceof LoginAccountFragment && !isChecked){
             Log.d("Login -> Create", "!!!");
@@ -115,6 +169,7 @@ public class OwnActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.own_login_fragment, CreateAccountFragment.newInstance(), createAccountFragmentTag)
                     .commit();
+            haveAccountFragementShown = false;
         }
         else{
             Log.d("Switch", "Error!");

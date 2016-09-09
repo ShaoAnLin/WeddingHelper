@@ -27,6 +27,8 @@ public class LoginAccountFragment extends Fragment {
     private static String mName;
     private static String mPassword;
 
+    public static AdView mLoginAccountAdView;
+    public static AdRequest mLoginAccountAdRequest;
     private EditText mUserNameEditText, mUserPasswordEditText;
     private Button mLoginButton;
     private CheckBox mRememberLoginCheckBox;
@@ -51,9 +53,10 @@ public class LoginAccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login_account, container, false);
 
         //載入廣告
-        AdView mAdView = (AdView) view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mLoginAccountAdView = (AdView) view.findViewById(R.id.loginAccountAdView);
+        mLoginAccountAdRequest = new AdRequest.Builder().build();
+        mLoginAccountAdView.loadAd(mLoginAccountAdRequest);
+
         mUserNameEditText = (EditText) view.findViewById(R.id.login_user_account);
         mUserPasswordEditText = (EditText) view.findViewById(R.id.login_user_password);
         mRememberLoginCheckBox = (CheckBox) view.findViewById(R.id.remember_login_checkbox);

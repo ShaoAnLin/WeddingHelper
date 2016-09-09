@@ -96,6 +96,7 @@ public class JoinMainActivity extends AppCompatActivity
         Bundle bundle = this.getIntent().getExtras();
         weddingInfoObjectId = bundle.getString("weddingInfoObjectId");
 
+        // check if keyboard is hidden or shown
         final View activityRootView = findViewById(R.id.container);
         activityRootView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -105,19 +106,14 @@ public class JoinMainActivity extends AppCompatActivity
                         activityRootView.getWindowVisibleDisplayFrame(r);
                         int screenHeight = activityRootView.getRootView().getHeight();
 
-                        // r.bottom is the position above soft keypad or device button.
-                        // if keypad is shown, the r.bottom is smaller than that before.
                         int keypadHeight = screenHeight - r.bottom;
-
-                        if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                        if (keypadHeight > screenHeight * 0.15) {
                             // keyboard is opened
-                            //mTabHost.setVisibility( View.GONE );
                             mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
                             mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
                             mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
                         } else {
                             // keyboard is closed
-                            //mTabHost.setVisibility( View.VISIBLE );
                             mTabHost.getTabWidget().getChildAt(0).setVisibility(View.VISIBLE);
                             mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
                             mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);

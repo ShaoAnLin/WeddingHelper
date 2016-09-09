@@ -1,5 +1,6 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,7 +23,10 @@ import com.wedding.weddinghelper.activities.OwnActivity;
 
 public class CreateAccountFragment extends Fragment {
 
+    public static AdView mCreateAccountAdView;
+    public static AdRequest mCreateAccountAdRquest;
     private Button mSignInButton;
+    public boolean hi = false;
 
     public static CreateAccountFragment newInstance() {
         Log.d("Create account", "New Instance");
@@ -42,10 +47,12 @@ public class CreateAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_account, container, false);
         Log.d("Create account", "create view");
+
         //載入廣告
-        AdView mAdView = (AdView) view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mCreateAccountAdView = (AdView) view.findViewById(R.id.createAccoutnAdView);
+        mCreateAccountAdRquest = new AdRequest.Builder().build();
+        mCreateAccountAdView.loadAd(mCreateAccountAdRquest);
+
         mSignInButton = (Button) view.findViewById(R.id.create_account_signin_button);
 
         if (mSignInButton != null) {
@@ -56,7 +63,6 @@ public class CreateAccountFragment extends Fragment {
                 }
             });
         }
-
         return(view);
     }
 

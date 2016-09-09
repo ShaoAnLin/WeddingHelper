@@ -3,6 +3,7 @@ package com.wedding.weddinghelper.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -29,6 +32,8 @@ public class JoinActivity extends AppCompatActivity
     private static String mName;
     private static String mPassword;
 
+    private AdView mAdView;
+    private AdRequest mAdRequest;
     private EditText mNameView;
     private EditText mPasswordView;
     private CheckBox mRememberLoginCheckBox;
@@ -40,10 +45,12 @@ public class JoinActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+
         //載入廣告
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(mAdRequest);
+
         // initiate action bar
         Toolbar actionBar = (Toolbar) findViewById(R.id.join_wedding_action_bar);
         setSupportActionBar(actionBar);
@@ -83,7 +90,7 @@ public class JoinActivity extends AppCompatActivity
             }
         }
 
-        Button mSignInButton = (Button) findViewById(R.id.join_wedding_sign_in_button);
+        final Button mSignInButton = (Button) findViewById(R.id.join_wedding_sign_in_button);
         if (mSignInButton != null) {
             mSignInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,8 +123,29 @@ public class JoinActivity extends AppCompatActivity
         progressDialog.setMax(100);
         progressDialog.setMessage("處理中...");
         progressDialog.setTitle(null);
-    }
 
+        // check if keyboard is hidden or shown
+        final View activityRootView = findViewById(R.id.join_wedding_fragment);
+        activityRootView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        activityRootView.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = activityRootView.getRootView().getHeight();
+
+                        int keypadHeight = screenHeight - r.bottom;
+                        if (keypadHeight > screenHeight * 0.15) {
+                            mAdView.destroy();
+                            mAdView.setVisibility(View.GONE);
+                        }
+                        else {
+                            mAdView.loadAd(mAdRequest);
+                            mAdView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+    }
 
     private void login(String weddingInfoObjectId){
         Intent intent = new Intent();
