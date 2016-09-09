@@ -2,7 +2,9 @@ package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -36,28 +39,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 
 public class PhotoFragment extends Fragment {
-    public static PhotoFragment newInstance() {
-        PhotoFragment fragment = new PhotoFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+
+    private static final int PICK_IMAGE = 1;
     public String weddingInfoObjectId;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d("Neal","activity class = "+activity.getLocalClassName());
-        if (activity.getLocalClassName().equals("activities.OwnMainActivity")){
+        Log.d("Neal", "activity class = " + activity.getLocalClassName());
+        if (activity.getLocalClassName().equals("activities.OwnMainActivity")) {
             OwnMainActivity mMainActivity = (OwnMainActivity) activity;
             weddingInfoObjectId = mMainActivity.getWeddingInfoObjectId();
-        }
-        else {
+        } else {
             JoinMainActivity mMainActivity = (JoinMainActivity) activity;
             weddingInfoObjectId = mMainActivity.getWeddingInfoObjectId();
         }
@@ -77,7 +77,7 @@ public class PhotoFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_camera){
+        if (id == R.id.action_camera) {
             //ToDo:使用相機拍照，並上傳照片
             //dispatchTakePictureIntent();
             new AlertDialog.Builder(getContext())
@@ -87,15 +87,16 @@ public class PhotoFragment extends Fragment {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
             return true;
-        }
-        else if(id == R.id.action_album){
+        } else if (id == R.id.action_album) {
             //ToDo:從相簿裡選擇照片，並上傳照片
-            new AlertDialog.Builder(getContext())
+            /*new AlertDialog.Builder(getContext())
                     .setTitle("訊息")
                     .setMessage("功能尚未開放呦！")
                     .setPositiveButton("好！", null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+                    .show();*/
+            Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, PICK_IMAGE);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -138,31 +139,65 @@ public class PhotoFragment extends Fragment {
     }
     */
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            Uri Selected_Image_Uri = data.getData();
+            try {
+                Bitmap captureBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);
+
+                // scale the image for display
+                final float MAX_PIXEL = 800;
+                float width = (float) captureBmp.getWidth();
+                float height = (float) captureBmp.getHeight();
+                float w = (width > height ? MAX_PIXEL : width / height * MAX_PIXEL);
+                float h = (height > width ? MAX_PIXEL : height / width * MAX_PIXEL);
+                Bitmap scaledBmp = Bitmap.createScaledBitmap(captureBmp, (int)w, (int)h, true);
+
+                ImageView imageView = (ImageView) getActivity().findViewById(R.id.testImageView);
+                imageView.setImageBitmap(scaledBmp);
+            }catch (Exception e){}
+        }
+        else {
+            Log.d("Shawn", "resultCode: " + resultCode);
+            switch (resultCode) {
+                case 0:
+                    Log.d("Shawn", "User cancelled");
+                    break;
+                default:
+                    break;
+
+            }
+        }
+    }
+
     private GridView photoGridView;
-    private ParseFile[]photos;
+    private ParseFile[] photos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
-        photoGridView = (GridView)view.findViewById(R.id.photo_grid_view);
-        ParseQuery query = ParseQuery.getQuery(weddingInfoObjectId+"Photo");
+        photoGridView = (GridView) view.findViewById(R.id.photo_grid_view);
+        ParseQuery query = ParseQuery.getQuery(weddingInfoObjectId + "Photo");
         query.orderByAscending("OriginalPhotoObjectID");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                String [] microPhotoUrls = new String[list.size()];
-                String [] miniPhotoUrls = new String[list.size()];
-                for (int i = 0 ; i<list.size() ; i++){
+                String[] microPhotoUrls = new String[list.size()];
+                String[] miniPhotoUrls = new String[list.size()];
+                for (int i = 0; i < list.size(); i++) {
                     ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
                     microPhotoUrls[i] = microPhotoFile.getUrl();
                     ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
                     miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
-                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), microPhotoUrls ));
+                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), microPhotoUrls));
 
                 PhotoViewActivity.photoUrls = miniPhotoUrls;
-                photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
@@ -172,7 +207,7 @@ public class PhotoFragment extends Fragment {
                 });
             }
         });
-        return(view);
+        return (view);
     }
 
     @Override

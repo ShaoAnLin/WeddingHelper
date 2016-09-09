@@ -5,12 +5,27 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/photo_grid_view"
-        android:horizontalSpacing="20dp"
-        android:verticalSpacing="20dp"
-        android:stretchMode="columnWidth"
-        android:numColumns="2"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/testImageView"
+            android:src="@drawable/ic_place_24dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/photo_grid_view"
+            android:horizontalSpacing="20dp"
+            android:verticalSpacing="20dp"
+            android:stretchMode="columnWidth"
+            android:numColumns="2"/>
+
+    </LinearLayout>
 </RelativeLayout>
