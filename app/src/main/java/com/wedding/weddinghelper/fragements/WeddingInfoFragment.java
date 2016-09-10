@@ -1,6 +1,7 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class WeddingInfoFragment extends Fragment {
     private Button engageTime, engagePlace, engageAddress, marryTime, marryPlace, marryAddress;
     private String engageDate, engagePlaceUrl, engageAddressUrl, marryDate, marryPlaceUrl, marryAddressUrl;
     private String[] engageDateSplit, marryDateSplit;
+    private ProgressDialog progressDialog;
 
     public static WeddingInfoFragment newInstance() {
         Log.d("Own info", "New Instance");
@@ -70,6 +72,13 @@ public class WeddingInfoFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         View view = getView();
 
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("處理中...");
+        progressDialog.setTitle(null);
+        progressDialog.show();
+
         engageTitle = (TextView)view.findViewById(R.id.engage_label);
         marryTitle = (TextView)view.findViewById(R.id.marry_label);
         groomAndBrideName = (TextView) view.findViewById(R.id.text_own_info);
@@ -85,6 +94,8 @@ public class WeddingInfoFragment extends Fragment {
         query.getInBackground(weddingInfoObjectId,new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject weddingInformation, ParseException e) {
+                progressDialog.dismiss();
+
                 groomAndBrideName.setText(weddingInformation.getString("groomName")+"&"+weddingInformation.getString("brideName"));
                 engageTime.setText(weddingInformation.getString("engageDate"));
                 engagePlace.setText(weddingInformation.getString("engagePlace"));

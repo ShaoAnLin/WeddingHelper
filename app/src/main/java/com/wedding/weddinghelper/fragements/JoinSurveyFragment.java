@@ -355,12 +355,14 @@ public class JoinSurveyFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("Neal","onActivityCreated infJoinSurveyFragment");
+
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
         progressDialog.setMax(100);
         progressDialog.setMessage("處理中...");
         progressDialog.setTitle(null);
         progressDialog.show();
+
         final ParseInstallation currentInstallation = ParseInstallation.getCurrentInstallation();
         ParseQuery query = ParseQuery.getQuery("AttendantList");
         query.whereEqualTo("InstallationID",currentInstallation.getInstallationId());
