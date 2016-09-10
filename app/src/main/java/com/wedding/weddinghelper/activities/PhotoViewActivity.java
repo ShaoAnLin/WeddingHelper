@@ -153,12 +153,14 @@ public class PhotoViewActivity extends AppCompatActivity implements
     private void showNextPhoto(){
         if (mPosition < (photoUrls.length - 1)){
             mPosition++;
+            progressDialog.show();
             showImage();
         }
     }
     private void showPreviousPhoto(){
         if (mPosition > 0){
             mPosition--;
+            progressDialog.show();
             showImage();
         }
     }
