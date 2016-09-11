@@ -40,7 +40,6 @@ public class PhotoViewActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_view);
 
-        fullScreen();
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMax(100);
@@ -90,7 +89,6 @@ public class PhotoViewActivity extends AppCompatActivity implements
             case MotionEvent.ACTION_MOVE:
                 return true;
             case MotionEvent.ACTION_UP:
-                Log.d("onTouchEvent-ACTION_UP","UP");
                 upX = event.getX();
                 upY = event.getY();
                 float x = Math.abs(upX - downX);
@@ -146,7 +144,6 @@ public class PhotoViewActivity extends AppCompatActivity implements
     }
     @Override
     public boolean onSingleTapConfirmed(MotionEvent event) {
-        fullScreen();
         return true;
     }
 

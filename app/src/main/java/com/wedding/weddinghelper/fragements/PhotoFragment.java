@@ -1,7 +1,11 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -46,16 +50,24 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 public class PhotoFragment extends Fragment {
 
-    private static final int PICK_IMAGE = 1;
-    private static final int TAKE_PHOTO = 2;
+    private static final int TAKE_PHOTO = 1;
+    private static final int PICK_IMAGE = 2;
     public String weddingInfoObjectId;
+    private ProgressDialog progressDialog;
+    private GridView photoGridView;
+    private File mPhotoDirectory;
+    private Bitmap originalBmp;
+
+    private enum PHOTO_SCALE{ ORIGIN, MINI, MICRO };
 
     @Override
     public void onAttach(Activity activity) {
@@ -85,35 +97,35 @@ public class PhotoFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_camera) {
-            //ToDo:使用相機拍照，並上傳照片
+            // 使用相機拍照，並上傳照片
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
             startActivityForResult(intent, TAKE_PHOTO);
             return true;
         } else if (id == R.id.action_album) {
-            //ToDo:從相簿裡選擇照片，並上傳照片
-            Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            // 從相簿裡選擇照片，並上傳照片
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, PICK_IMAGE);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private GridView photoGridView;
-    private ParseFile[] photos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
+
         photoGridView = (GridView) view.findViewById(R.id.photo_grid_view);
         getPhotoPreviewList();
+        prepareDownloadDirectory();
 
         return (view);
     }
 
-    public void getPhotoPreviewList(){
-        showProgressPar();
+    public void getPhotoPreviewList() {
+        showProgressBar("相片載入中...");
         ParseQuery query = ParseQuery.getQuery(weddingInfoObjectId + "Photo");
         query.orderByAscending("OriginalPhotoObjectID");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -136,7 +148,6 @@ public class PhotoFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
                         intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
                         startActivity(intent);
-
                     }
                 });
                 progressDialog.dismiss();
@@ -152,80 +163,63 @@ public class PhotoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap scaledBmp=null;
-        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+        Toast.makeText(getActivity().getApplicationContext(), "相片上傳中...", Toast.LENGTH_SHORT).show();
+        if (requestCode == TAKE_PHOTO && resultCode == Activity.RESULT_OK && data != null) {
             Uri Selected_Image_Uri = data.getData();
             try {
-                Bitmap captureBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);
-                // scale the image for display
-                final float MAX_PIXEL = 800;
-                float width = (float) captureBmp.getWidth();
-                float height = (float) captureBmp.getHeight();
-                float w = (width > height ? MAX_PIXEL : width / height * MAX_PIXEL);
-                float h = (height > width ? MAX_PIXEL : height / width * MAX_PIXEL);
-                scaledBmp = Bitmap.createScaledBitmap(captureBmp, (int)w, (int)h, true);
-                ImageView mImageView = (ImageView) getActivity().findViewById(R.id.testImageView);
-                mImageView.setImageBitmap(scaledBmp);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                uploadPhoto(bytes);
-            }catch (Exception e){}
-        }
-        else if (requestCode == TAKE_PHOTO && resultCode == Activity.RESULT_OK && data != null) {
-            Uri Selected_Image_Uri = data.getData();
-            try {
-                Bitmap captureBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);
-                // scale the image for display
-                final float MAX_PIXEL = 800;
-                float width = (float) captureBmp.getWidth();
-                float height = (float) captureBmp.getHeight();
-                float w = (width > height ? MAX_PIXEL : width / height * MAX_PIXEL);
-                float h = (height > width ? MAX_PIXEL : height / width * MAX_PIXEL);
-                scaledBmp = Bitmap.createScaledBitmap(captureBmp, (int)w, (int)h, true);
-                ImageView mImageView = (ImageView) getActivity().findViewById(R.id.testImageView);
-                mImageView.setImageBitmap(scaledBmp);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                scaledBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                //File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + "Imagename13.jpg");
-                //Log.d("Neal","File path = "+f.getPath()+"  " +f.getAbsolutePath());
-                uploadPhoto(bytes);
-
-            }catch (Exception e){
-                Log.d("Neal","Bitmap exception = " +e.toString());
+                originalBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);
+                uploadPhoto();
+            } catch (Exception e) {
+                Log.d("Neal", "Bitmap exception = " + e.toString());
             }
-        }
-        else {
-            Log.d("Shawn", "resultCode: " + resultCode);
-            switch (resultCode) {
-                case 0:
-                    Log.d("Shawn", "User cancelled");
-                    break;
-                default:
-                    break;
-
+        } else if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            Uri Selected_Image_Uri = data.getData();
+            try {
+                originalBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);
+                uploadPhoto();
+            } catch (Exception e) {
             }
         }
     }
 
-    public void uploadPhoto(ByteArrayOutputStream bytes){
-        showProgressPar();
-        final ParseFile fileUploadingToParse = new ParseFile("microPhoto.jpg",bytes.toByteArray());
+    private void uploadPhoto() {
+        ByteArrayOutputStream bytesOri = getByteArrayFromBmp(PHOTO_SCALE.ORIGIN);
+        final ParseFile fileUploadingToParse = new ParseFile("originPhoto.jpg", bytesOri.toByteArray());
         fileUploadingToParse.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                final ParseObject photoOriginal = new ParseObject(weddingInfoObjectId+"OriginalPhoto");
+                final ParseObject photoOriginal = new ParseObject(weddingInfoObjectId + "OriginalPhoto");
                 photoOriginal.put("Photo", fileUploadingToParse);
                 photoOriginal.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        ParseObject photoThumbnail = new ParseObject(weddingInfoObjectId+"Photo");
-                        photoThumbnail.put("OriginalPhotoObjectID",photoOriginal.getObjectId());
-                        photoThumbnail.put("microPhoto",fileUploadingToParse);
-                        photoThumbnail.put("miniPhoto", fileUploadingToParse);
+                        // upload micro, mini photo
+                        uploadCompressedPhoto(photoOriginal.getObjectId());
+                    }
+                });
+            }
+        });
+    }
+
+    // called from uploadPhoto()
+    private void uploadCompressedPhoto(final String originalPhotoId) {
+        ByteArrayOutputStream bytesMini = getByteArrayFromBmp(PHOTO_SCALE.MINI);
+        final ParseFile miniPhotoUploadingToParse = new ParseFile("miniPhoto.jpg", bytesMini.toByteArray());
+        miniPhotoUploadingToParse.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                ByteArrayOutputStream bytesMicro = getByteArrayFromBmp(PHOTO_SCALE.MICRO);
+                final ParseFile microPhotoUploadingToParse = new ParseFile("microPhoto.jpg", bytesMicro.toByteArray());
+                microPhotoUploadingToParse.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        ParseObject photoThumbnail = new ParseObject(weddingInfoObjectId + "Photo");
+                        photoThumbnail.put("OriginalPhotoObjectID", originalPhotoId);
+                        photoThumbnail.put("miniPhoto", miniPhotoUploadingToParse);
+                        photoThumbnail.put("microPhoto", microPhotoUploadingToParse);
                         photoThumbnail.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
-                                progressDialog.dismiss();
                                 Log.d("Neal", "Done saving 3 files!");
                                 getPhotoPreviewList();
                             }
@@ -235,15 +229,82 @@ public class PhotoFragment extends Fragment {
             }
         });
     }
-    ProgressDialog progressDialog;
-    public void showProgressPar(){
+
+    private void showProgressBar(String msg) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getContext());
         }
         progressDialog.setCancelable(false);
         progressDialog.setMax(100);
-        progressDialog.setMessage("處理中...");
+        progressDialog.setMessage(msg);
         progressDialog.setTitle(null);
         progressDialog.show();
+    }
+
+    // save image to Download directory
+    private void saveImage(Bitmap finalBitmap) {
+        Random generator = new Random();
+        int n = generator.nextInt(10000);
+        String fname = "Image-" + n;
+        if (!mPhotoDirectory.exists()) {
+            mPhotoDirectory.mkdir();
+        }
+        File file = new File(mPhotoDirectory, fname + ".jpg");
+        n = 1;
+        while (file.exists()) {
+            file = new File(mPhotoDirectory, fname + "(" + n + ")" + ".jpg");
+            n++;
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void prepareDownloadDirectory() {
+        if (Environment.getExternalStorageState() == null) {
+            // store internal
+            Log.d("Shawn", "NO SD card found");
+            mPhotoDirectory = new File(Environment.getDataDirectory() + "/Download/");
+            if (!mPhotoDirectory.exists()) {
+                mPhotoDirectory.mkdir();
+            }
+        } else {
+            // store in SD card
+            Log.d("Shawn", "Have SD card");
+            mPhotoDirectory = new File(Environment.getExternalStorageDirectory() + "/Download/");
+            if (!mPhotoDirectory.exists()) {
+                mPhotoDirectory.mkdir();
+            }
+        }
+    }
+
+    private ByteArrayOutputStream getByteArrayFromBmp(PHOTO_SCALE scale){
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+        if (scale == PHOTO_SCALE.ORIGIN){
+            originalBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        }
+        else if (scale == PHOTO_SCALE.MINI){
+            Bitmap miniBmp = getScaledBitmap(500);
+            miniBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        }
+        else if (scale == PHOTO_SCALE.MICRO){
+            Bitmap microBmp = getScaledBitmap(200);
+            microBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        }
+        return bytes;
+    }
+
+    private Bitmap getScaledBitmap(float MIN_PIXEL){
+        float width = (float) originalBmp.getWidth();
+        float height = (float) originalBmp.getHeight();
+        float w = (width < height ? MIN_PIXEL : width / height * MIN_PIXEL);
+        float h = (height < width ? MIN_PIXEL : height / width * MIN_PIXEL);
+        return Bitmap.createScaledBitmap(originalBmp, (int) w, (int) h, true);
     }
 }
