@@ -1,22 +1,40 @@
 package com.wedding.weddinghelper.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.fragements.PhotoFragment;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.util.Random;
 
 public class PhotoViewActivity extends AppCompatActivity implements
         GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener{
@@ -34,6 +52,7 @@ public class PhotoViewActivity extends AppCompatActivity implements
     private static float upY = 0;
 
     private int mPosition = 0;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +119,10 @@ public class PhotoViewActivity extends AppCompatActivity implements
                     // swipe up
                 }else if(upY > downY && jiaodu > 45) {
                     // swipe down
-                }else if(upX < downX && jiaodu <= 45) {
+                }else if(downX - upX > 20  && jiaodu <= 45) {
                     // swipe left
                     showNextPhoto();
-                }else if(upX > downX && jiaodu <= 45) {
+                }else if(upX - downX > 20 && jiaodu <= 45) {
                     // swipe right
                     showPreviousPhoto();
                 }
@@ -122,6 +141,7 @@ public class PhotoViewActivity extends AppCompatActivity implements
     }
     @Override
     public void onLongPress(MotionEvent event) {
+        callDownloadPopup();
     }
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -177,5 +197,51 @@ public class PhotoViewActivity extends AppCompatActivity implements
                     public void onError() {
                     }
                 });
+    }
+
+    private void callDownloadPopup() {
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.image_viewer_popup, null);
+        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        Button mDownloadButton = ((Button) popupView.findViewById(R.id.download_button));
+        if (mDownloadButton != null){
+            mDownloadButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Toast.makeText(getApplicationContext(), "相片下載中...", Toast.LENGTH_SHORT).show();
+                        PhotoFragment.saveImage(
+                                PhotoFragment.mPhotoDirectory,
+                                getBitmapFromURL(photoUrls[mPosition])
+                        );
+                        popupWindow.dismiss();
+                    }
+                });
+        }
+        Button mCalcelButton = ((Button) popupView.findViewById(R.id.cancel_button));
+        if (mCalcelButton != null){
+            mCalcelButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    popupWindow.dismiss();
+                }
+            });
+        }
+    }
+
+    private Bitmap getBitmapFromURL(String src) {
+        try {
+            java.net.URL url = new java.net.URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

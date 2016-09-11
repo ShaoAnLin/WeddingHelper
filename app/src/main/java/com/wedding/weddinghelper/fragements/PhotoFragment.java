@@ -61,11 +61,12 @@ public class PhotoFragment extends Fragment {
 
     private static final int TAKE_PHOTO = 1;
     private static final int PICK_IMAGE = 2;
-    public String weddingInfoObjectId;
     private ProgressDialog progressDialog;
     private GridView photoGridView;
-    private File mPhotoDirectory;
     private Bitmap originalBmp;
+
+    public String weddingInfoObjectId;
+    public static File mPhotoDirectory;
 
     private enum PHOTO_SCALE{ ORIGIN, MINI, MICRO };
 
@@ -242,17 +243,17 @@ public class PhotoFragment extends Fragment {
     }
 
     // save image to Download directory
-    private void saveImage(Bitmap finalBitmap) {
+    public static void saveImage(File path, Bitmap finalBitmap) {
         Random generator = new Random();
         int n = generator.nextInt(10000);
         String fname = "Image-" + n;
-        if (!mPhotoDirectory.exists()) {
-            mPhotoDirectory.mkdir();
+        if (!path.exists()) {
+            path.mkdir();
         }
-        File file = new File(mPhotoDirectory, fname + ".jpg");
+        File file = new File(path, fname + ".jpg");
         n = 1;
         while (file.exists()) {
-            file = new File(mPhotoDirectory, fname + "(" + n + ")" + ".jpg");
+            file = new File(path, fname + "(" + n + ")" + ".jpg");
             n++;
         }
         try {
@@ -290,11 +291,11 @@ public class PhotoFragment extends Fragment {
             originalBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         }
         else if (scale == PHOTO_SCALE.MINI){
-            Bitmap miniBmp = getScaledBitmap(500);
+            Bitmap miniBmp = getScaledBitmap(1000);
             miniBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         }
         else if (scale == PHOTO_SCALE.MICRO){
-            Bitmap microBmp = getScaledBitmap(200);
+            Bitmap microBmp = getScaledBitmap(400);
             microBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         }
         return bytes;
