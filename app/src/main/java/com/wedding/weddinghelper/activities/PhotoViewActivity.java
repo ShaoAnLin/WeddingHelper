@@ -273,6 +273,7 @@ public class PhotoViewActivity extends AppCompatActivity implements
                                 Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
                                 PhotoFragment.saveImage(PhotoFragment.mPhotoDirectory, bmp);
                                 Toast.makeText(getApplicationContext(), "相片下載完成!", Toast.LENGTH_SHORT).show();
+                                manager.remove(downloadId);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
