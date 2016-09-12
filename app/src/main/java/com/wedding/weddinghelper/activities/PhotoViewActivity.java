@@ -1,10 +1,18 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
@@ -53,6 +61,10 @@ public class PhotoViewActivity extends AppCompatActivity implements
 
     private int mPosition = 0;
     private PopupWindow popupWindow;
+
+    private long downloadId;
+    private DownloadManager manager;
+    private DownloadManager.Request request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,10 +224,8 @@ public class PhotoViewActivity extends AppCompatActivity implements
             mDownloadButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         Toast.makeText(getApplicationContext(), "相片下載中...", Toast.LENGTH_SHORT).show();
-                        PhotoFragment.saveImage(
-                                PhotoFragment.mPhotoDirectory,
-                                getBitmapFromURL(photoUrls[mPosition])
-                        );
+                        // TODO: download mini photo now, should be original photo
+                        download(photoUrls[mPosition]);
                         popupWindow.dismiss();
                     }
                 });
@@ -243,5 +253,36 @@ public class PhotoViewActivity extends AppCompatActivity implements
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void download(String url){
+        manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if(DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)){
+                    DownloadManager.Query query = new DownloadManager.Query();
+                    query.setFilterById(downloadId);
+                    Cursor c = manager.query(query);
+                    if (c.moveToFirst()) {
+                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                        if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
+                            String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                            try {
+                                Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
+                                PhotoFragment.saveImage(PhotoFragment.mPhotoDirectory, bmp);
+                                Toast.makeText(getApplicationContext(), "相片下載完成!", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        request = new DownloadManager.Request(Uri.parse(url));
+        downloadId = manager.enqueue(request);
     }
 }
