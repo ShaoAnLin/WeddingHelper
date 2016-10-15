@@ -211,6 +211,7 @@ public class PhotoViewActivity extends AppCompatActivity implements
                 });
     }
 
+    // TODO: dismiss popup when clicking the screen other than the window
     private void callDownloadPopup() {
         LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.image_viewer_popup, null);
@@ -237,21 +238,6 @@ public class PhotoViewActivity extends AppCompatActivity implements
                     popupWindow.dismiss();
                 }
             });
-        }
-    }
-
-    private Bitmap getBitmapFromURL(String src) {
-        try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 

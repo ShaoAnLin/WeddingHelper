@@ -104,7 +104,7 @@ public class JoinActivity extends AppCompatActivity
             testingSignInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ParseQuery query = ParseQuery.getQuery("Information");
+                    /*ParseQuery query = ParseQuery.getQuery("Information");
                     //query.whereEqualTo("weddingAccount", "Neal&Pallas");
                     //query.whereEqualTo("weddingPassword", "nealpallas");
                     query.whereEqualTo("weddingAccount", "BigWedding");
@@ -114,7 +114,10 @@ public class JoinActivity extends AppCompatActivity
                         public void done(ParseObject information, ParseException e) {
                             login(information.getObjectId());
                         }
-                    });
+                    });*/
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), GridViewActivity.class);
+                    startActivity(intent);
                 }
             });
         }
