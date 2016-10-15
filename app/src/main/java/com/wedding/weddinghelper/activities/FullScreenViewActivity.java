@@ -13,6 +13,10 @@ import android.view.View;
 import com.wedding.weddinghelper.Adapter.FullScreenImageAdapter;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.Utils;
+import com.wedding.weddinghelper.fragements.PhotoFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FullScreenViewActivity extends Activity{
 
@@ -26,17 +30,15 @@ public class FullScreenViewActivity extends Activity{
         setContentView(R.layout.activity_fullscreen_view);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-
         utils = new Utils(getApplicationContext());
 
         Intent i = getIntent();
         int position = i.getIntExtra("position", 0);
 
-        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, utils.getFilePaths());
-
+        //adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, utils.getFilePaths());
+        ArrayList<String> photoList = new ArrayList(Arrays.asList(PhotoFragment.miniPhotoUrls));
+        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, photoList);
         viewPager.setAdapter(adapter);
-
-        // displaying selected image first
         viewPager.setCurrentItem(position);
     }
 }

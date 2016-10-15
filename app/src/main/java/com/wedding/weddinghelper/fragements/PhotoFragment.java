@@ -79,8 +79,10 @@ public class PhotoFragment extends Fragment {
     private Utils utils;
     private ArrayList<String> imagePaths = new ArrayList<String>();
     private GridViewImageAdapter adapter;
-    private GridView gridView;
     private int columnWidth;
+
+    static public String [] miniPhotoUrls;
+    static public String [] microPhotoUrls;
 
     private enum PHOTO_SCALE{ ORIGIN, MINI, MICRO };
 
@@ -135,10 +137,6 @@ public class PhotoFragment extends Fragment {
         photoGridView = (GridView) view.findViewById(R.id.photo_grid_view);
         getPhotoPreviewList();
         prepareDownloadDirectory();
-
-        // init grid view
-        utils = new Utils(getActivity());
-        InitilizeGridLayout();
         return (view);
     }
 
@@ -165,8 +163,8 @@ public class PhotoFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                String [] microPhotoUrls = new String[list.size()];
-                String [] miniPhotoUrls = new String[list.size()];
+                microPhotoUrls = new String[list.size()];
+                miniPhotoUrls = new String[list.size()];
                 for (int i = 0; i < list.size(); i++) {
                     ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
                     microPhotoUrls[i] = microPhotoFile.getUrl();
@@ -174,6 +172,8 @@ public class PhotoFragment extends Fragment {
                     miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
                 PhotoViewActivity.photoUrls = miniPhotoUrls;
+                utils = new Utils(getActivity());
+                InitilizeGridLayout();
                 imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
                 adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
                 photoGridView.setAdapter(adapter);

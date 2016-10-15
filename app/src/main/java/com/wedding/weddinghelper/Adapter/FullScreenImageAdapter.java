@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.TouchImageView;
 
@@ -56,18 +57,24 @@ public class FullScreenImageAdapter extends PagerAdapter {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
+
+        //Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
+        String url = (String) _imagePaths.get(position);
+        Context context = this._activity.getApplicationContext();
+        Picasso.with(context)
+                .load(url)
+                .into(imgDisplay);
 
         // the bitmap must not be too large. Otherwise, it crashes
         // the following codes scale the image down
-        float width = (float) bitmap.getWidth();
+        /*float width = (float) bitmap.getWidth();
         float height = (float) bitmap.getHeight();
         float MIN_PIXEL = 400;
         float w = (width < height ? MIN_PIXEL : width / height * MIN_PIXEL);
         float h = (height < width ? MIN_PIXEL : height / width * MIN_PIXEL);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) w, (int) h, true);
 
-        imgDisplay.setImageBitmap(scaledBitmap);
+        imgDisplay.setImageBitmap(scaledBitmap);*/
 
         ((ViewPager) container).addView(viewLayout);
 
