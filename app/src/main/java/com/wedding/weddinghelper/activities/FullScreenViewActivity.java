@@ -32,8 +32,7 @@ public class FullScreenViewActivity extends Activity{
         Intent i = getIntent();
         int position = i.getIntExtra("position", 0);
 
-        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this,
-                utils.getFilePaths());
+        adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, utils.getFilePaths());
 
         viewPager.setAdapter(adapter);
 

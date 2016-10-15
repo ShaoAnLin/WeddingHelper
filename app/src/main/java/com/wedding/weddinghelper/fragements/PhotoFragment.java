@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,8 +40,12 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.wedding.weddinghelper.Adapter.GridViewImageAdapter;
 import com.wedding.weddinghelper.Adapter.gridViewCustomAdapter;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.AppConstant;
+import com.wedding.weddinghelper.Util.Utils;
+import com.wedding.weddinghelper.activities.GridViewActivity;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 import com.wedding.weddinghelper.activities.PhotoViewActivity;
@@ -52,6 +58,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -67,6 +75,12 @@ public class PhotoFragment extends Fragment {
 
     public String weddingInfoObjectId;
     public static File mPhotoDirectory;
+
+    private Utils utils;
+    private ArrayList<String> imagePaths = new ArrayList<String>();
+    private GridViewImageAdapter adapter;
+    private GridView gridView;
+    private int columnWidth;
 
     private enum PHOTO_SCALE{ ORIGIN, MINI, MICRO };
 
@@ -122,7 +136,26 @@ public class PhotoFragment extends Fragment {
         getPhotoPreviewList();
         prepareDownloadDirectory();
 
+        // init grid view
+        utils = new Utils(getActivity());
+        InitilizeGridLayout();
         return (view);
+    }
+
+    private void InitilizeGridLayout() {
+        Resources r = getResources();
+        float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                AppConstant.GRID_PADDING, r.getDisplayMetrics());
+
+        columnWidth = (int) ((utils.getScreenWidth() - ((AppConstant.NUM_OF_COLUMNS + 1) * padding)) / AppConstant.NUM_OF_COLUMNS);
+
+        photoGridView.setNumColumns(AppConstant.NUM_OF_COLUMNS);
+        photoGridView.setColumnWidth(columnWidth);
+        photoGridView.setStretchMode(GridView.NO_STRETCH);
+        photoGridView.setPadding((int) padding, (int) padding, (int) padding,
+                (int) padding);
+        photoGridView.setHorizontalSpacing((int) padding);
+        photoGridView.setVerticalSpacing((int) padding);
     }
 
     public void getPhotoPreviewList() {
@@ -132,25 +165,18 @@ public class PhotoFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                String[] microPhotoUrls = new String[list.size()];
-                String[] miniPhotoUrls = new String[list.size()];
+                String [] microPhotoUrls = new String[list.size()];
+                String [] miniPhotoUrls = new String[list.size()];
                 for (int i = 0; i < list.size(); i++) {
                     ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
                     microPhotoUrls[i] = microPhotoFile.getUrl();
                     ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
                     miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
-                photoGridView.setAdapter(new gridViewCustomAdapter(getContext(), microPhotoUrls));
-
                 PhotoViewActivity.photoUrls = miniPhotoUrls;
-                photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
-                        intent.putExtra(PhotoViewActivity.EXTRA_MESSAGE, position);
-                        startActivity(intent);
-                    }
-                });
+                imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
+                adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
+                photoGridView.setAdapter(adapter);
                 progressDialog.dismiss();
             }
         });
@@ -222,6 +248,7 @@ public class PhotoFragment extends Fragment {
                             @Override
                             public void done(ParseException e) {
                                 Log.d("Neal", "Done saving 3 files!");
+                                // TODO: replace with new method?
                                 getPhotoPreviewList();
                             }
                         });

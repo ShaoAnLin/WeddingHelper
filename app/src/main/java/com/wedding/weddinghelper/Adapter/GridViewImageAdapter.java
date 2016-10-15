@@ -3,14 +3,20 @@ package com.wedding.weddinghelper.Adapter;
 /**
  * Created by linshaoan on 2016/10/15.
  */
+
+import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.activities.FullScreenViewActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,8 +33,7 @@ public class GridViewImageAdapter extends BaseAdapter {
     private ArrayList<String> _filePaths = new ArrayList<String>();
     private int imageWidth;
 
-    public GridViewImageAdapter(Activity activity, ArrayList<String> filePaths,
-                                int imageWidth) {
+    public GridViewImageAdapter(Activity activity, ArrayList<String> filePaths, int imageWidth) {
         this._activity = activity;
         this._filePaths = filePaths;
         this.imageWidth = imageWidth;
@@ -59,13 +64,17 @@ public class GridViewImageAdapter extends BaseAdapter {
         }
 
         // get screen dimensions
-        Bitmap image = decodeFile(_filePaths.get(position), imageWidth,
-                imageWidth);
+        //Bitmap image = decodeFile(_filePaths.get(position), imageWidth, imageWidth);
+
+        String url = (String) _filePaths.get(position);
+        Context context = this._activity.getApplicationContext();
+        Picasso.with(context)
+                .load(url)
+                .into(imageView);
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setLayoutParams(new GridView.LayoutParams(imageWidth,
-                imageWidth));
-        imageView.setImageBitmap(image);
+        imageView.setLayoutParams(new GridView.LayoutParams(imageWidth, imageWidth));
+        //imageView.setImageBitmap(image);
 
         // image view click listener
         imageView.setOnClickListener(new OnImageClickListener(position));
@@ -74,7 +83,6 @@ public class GridViewImageAdapter extends BaseAdapter {
     }
 
     class OnImageClickListener implements OnClickListener {
-
         int _postion;
 
         // constructor
