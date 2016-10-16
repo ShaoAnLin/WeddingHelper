@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,15 +31,11 @@ import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.PhotoUtils;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
-import com.wedding.weddinghelper.activities.PhotoViewActivity;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 
 public class PhotoFragment extends Fragment {
@@ -52,15 +47,12 @@ public class PhotoFragment extends Fragment {
     private Bitmap originalBmp;
 
     public String weddingInfoObjectId;
-    public static File mPhotoDirectory;
 
     private PhotoUtils utils;
     private int columnWidth;
 
     static public String [] miniPhotoUrls;
     static public String [] microPhotoUrls;
-
-    private enum PHOTO_SCALE{ ORIGIN, MINI, MICRO };
 
     @Override
     public void onAttach(Activity activity) {
@@ -112,7 +104,6 @@ public class PhotoFragment extends Fragment {
 
         photoGridView = (GridView) view.findViewById(R.id.photo_grid_view);
         getPhotoPreviewList();
-        prepareDownloadDirectory();
         return (view);
     }
 
@@ -147,7 +138,6 @@ public class PhotoFragment extends Fragment {
                     ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
                     miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
-                PhotoViewActivity.photoUrls = miniPhotoUrls;
                 utils = new PhotoUtils(getActivity());
                 InitilizeGridLayout();
                 ArrayList<String> imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
@@ -186,7 +176,7 @@ public class PhotoFragment extends Fragment {
     }
 
     private void uploadPhoto() {
-        ByteArrayOutputStream bytesOri = getByteArrayFromBmp(PHOTO_SCALE.ORIGIN);
+        ByteArrayOutputStream bytesOri = PhotoUtils.getByteArrayFromBmp(originalBmp, PhotoUtils.PHOTO_SCALE.ORIGIN);
         final ParseFile fileUploadingToParse = new ParseFile("originPhoto.jpg", bytesOri.toByteArray());
         fileUploadingToParse.saveInBackground(new SaveCallback() {
             @Override
@@ -206,12 +196,12 @@ public class PhotoFragment extends Fragment {
 
     // called from uploadPhoto()
     private void uploadCompressedPhoto(final String originalPhotoId) {
-        ByteArrayOutputStream bytesMini = getByteArrayFromBmp(PHOTO_SCALE.MINI);
+        ByteArrayOutputStream bytesMini = PhotoUtils.getByteArrayFromBmp(originalBmp, PhotoUtils.PHOTO_SCALE.MINI);
         final ParseFile miniPhotoUploadingToParse = new ParseFile("miniPhoto.jpg", bytesMini.toByteArray());
         miniPhotoUploadingToParse.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                ByteArrayOutputStream bytesMicro = getByteArrayFromBmp(PHOTO_SCALE.MICRO);
+                ByteArrayOutputStream bytesMicro = PhotoUtils.getByteArrayFromBmp(originalBmp, PhotoUtils.PHOTO_SCALE.MICRO);
                 final ParseFile microPhotoUploadingToParse = new ParseFile("microPhoto.jpg", bytesMicro.toByteArray());
                 microPhotoUploadingToParse.saveInBackground(new SaveCallback() {
                     @Override
@@ -243,72 +233,5 @@ public class PhotoFragment extends Fragment {
         progressDialog.setMessage(msg);
         progressDialog.setTitle(null);
         progressDialog.show();
-    }
-
-    // save image to Download directory
-    public static void saveImage(File path, Bitmap finalBitmap) {
-        Random generator = new Random();
-        int n = generator.nextInt(10000);
-        String fname = "Image-" + n;
-        if (!path.exists()) {
-            path.mkdir();
-        }
-        File file = new File(path, fname + ".jpg");
-        n = 1;
-        while (file.exists()) {
-            file = new File(path, fname + "(" + n + ")" + ".jpg");
-            n++;
-        }
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void prepareDownloadDirectory() {
-        if (Environment.getExternalStorageState() == null) {
-            // store internal
-            Log.d("Shawn", "NO SD card found");
-            mPhotoDirectory = new File(Environment.getDataDirectory() + "/Download/");
-            if (!mPhotoDirectory.exists()) {
-                mPhotoDirectory.mkdir();
-            }
-        } else {
-            // store in SD card
-            Log.d("Shawn", "Have SD card");
-            mPhotoDirectory = new File(Environment.getExternalStorageDirectory() + "/Download/");
-            if (!mPhotoDirectory.exists()) {
-                mPhotoDirectory.mkdir();
-            }
-        }
-    }
-
-    private ByteArrayOutputStream getByteArrayFromBmp(PHOTO_SCALE scale){
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-        if (scale == PHOTO_SCALE.ORIGIN){
-            originalBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        }
-        else if (scale == PHOTO_SCALE.MINI){
-            Bitmap miniBmp = getScaledBitmap(1000);
-            miniBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        }
-        else if (scale == PHOTO_SCALE.MICRO){
-            Bitmap microBmp = getScaledBitmap(400);
-            microBmp.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        }
-        return bytes;
-    }
-
-    private Bitmap getScaledBitmap(float MIN_PIXEL){
-        float width = (float) originalBmp.getWidth();
-        float height = (float) originalBmp.getHeight();
-        float w = (width < height ? MIN_PIXEL : width / height * MIN_PIXEL);
-        float h = (height < width ? MIN_PIXEL : height / width * MIN_PIXEL);
-        return Bitmap.createScaledBitmap(originalBmp, (int) w, (int) h, true);
     }
 }

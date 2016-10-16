@@ -27,12 +27,8 @@
     <string name="create_wedding">舉辦婚宴</string>
     <string name="create_manage_wedding">舉辦/管理婚宴</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="real_name">真實姓名</string>
-    <string name="survey_name_hint">王小明</string>
     <string name="contact_phone">聯絡電話</string>
-    <string name="survey_phone_hint">0910-123-456</string>
     <string name="i_am">我是</string>
     <string name="s_friend">的親友</string>
     <string name="groom">新郎</string>

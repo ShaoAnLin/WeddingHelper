@@ -3,11 +3,13 @@ package com.wedding.weddinghelper.Util;
 /**
  * Created by linshaoan on 2016/10/15.
  */
+import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,10 +17,11 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import com.wedding.weddinghelper.activities.FullScreenViewActivity;
 
-public class TouchImageView extends ImageView{
+public class TouchImageView extends ImageView {
 
     Matrix matrix;
 
@@ -42,8 +45,10 @@ public class TouchImageView extends ImageView{
     int oldMeasuredWidth, oldMeasuredHeight;
 
     ScaleGestureDetector mScaleDetector;
+    private GestureDetectorCompat mGestureDetector;
 
     Context context;
+    private Activity mActivity;
 
     public TouchImageView(Context context) {
         super(context);
@@ -55,20 +60,25 @@ public class TouchImageView extends ImageView{
         sharedConstructing(context);
     }
 
+    public void passActivity(Activity activity){
+        mActivity = activity;
+    }
+
     private void sharedConstructing(Context context) {
         super.setClickable(true);
         this.context = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+        mGestureDetector = new GestureDetectorCompat(context, new GestureListenser());
         matrix = new Matrix();
         m = new float[9];
         setImageMatrix(matrix);
         setScaleType(ScaleType.MATRIX);
 
         setOnTouchListener(new OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mScaleDetector.onTouchEvent(event);
+                mGestureDetector.onTouchEvent(event);
                 PointF curr = new PointF(event.getX(), event.getY());
 
                 switch (event.getAction()) {
@@ -109,7 +119,6 @@ public class TouchImageView extends ImageView{
                 invalidate();
                 return true; // indicate event was handled
             }
-
         });
     }
 
@@ -147,6 +156,45 @@ public class TouchImageView extends ImageView{
                         detector.getFocusX(), detector.getFocusY());
 
             fixTrans();
+            return true;
+        }
+    }
+
+    private class GestureListenser implements
+            GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
+        @Override
+        public boolean onDown(MotionEvent e) { return true; }
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) { return true; }
+        @Override
+        public void onLongPress(MotionEvent e) {
+            Log.d("Shawn", "Long pressed");
+            FullScreenViewActivity activity = (FullScreenViewActivity) mActivity;
+            activity.callDownloadPopup();
+        }
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return true; }
+        @Override
+        public void onShowPress(MotionEvent e) {
+            Log.d("Shawn", "Show press");
+        }
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            Log.d("Shawn", "Single tap up");
+            return true;
+        }
+        public boolean onDoubleTap(MotionEvent event) {
+            Log.d("Shawn", "Double tap");
+            return true;
+        }
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent event) {
+            Log.d("Shawn", "Double tap event");
+            return true;
+        }
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent event) {
+            Log.d("Shawn", "Single tap confiremed");
             return true;
         }
     }
@@ -195,9 +243,7 @@ public class TouchImageView extends ImageView{
         viewWidth = MeasureSpec.getSize(widthMeasureSpec);
         viewHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        //
         // Rescales image on rotation
-        //
         if (oldMeasuredHeight == viewWidth && oldMeasuredHeight == viewHeight
                 || viewWidth == 0 || viewHeight == 0)
             return;

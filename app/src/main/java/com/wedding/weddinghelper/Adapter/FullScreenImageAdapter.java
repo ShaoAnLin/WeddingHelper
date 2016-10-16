@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.TouchImageView;
+import com.wedding.weddinghelper.activities.FullScreenViewActivity;
 
 import java.util.ArrayList;
 
@@ -46,12 +47,11 @@ public class FullScreenImageAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         TouchImageView imgDisplay;
 
-        inflater = (LayoutInflater) _activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View viewLayout = inflater.inflate(R.layout.layout_fullscreen_image, container,
-                false);
+        inflater = (LayoutInflater) _activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View viewLayout = inflater.inflate(R.layout.layout_fullscreen_image, container, false);
 
         imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
+        imgDisplay.passActivity(this._activity);
 
         String url = (String) _imagePaths.get(position);
         Picasso.with(this._activity)
