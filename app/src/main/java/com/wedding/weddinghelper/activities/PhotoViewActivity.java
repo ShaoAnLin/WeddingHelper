@@ -44,6 +44,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Random;
 
+// TODO: should be removed
 public class PhotoViewActivity extends AppCompatActivity implements
         GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener{
 

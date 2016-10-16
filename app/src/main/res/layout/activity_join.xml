@@ -89,7 +89,8 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/colorButtonBackground"
                 android:text="@string/testing_login"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
         </LinearLayout>
 
         <com.google.android.gms.ads.AdView

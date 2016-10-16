@@ -2,24 +2,16 @@ package com.wedding.weddinghelper.Adapter;
 
 /**
  * Created by linshaoan on 2016/10/15.
+ * Reference: http://www.androidhive.info/2013/09/android-fullscreen-image-slider-with-swipe-and-pinch-zoom-gestures/
  */
 
 import com.squareup.picasso.Picasso;
 import com.wedding.weddinghelper.activities.FullScreenViewActivity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -63,20 +55,14 @@ public class GridViewImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        // get screen dimensions
-        //Bitmap image = decodeFile(_filePaths.get(position), imageWidth, imageWidth);
-
         String url = (String) _filePaths.get(position);
-        Context context = this._activity.getApplicationContext();
-        Picasso.with(context)
+        Picasso.with(this._activity)
                 .load(url)
+                //.fit().centerCrop()
                 .into(imageView);
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(imageWidth, imageWidth));
-        //imageView.setImageBitmap(image);
-
-        // image view click listener
         imageView.setOnClickListener(new OnImageClickListener(position));
 
         return imageView;
@@ -85,48 +71,15 @@ public class GridViewImageAdapter extends BaseAdapter {
     class OnImageClickListener implements OnClickListener {
         int _postion;
 
-        // constructor
         public OnImageClickListener(int position) {
             this._postion = position;
         }
 
         @Override
         public void onClick(View v) {
-            // on selecting grid view image
-            // launch full screen activity
             Intent i = new Intent(_activity, FullScreenViewActivity.class);
             i.putExtra("position", _postion);
             _activity.startActivity(i);
         }
-
     }
-
-    /*
-     * Resizing image size
-     */
-    public static Bitmap decodeFile(String filePath, int WIDTH, int HIGHT) {
-        try {
-
-            File f = new File(filePath);
-
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-            final int REQUIRED_WIDTH = WIDTH;
-            final int REQUIRED_HIGHT = HIGHT;
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_WIDTH
-                    && o.outHeight / scale / 2 >= REQUIRED_HIGHT)
-                scale *= 2;
-
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }

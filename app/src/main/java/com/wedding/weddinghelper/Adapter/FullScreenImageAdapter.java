@@ -2,14 +2,11 @@ package com.wedding.weddinghelper.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Picasso;
@@ -20,6 +17,7 @@ import java.util.ArrayList;
 
 /**
  * Created by linshaoan on 2016/10/15.
+ * Reference: http://www.androidhive.info/2013/09/android-fullscreen-image-slider-with-swipe-and-pinch-zoom-gestures/
  */
 public class FullScreenImageAdapter extends PagerAdapter {
 
@@ -55,36 +53,18 @@ public class FullScreenImageAdapter extends PagerAdapter {
 
         imgDisplay = (TouchImageView) viewLayout.findViewById(R.id.imgDisplay);
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        //Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);
         String url = (String) _imagePaths.get(position);
-        Context context = this._activity.getApplicationContext();
-        Picasso.with(context)
+        Picasso.with(this._activity)
                 .load(url)
+                .fit().centerInside()
                 .into(imgDisplay);
 
-        // the bitmap must not be too large. Otherwise, it crashes
-        // the following codes scale the image down
-        /*float width = (float) bitmap.getWidth();
-        float height = (float) bitmap.getHeight();
-        float MIN_PIXEL = 400;
-        float w = (width < height ? MIN_PIXEL : width / height * MIN_PIXEL);
-        float h = (height < width ? MIN_PIXEL : height / width * MIN_PIXEL);
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) w, (int) h, true);
-
-        imgDisplay.setImageBitmap(scaledBitmap);*/
-
         ((ViewPager) container).addView(viewLayout);
-
         return viewLayout;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         ((ViewPager) container).removeView((RelativeLayout) object);
-
     }
-
 }

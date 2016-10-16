@@ -1,26 +1,15 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -29,9 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -41,26 +28,17 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.wedding.weddinghelper.Adapter.GridViewImageAdapter;
-import com.wedding.weddinghelper.Adapter.gridViewCustomAdapter;
 import com.wedding.weddinghelper.R;
-import com.wedding.weddinghelper.Util.AppConstant;
-import com.wedding.weddinghelper.Util.Utils;
-import com.wedding.weddinghelper.activities.GridViewActivity;
+import com.wedding.weddinghelper.Util.PhotoUtils;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 import com.wedding.weddinghelper.activities.PhotoViewActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -76,9 +54,7 @@ public class PhotoFragment extends Fragment {
     public String weddingInfoObjectId;
     public static File mPhotoDirectory;
 
-    private Utils utils;
-    private ArrayList<String> imagePaths = new ArrayList<String>();
-    private GridViewImageAdapter adapter;
+    private PhotoUtils utils;
     private int columnWidth;
 
     static public String [] miniPhotoUrls;
@@ -143,11 +119,11 @@ public class PhotoFragment extends Fragment {
     private void InitilizeGridLayout() {
         Resources r = getResources();
         float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                AppConstant.GRID_PADDING, r.getDisplayMetrics());
+                PhotoUtils.GRID_PADDING, r.getDisplayMetrics());
 
-        columnWidth = (int) ((utils.getScreenWidth() - ((AppConstant.NUM_OF_COLUMNS + 1) * padding)) / AppConstant.NUM_OF_COLUMNS);
+        columnWidth = (int) ((utils.getScreenWidth() - ((PhotoUtils.NUM_OF_COLUMNS + 1) * padding)) / PhotoUtils.NUM_OF_COLUMNS);
 
-        photoGridView.setNumColumns(AppConstant.NUM_OF_COLUMNS);
+        photoGridView.setNumColumns(PhotoUtils.NUM_OF_COLUMNS);
         photoGridView.setColumnWidth(columnWidth);
         photoGridView.setStretchMode(GridView.NO_STRETCH);
         photoGridView.setPadding((int) padding, (int) padding, (int) padding,
@@ -172,10 +148,10 @@ public class PhotoFragment extends Fragment {
                     miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
                 PhotoViewActivity.photoUrls = miniPhotoUrls;
-                utils = new Utils(getActivity());
+                utils = new PhotoUtils(getActivity());
                 InitilizeGridLayout();
-                imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
-                adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
+                ArrayList<String> imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
+                GridViewImageAdapter adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
                 photoGridView.setAdapter(adapter);
                 progressDialog.dismiss();
             }
