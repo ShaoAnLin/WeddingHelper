@@ -48,7 +48,7 @@ public class TouchImageView extends ImageView {
     private GestureDetectorCompat mGestureDetector;
 
     Context context;
-    private Activity mActivity;
+    private FullScreenViewActivity mActivity;
 
     public TouchImageView(Context context) {
         super(context);
@@ -61,7 +61,7 @@ public class TouchImageView extends ImageView {
     }
 
     public void passActivity(Activity activity){
-        mActivity = activity;
+        mActivity = (FullScreenViewActivity) activity;
     }
 
     private void sharedConstructing(Context context) {
@@ -147,13 +147,10 @@ public class TouchImageView extends ImageView {
                 mScaleFactor = minScale / origScale;
             }
 
-            if (origWidth * saveScale <= viewWidth
-                    || origHeight * saveScale <= viewHeight)
-                matrix.postScale(mScaleFactor, mScaleFactor, viewWidth / 2,
-                        viewHeight / 2);
+            if (origWidth * saveScale <= viewWidth || origHeight * saveScale <= viewHeight)
+                matrix.postScale(mScaleFactor, mScaleFactor, viewWidth / 2, viewHeight / 2);
             else
-                matrix.postScale(mScaleFactor, mScaleFactor,
-                        detector.getFocusX(), detector.getFocusY());
+                matrix.postScale(mScaleFactor, mScaleFactor, detector.getFocusX(), detector.getFocusY());
 
             fixTrans();
             return true;
@@ -168,9 +165,7 @@ public class TouchImageView extends ImageView {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) { return true; }
         @Override
         public void onLongPress(MotionEvent e) {
-            Log.d("Shawn", "Long pressed");
-            FullScreenViewActivity activity = (FullScreenViewActivity) mActivity;
-            activity.callDownloadPopup();
+            mActivity.callDownloadPopup();
         }
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return true; }
@@ -200,6 +195,13 @@ public class TouchImageView extends ImageView {
     }
 
     void fixTrans() {
+        if (saveScale != minScale){
+            mActivity.setPagingEnabled(false);
+        }
+        else {
+            mActivity.setPagingEnabled(true);
+        }
+
         matrix.getValues(m);
         float transX = m[Matrix.MTRANS_X];
         float transY = m[Matrix.MTRANS_Y];
@@ -237,6 +239,7 @@ public class TouchImageView extends ImageView {
         return delta;
     }
 
+    // TODO: fix problem when scaling (do not swipe to another image)
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

@@ -214,7 +214,6 @@ public class PhotoFragment extends Fragment {
                             @Override
                             public void done(ParseException e) {
                                 Log.d("Neal", "Done saving 3 files!");
-                                // TODO: replace with new method?
                                 getPhotoPreviewList();
                             }
                         });

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.wedding.weddinghelper.Adapter.FullScreenImageAdapter;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.CustomizedViewPager;
 import com.wedding.weddinghelper.Util.PhotoUtils;
 import com.wedding.weddinghelper.fragements.PhotoFragment;
 
@@ -33,7 +34,7 @@ import java.util.Arrays;
 public class FullScreenViewActivity extends Activity {
 
     private FullScreenImageAdapter adapter;
-    private ViewPager viewPager;
+    private CustomizedViewPager viewPager;
 
     private PopupWindow popupWindow;
 
@@ -46,7 +47,7 @@ public class FullScreenViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen_view);
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (CustomizedViewPager) findViewById(R.id.pager);
 
         Intent i = getIntent();
         int position = i.getIntExtra("position", 0);
@@ -55,6 +56,10 @@ public class FullScreenViewActivity extends Activity {
         adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, photoList);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
+    }
+
+    public void setPagingEnabled(boolean enabled){
+        viewPager.setPagingEnabled(enabled);
     }
 
     // TODO: dismiss popup when clicking the screen other than the window
