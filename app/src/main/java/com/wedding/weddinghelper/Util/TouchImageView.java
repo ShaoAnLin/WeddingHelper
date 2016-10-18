@@ -160,28 +160,41 @@ public class TouchImageView extends ImageView {
     private class GestureListenser implements
             GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
         @Override
-        public boolean onDown(MotionEvent e) { return true; }
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
         @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) { return true; }
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return true;
+        }
         @Override
         public void onLongPress(MotionEvent e) {
             mActivity.callDownloadPopup();
         }
         @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) { return true; }
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return true;
+        }
         @Override
         public void onShowPress(MotionEvent e) {}
         @Override
-        public boolean onSingleTapUp(MotionEvent e) { return true;}
+        public boolean onSingleTapUp(MotionEvent e) {
+            return true;
+        }
         public boolean onDoubleTap(MotionEvent event) {
             Log.d("Shawn", "Double tap");
             autoScaleImage();
             return true;
         }
         @Override
-        public boolean onDoubleTapEvent(MotionEvent event) { return true; }
+        public boolean onDoubleTapEvent(MotionEvent event) {
+            return true;
+        }
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent event) { return true;}
+        public boolean onSingleTapConfirmed(MotionEvent event) {
+            mActivity.fullScreen();
+            return true;
+        }
     }
 
     void autoScaleImage(){

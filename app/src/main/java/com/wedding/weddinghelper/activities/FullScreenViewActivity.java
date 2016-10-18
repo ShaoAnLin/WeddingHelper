@@ -56,6 +56,8 @@ public class FullScreenViewActivity extends Activity {
         adapter = new FullScreenImageAdapter(FullScreenViewActivity.this, photoList);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(position);
+
+        fullScreen();
     }
 
     public void setPagingEnabled(boolean enabled){
