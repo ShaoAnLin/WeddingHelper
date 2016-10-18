@@ -58,7 +58,7 @@ public class GridViewImageAdapter extends BaseAdapter {
         String url = (String) _filePaths.get(position);
         Picasso.with(this._activity)
                 .load(url)
-                //.fit().centerCrop()
+                //.fit().centerInside()
                 .into(imageView);
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);

@@ -169,7 +169,6 @@ public class TouchImageView extends ImageView {
         }
         @Override
         public void onLongPress(MotionEvent e) {
-            mActivity.callDownloadPopup();
         }
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {

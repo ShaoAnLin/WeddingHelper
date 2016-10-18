@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -15,9 +18,11 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -35,8 +40,7 @@ public class FullScreenViewActivity extends Activity {
 
     private FullScreenImageAdapter adapter;
     private CustomizedViewPager viewPager;
-
-    private PopupWindow popupWindow;
+    private ImageButton downloadButton;
 
     private long downloadId;
     private DownloadManager manager;
@@ -48,6 +52,18 @@ public class FullScreenViewActivity extends Activity {
         setContentView(R.layout.activity_fullscreen_view);
 
         viewPager = (CustomizedViewPager) findViewById(R.id.pager);
+        downloadButton = (ImageButton) findViewById(R.id.fullscreen_download_button);
+        downloadButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "相片下載中...", Toast.LENGTH_SHORT).show();
+                        // TODO: download mini photo now, should be original photo
+                        int position = viewPager.getCurrentItem();
+                        download(PhotoFragment.miniPhotoUrls[position]);
+                    }
+                }
+        );
 
         Intent i = getIntent();
         int position = i.getIntExtra("position", 0);
@@ -60,48 +76,17 @@ public class FullScreenViewActivity extends Activity {
         fullScreen();
     }
 
-    public void setPagingEnabled(boolean enabled){
+    public void setPagingEnabled(boolean enabled) {
         viewPager.setPagingEnabled(enabled);
     }
 
-    // TODO: dismiss popup when clicking the screen other than the window
-    public void callDownloadPopup() {
-        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = layoutInflater.inflate(R.layout.image_viewer_popup, null);
-        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.MATCH_PARENT, true);
-        popupWindow.setTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-
-        Button mDownloadButton = ((Button) popupView.findViewById(R.id.download_button));
-        if (mDownloadButton != null){
-            mDownloadButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    Toast.makeText(getApplicationContext(), "相片下載中...", Toast.LENGTH_SHORT).show();
-                    // TODO: download mini photo now, should be original photo
-                    int position = viewPager.getCurrentItem();
-                    download(PhotoFragment.miniPhotoUrls[position]);
-                    popupWindow.dismiss();
-                }
-            });
-        }
-        Button mCalcelButton = ((Button) popupView.findViewById(R.id.cancel_button));
-        if (mCalcelButton != null){
-            mCalcelButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    popupWindow.dismiss();
-                }
-            });
-        }
-    }
-
-    private void download(String url){
+    private void download(String url) {
         manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                if(DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)){
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                     DownloadManager.Query query = new DownloadManager.Query();
                     query.setFilterById(downloadId);
                     Cursor c = manager.query(query);
