@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TabHost;
 
 import com.wedding.weddinghelper.R;
@@ -23,9 +24,9 @@ public class JoinMainActivity extends AppCompatActivity
     final private String tabSurveyTag = "tabSurveyTag";
     final private String tabInfoTag = "tabInfoTag";
     final private String tabPhotoTag = "tabPhotoTag";
-    final private String tabSettingTag = "tabSettingTag";
 
     private FragmentTabHost mTabHost;
+    private String weddingInfoObjectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,8 +127,6 @@ public class JoinMainActivity extends AppCompatActivity
     public void onClick(View v) {
         finish();
     }
-
-    private String weddingInfoObjectId;
 
     public String getWeddingInfoObjectId() {
         return weddingInfoObjectId;

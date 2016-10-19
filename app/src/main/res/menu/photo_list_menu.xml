@@ -14,4 +14,10 @@
         android:icon="@android:drawable/ic_menu_gallery"
         android:orderInCategory="10"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_download"
+        android:title="下載"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="10"
+        app:showAsAction="ifRoom" />
 </menu>

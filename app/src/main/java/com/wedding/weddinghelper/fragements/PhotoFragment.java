@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -29,6 +31,7 @@ import com.parse.SaveCallback;
 import com.wedding.weddinghelper.Adapter.GridViewImageAdapter;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.PhotoUtils;
+import com.wedding.weddinghelper.activities.FullScreenViewActivity;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
 
@@ -53,6 +56,9 @@ public class PhotoFragment extends Fragment {
 
     static public String [] miniPhotoUrls;
     static public String [] microPhotoUrls;
+
+    static public boolean mDownload = false;
+    static public boolean [] mDownloadList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -92,10 +98,16 @@ public class PhotoFragment extends Fragment {
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, PICK_IMAGE);
             return true;
+        } else if (id == R.id.action_download ){
+            mDownload = true;
+            mDownloadList = new boolean[microPhotoUrls.length];
+            for(int i = 0; i < mDownloadList.length; i++) {
+                mDownloadList[i] = false;
+            }
+            //TODO: add confirm button
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,16 +121,14 @@ public class PhotoFragment extends Fragment {
 
     private void InitilizeGridLayout() {
         Resources r = getResources();
-        float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                PhotoUtils.GRID_PADDING, r.getDisplayMetrics());
+        float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, PhotoUtils.GRID_PADDING, r.getDisplayMetrics());
 
         columnWidth = (int) ((utils.getScreenWidth() - ((PhotoUtils.NUM_OF_COLUMNS + 1) * padding)) / PhotoUtils.NUM_OF_COLUMNS);
 
         photoGridView.setNumColumns(PhotoUtils.NUM_OF_COLUMNS);
         photoGridView.setColumnWidth(columnWidth);
         photoGridView.setStretchMode(GridView.NO_STRETCH);
-        photoGridView.setPadding((int) padding, (int) padding, (int) padding,
-                (int) padding);
+        photoGridView.setPadding((int) padding, (int) padding, (int) padding, (int) padding);
         photoGridView.setHorizontalSpacing((int) padding);
         photoGridView.setVerticalSpacing((int) padding);
     }
@@ -156,8 +166,8 @@ public class PhotoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getActivity().getApplicationContext(), "相片上傳中...", Toast.LENGTH_SHORT).show();
         if (requestCode == TAKE_PHOTO && resultCode == Activity.RESULT_OK && data != null) {
+            Toast.makeText(getActivity().getApplicationContext(), "相片上傳中...", Toast.LENGTH_SHORT).show();
             Uri Selected_Image_Uri = data.getData();
             try {
                 originalBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);
@@ -166,6 +176,7 @@ public class PhotoFragment extends Fragment {
                 Log.d("Neal", "Bitmap exception = " + e.toString());
             }
         } else if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            Toast.makeText(getActivity().getApplicationContext(), "相片上傳中...", Toast.LENGTH_SHORT).show();
             Uri Selected_Image_Uri = data.getData();
             try {
                 originalBmp = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Selected_Image_Uri);

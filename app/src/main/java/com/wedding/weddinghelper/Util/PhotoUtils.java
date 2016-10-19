@@ -22,7 +22,7 @@ public class PhotoUtils {
 
     // Grid view constants
     public static final int NUM_OF_COLUMNS = 3;
-    public static final int GRID_PADDING = 8; // in dp
+    public static final int GRID_PADDING = 2; // in dp
     public static final List<String> FILE_EXTN = Arrays.asList("jpg", "jpeg", "png");
 
     private Context _context;
