@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.TabHost;
 
 import com.wedding.weddinghelper.R;
@@ -51,6 +50,38 @@ public class JoinMainActivity extends AppCompatActivity
         }
 
         // set up tab host
+        tabSetup();
+
+        Bundle bundle = this.getIntent().getExtras();
+        weddingInfoObjectId = bundle.getString("weddingInfoObjectId");
+
+        // check if keyboard is hidden or shown
+        final View activityRootView = findViewById(R.id.container);
+        activityRootView.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        Rect r = new Rect();
+                        activityRootView.getWindowVisibleDisplayFrame(r);
+                        int screenHeight = activityRootView.getRootView().getHeight();
+
+                        int keypadHeight = screenHeight - r.bottom;
+                        if (keypadHeight > screenHeight * 0.15) {
+                            // keyboard is opened
+                            mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
+                            mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
+                            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+                        } else {
+                            // keyboard is closed
+                            mTabHost.getTabWidget().getChildAt(0).setVisibility(View.VISIBLE);
+                            mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+                            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+    }
+
+    public void tabSetup() {
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.container);
 
@@ -94,33 +125,6 @@ public class JoinMainActivity extends AppCompatActivity
                 }
             }
         });
-        Bundle bundle = this.getIntent().getExtras();
-        weddingInfoObjectId = bundle.getString("weddingInfoObjectId");
-
-        // check if keyboard is hidden or shown
-        final View activityRootView = findViewById(R.id.container);
-        activityRootView.getViewTreeObserver()
-                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        Rect r = new Rect();
-                        activityRootView.getWindowVisibleDisplayFrame(r);
-                        int screenHeight = activityRootView.getRootView().getHeight();
-
-                        int keypadHeight = screenHeight - r.bottom;
-                        if (keypadHeight > screenHeight * 0.15) {
-                            // keyboard is opened
-                            mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
-                            mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
-                            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
-                        } else {
-                            // keyboard is closed
-                            mTabHost.getTabWidget().getChildAt(0).setVisibility(View.VISIBLE);
-                            mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
-                            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
     }
 
     @Override

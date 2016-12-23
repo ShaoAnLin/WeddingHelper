@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,6 +33,7 @@ import com.parse.SaveCallback;
 import com.wedding.weddinghelper.Adapter.GridViewImageAdapter;
 import com.wedding.weddinghelper.R;
 import com.wedding.weddinghelper.Util.PhotoUtils;
+import com.wedding.weddinghelper.activities.DownloadPhotosActivity;
 import com.wedding.weddinghelper.activities.FullScreenViewActivity;
 import com.wedding.weddinghelper.activities.JoinMainActivity;
 import com.wedding.weddinghelper.activities.OwnMainActivity;
@@ -57,9 +59,6 @@ public class PhotoFragment extends Fragment {
 
     static public String [] miniPhotoUrls = new String[0];
     static public String [] microPhotoUrls = new String[0];
-
-    static public boolean mDownload = false;
-    static public boolean [] mDownloadList;
 
     @Override
     public void onAttach(Activity activity) {
@@ -100,12 +99,8 @@ public class PhotoFragment extends Fragment {
             startActivityForResult(i, PICK_IMAGE);
             return true;
         } else if (id == R.id.action_download ){
-            mDownload = true;
-            mDownloadList = new boolean[microPhotoUrls.length];
-            for(int i = 0; i < mDownloadList.length; i++) {
-                mDownloadList[i] = false;
-            }
-            //TODO: add confirm button
+            Intent intent = new Intent(getActivity(), DownloadPhotosActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -141,43 +136,28 @@ public class PhotoFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                if (list.size() != microPhotoUrls.length) {
-                    microPhotoUrls = new String[list.size()];
-                    miniPhotoUrls = new String[list.size()];
-                    for (int i = 0; i < list.size(); i++) {
-                        ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
-                        microPhotoUrls[i] = microPhotoFile.getUrl();
-                        ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
-                        miniPhotoUrls[i] = miniPhotoFile.getUrl();
-                    }
-                    utils = new PhotoUtils(getActivity());
-                    InitilizeGridLayout();
-                    ArrayList<String> imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
-                    GridViewImageAdapter adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
-                    photoGridView.setAdapter(adapter);
-
-                    photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        public void onItemClick(AdapterView parent, View v, int position, long id) {
-                            // TODO: The upper left and lower left image cannot be selected correctly
-                            if (PhotoFragment.mDownload) {
-                                ImageView imageView = (ImageView) v;
-                                if (PhotoFragment.mDownloadList[position]) {
-                                    imageView.setBackgroundColor(Color.TRANSPARENT);
-                                    PhotoFragment.mDownloadList[position] = false;
-                                }
-                                else {
-                                    imageView.setBackgroundColor(Color.RED);
-                                    PhotoFragment.mDownloadList[position] = true;
-                                }
-                            } else {
-                                Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
-                                i.putExtra("position", position);
-                                getActivity().startActivity(i);
-                            }
-                        }
-                    });
-                    progressDialog.dismiss();
+                microPhotoUrls = new String[list.size()];
+                miniPhotoUrls = new String[list.size()];
+                for (int i = 0; i < list.size(); i++) {
+                    ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
+                    microPhotoUrls[i] = microPhotoFile.getUrl();
+                    ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
+                    miniPhotoUrls[i] = miniPhotoFile.getUrl();
                 }
+                utils = new PhotoUtils(getActivity());
+                InitilizeGridLayout();
+                ArrayList<String> imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
+                GridViewImageAdapter adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
+                photoGridView.setAdapter(adapter);
+
+                photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView parent, View v, int position, long id) {
+                        Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
+                        i.putExtra("position", position);
+                        getActivity().startActivity(i);
+                    }
+                });
+                progressDialog.dismiss();
             }
         });
     }

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
@@ -81,35 +82,41 @@ public class FullScreenViewActivity extends Activity {
     }
 
     private void download(String url) {
-        manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+        request = new DownloadManager.Request(Uri.parse(url));
+        AsyncTask.execute(new Runnable() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                    DownloadManager.Query query = new DownloadManager.Query();
-                    query.setFilterById(downloadId);
-                    Cursor c = manager.query(query);
-                    if (c.moveToFirst()) {
-                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                        if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-                            String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                            try {
-                                Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
-                                PhotoUtils.saveImage(bmp);
-                                Toast.makeText(getApplicationContext(), "相片下載完成!", Toast.LENGTH_SHORT).show();
-                                manager.remove(downloadId);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+            public void run() {
+                //TODO your background code
+                manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                BroadcastReceiver receiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        String action = intent.getAction();
+                        if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                            DownloadManager.Query query = new DownloadManager.Query();
+                            query.setFilterById(downloadId);
+                            Cursor c = manager.query(query);
+                            if (c.moveToFirst()) {
+                                int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                                if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
+                                    String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                                    try {
+                                        Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
+                                        PhotoUtils.saveImage(bmp);
+                                        Toast.makeText(getApplicationContext(), "相片下載完成!", Toast.LENGTH_SHORT).show();
+                                        manager.remove(downloadId);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                         }
                     }
-                }
+                };
+                registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                downloadId = manager.enqueue(request);
             }
-        };
-        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        request = new DownloadManager.Request(Uri.parse(url));
-        downloadId = manager.enqueue(request);
+        });
     }
 
     public void fullScreen() {

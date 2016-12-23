@@ -72,37 +72,8 @@ public class GridViewImageAdapter extends BaseAdapter {
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(imageWidth, imageWidth));
-        //imageView.setOnClickListener(new OnImageClickListener(position));
         imageView.setPadding(10, 10, 10, 10);
 
         return imageView;
     }
-
-    /*class OnImageClickListener implements OnClickListener {
-        int _postion;
-
-        public OnImageClickListener(int position) {
-            this._postion = position;
-        }
-
-        @Override
-        public void onClick(View v) {
-            // TODO: The upper left and lower left image cannot be selected correctly
-            if (PhotoFragment.mDownload) {
-                ImageView imageView = (ImageView) v;
-                if (PhotoFragment.mDownloadList[this._postion]) {
-                    imageView.setBackgroundColor(Color.TRANSPARENT);
-                    PhotoFragment.mDownloadList[this._postion] = false;
-                }
-                else {
-                    imageView.setBackgroundColor(Color.RED);
-                    PhotoFragment.mDownloadList[this._postion] = true;
-                }
-            } else {
-                Intent i = new Intent(_activity, FullScreenViewActivity.class);
-                i.putExtra("position", _postion);
-                _activity.startActivity(i);
-            }
-        }
-    }*/
 }
