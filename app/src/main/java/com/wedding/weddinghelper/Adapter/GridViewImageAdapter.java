@@ -72,13 +72,13 @@ public class GridViewImageAdapter extends BaseAdapter {
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLayoutParams(new GridView.LayoutParams(imageWidth, imageWidth));
-        imageView.setOnClickListener(new OnImageClickListener(position));
+        //imageView.setOnClickListener(new OnImageClickListener(position));
         imageView.setPadding(10, 10, 10, 10);
 
         return imageView;
     }
 
-    class OnImageClickListener implements OnClickListener {
+    /*class OnImageClickListener implements OnClickListener {
         int _postion;
 
         public OnImageClickListener(int position) {
@@ -104,5 +104,5 @@ public class GridViewImageAdapter extends BaseAdapter {
                 _activity.startActivity(i);
             }
         }
-    }
+    }*/
 }

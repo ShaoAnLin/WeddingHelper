@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -54,8 +55,8 @@ public class PhotoFragment extends Fragment {
     private PhotoUtils utils;
     private int columnWidth;
 
-    static public String [] miniPhotoUrls;
-    static public String [] microPhotoUrls;
+    static public String [] miniPhotoUrls = new String[0];
+    static public String [] microPhotoUrls = new String[0];
 
     static public boolean mDownload = false;
     static public boolean [] mDownloadList;
@@ -140,20 +141,43 @@ public class PhotoFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> list, ParseException e) {
-                microPhotoUrls = new String[list.size()];
-                miniPhotoUrls = new String[list.size()];
-                for (int i = 0; i < list.size(); i++) {
-                    ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
-                    microPhotoUrls[i] = microPhotoFile.getUrl();
-                    ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
-                    miniPhotoUrls[i] = miniPhotoFile.getUrl();
+                if (list.size() != microPhotoUrls.length) {
+                    microPhotoUrls = new String[list.size()];
+                    miniPhotoUrls = new String[list.size()];
+                    for (int i = 0; i < list.size(); i++) {
+                        ParseFile microPhotoFile = list.get(i).getParseFile("microPhoto");
+                        microPhotoUrls[i] = microPhotoFile.getUrl();
+                        ParseFile miniPhotoFile = list.get(i).getParseFile("miniPhoto");
+                        miniPhotoUrls[i] = miniPhotoFile.getUrl();
+                    }
+                    utils = new PhotoUtils(getActivity());
+                    InitilizeGridLayout();
+                    ArrayList<String> imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
+                    GridViewImageAdapter adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
+                    photoGridView.setAdapter(adapter);
+
+                    photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView parent, View v, int position, long id) {
+                            // TODO: The upper left and lower left image cannot be selected correctly
+                            if (PhotoFragment.mDownload) {
+                                ImageView imageView = (ImageView) v;
+                                if (PhotoFragment.mDownloadList[position]) {
+                                    imageView.setBackgroundColor(Color.TRANSPARENT);
+                                    PhotoFragment.mDownloadList[position] = false;
+                                }
+                                else {
+                                    imageView.setBackgroundColor(Color.RED);
+                                    PhotoFragment.mDownloadList[position] = true;
+                                }
+                            } else {
+                                Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
+                                i.putExtra("position", position);
+                                getActivity().startActivity(i);
+                            }
+                        }
+                    });
+                    progressDialog.dismiss();
                 }
-                utils = new PhotoUtils(getActivity());
-                InitilizeGridLayout();
-                ArrayList<String> imagePaths = new ArrayList(Arrays.asList(microPhotoUrls));
-                GridViewImageAdapter adapter = new GridViewImageAdapter(getActivity(), imagePaths, columnWidth);
-                photoGridView.setAdapter(adapter);
-                progressDialog.dismiss();
             }
         });
     }
