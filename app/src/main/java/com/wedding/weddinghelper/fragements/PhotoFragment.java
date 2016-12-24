@@ -234,6 +234,7 @@ public class PhotoFragment extends Fragment {
                         photoThumbnail.put("OriginalPhotoObjectID", originalPhotoId);
                         photoThumbnail.put("miniPhoto", miniPhotoUploadingToParse);
                         photoThumbnail.put("microPhoto", microPhotoUploadingToParse);
+                        photoThumbnail.put("Shooter"," ");
                         photoThumbnail.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
