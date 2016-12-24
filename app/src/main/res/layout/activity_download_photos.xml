@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <!--TODO: the buttons overlap the grid view-->
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/download_photo_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:gravity="center"
         android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" />
+        android:stretchMode="columnWidth"
+        android:layout_weight="1"/>
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorBackground">
+        android:background="@color/colorBackground"
+        android:baselineAligned="false">
 
         <Button
             android:id="@+id/download_cancel"
@@ -43,4 +44,5 @@
             android:text="下載" />
 
     </LinearLayout>
-</RelativeLayout>
+
+</TableLayout>
