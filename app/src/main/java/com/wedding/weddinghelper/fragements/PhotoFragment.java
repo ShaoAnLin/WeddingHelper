@@ -1,10 +1,12 @@
 package com.wedding.weddinghelper.fragements;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,7 +14,9 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -65,6 +69,8 @@ public class PhotoFragment extends Fragment {
 
     static public boolean[] mDownloadList;
 
+    final private int MY_PERMISSIONS_REQUEST_CAMERA = 0;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -94,9 +100,7 @@ public class PhotoFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_camera) {
             // 使用相機拍照，並上傳照片
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
-            startActivityForResult(intent, TAKE_PHOTO);
+            checkCameraPermission();
             return true;
         } else if (id == R.id.action_album) {
             // 從相簿裡選擇照片，並上傳照片
@@ -252,5 +256,39 @@ public class PhotoFragment extends Fragment {
         progressDialog.setMessage(msg);
         progressDialog.setTitle(null);
         progressDialog.show();
+    }
+
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+        }
+        else{
+            startCamera();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted!
+                    startCamera();
+                } else {
+                    // permission denied!
+                }
+                return;
+            }
+        }
+    }
+
+    private void startCamera(){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI.getPath());
+        startActivityForResult(intent, TAKE_PHOTO);
     }
 }
