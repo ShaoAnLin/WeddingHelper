@@ -195,6 +195,7 @@ public class JoinMainActivity extends AppCompatActivity
         return weddingInfoObjectId;
     }
 
+    // TODO: also allow download for OwnMainActivity
     static public void download(int position) {
         String url = PhotoFragment.miniPhotoUrls[position];
         request = new DownloadManager.Request(Uri.parse(url));

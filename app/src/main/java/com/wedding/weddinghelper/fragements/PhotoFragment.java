@@ -59,6 +59,7 @@ public class PhotoFragment extends Fragment {
     private PhotoUtils utils;
     private int columnWidth;
 
+    // TODO: get also original photo urls
     static public String [] miniPhotoUrls = new String[0];
     static public String [] microPhotoUrls = new String[0];
 
