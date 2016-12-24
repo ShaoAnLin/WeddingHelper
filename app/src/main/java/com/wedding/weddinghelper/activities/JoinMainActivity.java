@@ -1,6 +1,15 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +19,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.PhotoUtils;
 import com.wedding.weddinghelper.fragements.PhotoFragment;
 import com.wedding.weddinghelper.fragements.JoinSurveyFragment;
 import com.wedding.weddinghelper.fragements.WeddingInfoFragment;
+
+import java.io.IOException;
 
 
 public class JoinMainActivity extends AppCompatActivity
@@ -26,6 +39,11 @@ public class JoinMainActivity extends AppCompatActivity
 
     private FragmentTabHost mTabHost;
     private String weddingInfoObjectId;
+
+    static public long downloadId;
+    static public DownloadManager manager;
+    static public DownloadManager.Request request;
+    static public BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +97,47 @@ public class JoinMainActivity extends AppCompatActivity
                         }
                     }
                 });
+
+        // download
+        manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
+                    DownloadManager.Query query = new DownloadManager.Query();
+                    query.setFilterById(downloadId);
+                    Cursor c = manager.query(query);
+                    if (c.moveToFirst()) {
+                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                        if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
+                            String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+                            try {
+                                Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
+                                PhotoUtils.saveImage(bmp);
+                                manager.remove(downloadId);
+
+                                boolean done = true;
+                                for (int i = 0; i < PhotoFragment.mDownloadList.length; ++i) {
+                                    if (PhotoFragment.mDownloadList[i]){
+                                        PhotoFragment.mDownloadList[i] = false;
+                                        download(i);
+                                        done = false;
+                                        break;
+                                    }
+                                }
+                                if (done){
+                                    Toast.makeText(getApplicationContext(), "相片下載完成!", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     public void tabSetup() {
@@ -134,5 +193,21 @@ public class JoinMainActivity extends AppCompatActivity
 
     public String getWeddingInfoObjectId() {
         return weddingInfoObjectId;
+    }
+
+    static public void download(int position) {
+        String url = PhotoFragment.miniPhotoUrls[position];
+        request = new DownloadManager.Request(Uri.parse(url));
+        downloadId = manager.enqueue(request);
+    }
+
+    static public void downloadPhotoList() {
+        for (int i = 0; i < PhotoFragment.mDownloadList.length; ++i) {
+            if (PhotoFragment.mDownloadList[i]) {
+                PhotoFragment.mDownloadList[i] = false;
+                download(i);
+                break;
+            }
+        }
     }
 }

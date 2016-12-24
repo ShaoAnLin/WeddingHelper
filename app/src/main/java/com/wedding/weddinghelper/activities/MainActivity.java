@@ -1,18 +1,32 @@
 package com.wedding.weddinghelper.activities;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.wedding.weddinghelper.R;
+import com.wedding.weddinghelper.Util.PhotoUtils;
+import com.wedding.weddinghelper.fragements.PhotoFragment;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
@@ -93,5 +107,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStop(); }
     @Override
     public void onDestroy() { Log.d(getClass().getSimpleName(), "onDestroy()");
-        super.onDestroy(); }
+        super.onDestroy();
+    }
 }

@@ -43,10 +43,6 @@ public class FullScreenViewActivity extends Activity {
     private CustomizedViewPager viewPager;
     private ImageButton downloadButton;
 
-    private long downloadId;
-    private DownloadManager manager;
-    private DownloadManager.Request request;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +57,7 @@ public class FullScreenViewActivity extends Activity {
                         Toast.makeText(getApplicationContext(), "相片下載中...", Toast.LENGTH_SHORT).show();
                         // TODO: download mini photo now, should be original photo
                         int position = viewPager.getCurrentItem();
-                        download(PhotoFragment.miniPhotoUrls[position]);
+                        JoinMainActivity.download(position);
                     }
                 }
         );
@@ -79,44 +75,6 @@ public class FullScreenViewActivity extends Activity {
 
     public void setPagingEnabled(boolean enabled) {
         viewPager.setPagingEnabled(enabled);
-    }
-
-    private void download(String url) {
-        request = new DownloadManager.Request(Uri.parse(url));
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                //TODO your background code
-                manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                BroadcastReceiver receiver = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        String action = intent.getAction();
-                        if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                            DownloadManager.Query query = new DownloadManager.Query();
-                            query.setFilterById(downloadId);
-                            Cursor c = manager.query(query);
-                            if (c.moveToFirst()) {
-                                int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                                if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-                                    String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                                    try {
-                                        Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
-                                        PhotoUtils.saveImage(bmp);
-                                        Toast.makeText(getApplicationContext(), "相片下載完成!", Toast.LENGTH_SHORT).show();
-                                        manager.remove(downloadId);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                };
-                registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-                downloadId = manager.enqueue(request);
-            }
-        });
     }
 
     public void fullScreen() {

@@ -1,7 +1,9 @@
 package com.wedding.weddinghelper.fragements;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -59,6 +61,8 @@ public class PhotoFragment extends Fragment {
 
     static public String [] miniPhotoUrls = new String[0];
     static public String [] microPhotoUrls = new String[0];
+
+    static public boolean[] mDownloadList;
 
     @Override
     public void onAttach(Activity activity) {

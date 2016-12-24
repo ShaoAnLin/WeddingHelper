@@ -42,12 +42,6 @@ public class DownloadPhotosActivity extends AppCompatActivity {
     private GridView photoGridView;
     private Button mCancel, mConfirm;
 
-    private boolean[] mDownloadList;
-    private long downloadId;
-    private DownloadManager manager;
-    private DownloadManager.Request request;
-    private BroadcastReceiver receiver;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +59,9 @@ public class DownloadPhotosActivity extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                downloadPhotoList();
+                JoinMainActivity.downloadPhotoList();
                 Toast.makeText(getApplicationContext(), "相片下載中...", Toast.LENGTH_SHORT).show();
-                //finish();
+                finish();
             }
         });
 
@@ -81,17 +75,17 @@ public class DownloadPhotosActivity extends AppCompatActivity {
         ArrayList<String> imagePaths = new ArrayList(Arrays.asList(PhotoFragment.microPhotoUrls));
         GridViewImageAdapter adapter = new GridViewImageAdapter(this, imagePaths, columnWidth);
         photoGridView.setAdapter(adapter);
-        mDownloadList = new boolean[PhotoFragment.microPhotoUrls.length];
+        PhotoFragment.mDownloadList = new boolean[PhotoFragment.microPhotoUrls.length];
 
         photoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 ImageView imageView = (ImageView) v;
-                if (mDownloadList[position]) {
+                if (PhotoFragment.mDownloadList[position]) {
                     imageView.setBackgroundColor(Color.TRANSPARENT);
-                    mDownloadList[position] = false;
+                    PhotoFragment.mDownloadList[position] = false;
                 } else {
                     imageView.setBackgroundColor(Color.RED);
-                    mDownloadList[position] = true;
+                    PhotoFragment.mDownloadList[position] = true;
                 }
             }
         });
@@ -109,59 +103,5 @@ public class DownloadPhotosActivity extends AppCompatActivity {
         photoGridView.setPadding((int) padding, (int) padding, (int) padding, (int) padding);
         photoGridView.setHorizontalSpacing((int) padding);
         photoGridView.setVerticalSpacing((int) padding);
-    }
-
-    private void downloadPhotoList() {
-        for (int i = 0; i < mDownloadList.length; ++i) {
-            if (mDownloadList[i]) {
-                mDownloadList[i] = false;
-                download(PhotoFragment.miniPhotoUrls[i]);
-                break;
-            }
-        }
-    }
-
-    private void download(String url) {
-        request = new DownloadManager.Request(Uri.parse(url));
-        manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
-                    DownloadManager.Query query = new DownloadManager.Query();
-                    query.setFilterById(downloadId);
-                    Cursor c = manager.query(query);
-                    if (c.moveToFirst()) {
-                        int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
-                        if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
-                            String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                            try {
-                                Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(uriString));
-                                PhotoUtils.saveImage(bmp);
-                                manager.remove(downloadId);
-
-                                boolean done = true;
-                                for (int i = 0; i < mDownloadList.length; ++i) {
-                                    if (mDownloadList[i]) {
-                                        mDownloadList[i] = false;
-                                        download(PhotoFragment.miniPhotoUrls[i]);
-                                        done = false;
-                                        break;
-                                    }
-                                }
-                                if (done) {
-                                    Toast.makeText(getApplicationContext(), "相片下載完成！", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-        downloadId = manager.enqueue(request);
     }
 }
